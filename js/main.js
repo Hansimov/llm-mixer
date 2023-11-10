@@ -22,6 +22,14 @@ function auto_resize_user_input() {
     );
 }
 
+function load_live_js() {
+    if (window.location.protocol !== "https:") {
+        var script = document.createElement("script");
+        script.src = "./js/common/live.js";
+        document.head.appendChild(script);
+    }
+}
+
 function setup_interactive_components() {
     setup_available_models_on_select();
     setup_temperature_on_select();
@@ -85,5 +93,6 @@ function adjust_messagers_container_max_height() {
 }
 
 $(document).ready(function () {
+    load_live_js();
     setup_interactive_components();
 });
