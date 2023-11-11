@@ -31,11 +31,23 @@ export class ChatCompletionsRequester {
         this.model = model || get_selected_llm_model() || "gpt-turbo-3.5";
         this.temperature =
             temperature !== null ? temperature : get_selected_temperature();
-        this.endpoint = endpoint || localStorage.getItem("openai_endpoint");
+
+        if (this.model.startsWith("bingo")) {
+            // if this.model is `bingo-precise`, then:
+            // - this.endpoint: `https://copilot.github1s.tk/api/v1`
+            // - this.model: `Precise`
+            this.endpoint = "https://copilot.github1s.tk";
+            this.mode = this.model.split("-")[1];
+            this.model =
+                this.mode.charAt(0).toUpperCase() +
+                this.mode.slice(1).toLowerCase();
+        } else {
+            this.endpoint = endpoint || localStorage.getItem("openai_endpoint");
+        }
         if (cors_proxy !== null) {
             this.cors_proxy = cors_proxy;
         } else if (window.location.protocol === "https:") {
-            this.cors_proxy = "https://hansimov-cors-anywhere.onrender.com/";
+            this.cors_proxy = "https://hansimov-cors.onrender.com/";
         } else {
             this.cors_proxy = "https://cors-anywhere.herokuapp.com/";
         }

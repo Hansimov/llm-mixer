@@ -11,9 +11,9 @@ export async function setup_available_models_on_select(default_option = null) {
         // "bing-dall-e", // not work
         // "bing-gpt-4", // not work
         // "bing-gpt-4-32k", // not work
-        // "bingo-balanced", // not work
-        // "bingo-creative", // not work
-        // "bingo-precise", // not work
+        // "bingo-precise", // in progress
+        // "bingo-balanced", // in progress
+        // "bingo-creative", // in progress
         "claude-2",
         "gpt-3.5-turbo",
         "gpt-3.5-turbo-internet",
