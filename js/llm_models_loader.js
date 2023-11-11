@@ -9,17 +9,17 @@ export async function setup_available_models_on_select(default_option = null) {
         "bing-balanced",
         "bing-creative",
         // "bing-dall-e", // not work
-        "bing-gpt-4",
-        "bing-gpt-4-32k",
+        // "bing-gpt-4", // not work
+        // "bing-gpt-4-32k", // not work
         // "bingo-balanced", // not work
         // "bingo-creative", // not work
         // "bingo-precise", // not work
         "claude-2",
         "gpt-3.5-turbo",
         "gpt-3.5-turbo-internet",
-        "gpt-4",
-        "gpt-4-32k",
-        "gpt-4-internet",
+        // "gpt-4", // not work
+        // "gpt-4-32k", // not work
+        // "gpt-4-internet", // not work
         // "pandora-gpt-3.5-turbo", // not work
         // "poe-claude-2-100k", // not work
         "poe-claude-instant",
@@ -32,15 +32,15 @@ export async function setup_available_models_on_select(default_option = null) {
         "poe-gpt-3.5-turbo",
         // "poe-gpt-3.5-turbo-16k", // not work
         "poe-gpt-3.5-turbo-instruct",
-        "poe-gpt-4",
-        "poe-gpt-4-32k",
+        // "poe-gpt-4", // not work
+        // "poe-gpt-4-32k", // not work
         // "poe-llama-2-13b",
         // "poe-llama-2-70b",
         // "poe-llama-2-7b",
         // "poe-nous-hermes-13b",
         // "poe-nous-hermes-l2-13b", // not work
-        // "poe-saga",
-        // "poe-solar-0-70b",
+        "poe-saga",
+        "poe-solar-0-70b",
         // "poe-stablediffusion-xl", // not work
         // "poe-starcoderchat", // not work
         "poe-web-search",
@@ -52,8 +52,13 @@ export async function setup_available_models_on_select(default_option = null) {
         }
     });
     let default_model = "gpt-turbo-3.5";
-    if (localStorage.getItem("default_model")) {
-        default_model = localStorage.getItem("default_model");
+    let local_default_model = localStorage.getItem("default_model");
+    if (
+        local_default_model &&
+        working_models.includes(local_default_model) &&
+        available_models.includes(local_default_model)
+    ) {
+        default_model = local_default_model;
     }
     select.val(default_model);
     console.log(`Default model: ${select.val()}`);
