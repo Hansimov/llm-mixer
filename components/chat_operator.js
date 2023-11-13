@@ -1,4 +1,4 @@
-import { Messager, MessagerList } from "../components/messager.js";
+import { Messager, MessagerList } from "./messager.js";
 import { transform_footnote } from "../converters/stream_jsonizer.js";
 
 let messagers_container = $("#messagers-container");

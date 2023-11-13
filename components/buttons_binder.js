@@ -6,7 +6,7 @@ import {
     get_latest_message_content_displayer,
     scroll_to_bottom,
     set_user_scroll_status,
-} from "../js/chat_operator.js";
+} from "./chat_operator.js";
 
 export function bind_chat_buttons() {
     let send_user_input_binder = new SendUserInputButtonBinder();

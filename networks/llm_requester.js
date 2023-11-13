@@ -8,7 +8,7 @@ import {
     get_request_messages,
     get_selected_llm_model,
     get_selected_temperature,
-} from "../js/chat_operator.js";
+} from "../components/chat_operator.js";
 
 function concat_urls(...urls) {
     let new_url = urls
