@@ -1,4 +1,7 @@
-import { request_available_models, available_models } from "./llm_requester.js";
+import {
+    request_available_models,
+    available_models,
+} from "../js/llm_requester.js";
 
 export async function setup_available_models_on_select(default_option = null) {
     var select = $("#available-models-select");
