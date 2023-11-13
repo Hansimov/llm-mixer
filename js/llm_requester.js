@@ -1,7 +1,7 @@
 import {
     jsonize_stream_data,
     stringify_stream_bytes,
-} from "./stream_jsonizer.js";
+} from "../converters/stream_jsonizer.js";
 import {
     update_message,
     create_messager,
