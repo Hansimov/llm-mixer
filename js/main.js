@@ -25,7 +25,7 @@ function auto_resize_user_input() {
 function load_live_js() {
     if (window.location.protocol !== "https:") {
         var script = document.createElement("script");
-        script.src = "./js/common/live.js";
+        script.src = "./common/live.js";
         document.head.appendChild(script);
     }
 }
