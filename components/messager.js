@@ -1,4 +1,4 @@
-export class MessagerViewer {
+class MessagerViewer {
     constructor(message) {
         this.message = message;
         this.create_elements();
