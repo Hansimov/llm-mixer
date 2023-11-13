@@ -1,4 +1,4 @@
-import { ChatCompletionsRequester } from "../js/llm_requester.js";
+import { ChatCompletionsRequester } from "../networks/llm_requester.js";
 import {
     stop_latest_message_animation,
     start_latest_message_animation,
