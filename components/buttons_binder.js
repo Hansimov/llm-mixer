@@ -1,4 +1,4 @@
-import { ChatCompletionsRequester } from "./llm_requester.js";
+import { ChatCompletionsRequester } from "../js/llm_requester.js";
 import {
     stop_latest_message_animation,
     start_latest_message_animation,
@@ -6,7 +6,7 @@ import {
     get_latest_message_content_displayer,
     scroll_to_bottom,
     set_user_scroll_status,
-} from "./chat_operator.js";
+} from "../js/chat_operator.js";
 
 export function bind_chat_buttons() {
     let send_user_input_binder = new SendUserInputButtonBinder();
