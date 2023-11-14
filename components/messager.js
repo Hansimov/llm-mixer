@@ -34,7 +34,7 @@ class MessagerViewer {
             .addClass("content-displayer")
             .addClass(`chat-${this.message.role}`)
             .append(this.message.content);
-        this.content_displayer.data("raw_content", "");
+        this.content_displayer.data("raw_content", this.message.content);
     }
     create_button_group() {
         this.button_group = $("<div>")
@@ -42,6 +42,16 @@ class MessagerViewer {
             .addClass("button-group")
             .css("z-index", "1")
             .css("padding", "auto");
+
+        if (this.message.role === "assistant") {
+            this.regenerate_button = $("<button>")
+                .addClass("btn pt-0 px-2")
+                .addClass("regenerate-button")
+                .attr("title", "Regenerate")
+                .append($("<span>").addClass("fa fa-small fa-rotate"));
+            this.button_group.append(this.regenerate_button);
+        } else {
+        }
 
         this.edit_button = $("<button>")
             .addClass("btn pt-0 px-2")
@@ -57,15 +67,19 @@ class MessagerViewer {
             .append($("<span>").addClass("fa fa-small fa-copy"));
         this.button_group.append(this.copy_button);
 
-        if (this.message.role === "assistant") {
-            this.regenerate_button = $("<button>")
-                .addClass("btn pt-0 px-2")
-                .addClass("regenerate-button")
-                .attr("title", "Regenerate")
-                .append($("<span>").addClass("fa fa-small fa-rotate"));
-            this.button_group.append(this.regenerate_button);
-        } else {
-        }
+        this.copy_button.click(function () {
+            let content = $(this)
+                .closest(".message-viewer")
+                .find(".content-displayer")
+                .data("raw_content");
+            console.log("Copy");
+            console.log(content);
+            let clipboard = new ClipboardJS(this, {
+                text: function () {
+                    return content;
+                },
+            });
+        });
     }
 }
 
