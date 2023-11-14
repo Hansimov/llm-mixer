@@ -5,7 +5,7 @@ class MessagerViewer {
     }
     create_elements() {
         this.container = $("<div>")
-            .addClass("mt-2 row no-gutters message-viewer")
+            .addClass("mt-2 row no-gutters message-viewer position-relative")
             .addClass(`message-${this.message.role}`);
         this.create_role_displayer();
         this.create_content_displayer();
@@ -17,8 +17,11 @@ class MessagerViewer {
     }
     create_role_displayer() {
         this.role_displayer = $("<div>")
-            .addClass("col-2 p-2")
-            .addClass("role-displayer");
+            .addClass("position-absolute top-0 start-0 px-2")
+            .addClass("role-displayer")
+            .css("z-index", "1")
+            .css("padding", "auto")
+            .css("color", "red");
         if (this.message.role === "user") {
             this.role_displayer.append("You");
         } else {
@@ -27,7 +30,7 @@ class MessagerViewer {
     }
     create_content_displayer() {
         this.content_displayer = $("<div>")
-            .addClass("col-8 p-2")
+            .addClass("col-12 px-2 pt-4")
             .addClass("content-displayer")
             .addClass(`chat-${this.message.role}`)
             .append(this.message.content);
@@ -35,8 +38,10 @@ class MessagerViewer {
     }
     create_button_group() {
         this.button_group = $("<div>")
-            .addClass("col-2")
-            .addClass("button-group");
+            .addClass("position-absolute top-0 end-0 px-2")
+            .addClass("button-group")
+            .css("z-index", "1")
+            .css("padding", "auto");
 
         this.edit_button = $("<button>")
             .addClass("btn px-2")
