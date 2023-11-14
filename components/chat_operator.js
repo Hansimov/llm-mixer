@@ -80,11 +80,15 @@ export function get_latest_user_messager() {
     return $(".message-user").last();
 }
 
+export function get_latest_assistant_messager() {
+    return $(".message-assistant").last();
+}
+
 export function start_latest_message_animation() {
-    get_latest_messager_container()
+    get_latest_assistant_messager()
         .find(".content-displayer")
         .addClass("blinking");
-    get_latest_user_messager()
+    get_latest_assistant_messager()
         .find(".button-group")
         .find(".regenerate-button")
         .find("i")
@@ -92,10 +96,10 @@ export function start_latest_message_animation() {
 }
 
 export function stop_latest_message_animation() {
-    get_latest_messager_container()
+    get_latest_assistant_messager()
         .find(".content-displayer")
         .removeClass("blinking");
-    get_latest_user_messager()
+    get_latest_assistant_messager()
         .find(".button-group")
         .find(".regenerate-button")
         .find("i")

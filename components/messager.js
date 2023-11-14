@@ -17,7 +17,7 @@ class MessagerViewer {
     }
     create_role_displayer() {
         this.role_displayer = $("<div>")
-            .addClass("position-absolute top-0 start-0 px-2")
+            .addClass("position-absolute px-2")
             .addClass("role-displayer")
             .css("z-index", "1")
             .css("padding", "auto")
@@ -38,31 +38,31 @@ class MessagerViewer {
     }
     create_button_group() {
         this.button_group = $("<div>")
-            .addClass("position-absolute top-0 end-0 px-2")
+            .addClass("position-absolute text-end px-1")
             .addClass("button-group")
             .css("z-index", "1")
             .css("padding", "auto");
 
         this.edit_button = $("<button>")
-            .addClass("btn px-2")
+            .addClass("btn pt-0 px-2")
             .addClass("edit-button")
             .attr("title", "Edit")
-            .append($("<i>").addClass("fa fa-edit"));
+            .append($("<span>").addClass("fa fa-small fa-edit"));
         this.button_group.append(this.edit_button);
 
         this.copy_button = $("<button>")
-            .addClass("btn px-2")
+            .addClass("btn pt-0 px-2")
             .addClass("copy-button")
             .attr("title", "Copy")
-            .append($("<i>").addClass("fa fa-copy"));
+            .append($("<span>").addClass("fa fa-small fa-copy"));
         this.button_group.append(this.copy_button);
 
-        if (this.message.role === "user") {
+        if (this.message.role === "assistant") {
             this.regenerate_button = $("<button>")
-                .addClass("btn px-2")
+                .addClass("btn pt-0 px-2")
                 .addClass("regenerate-button")
                 .attr("title", "Regenerate")
-                .append($("<i>").addClass("fa fa-rotate"));
+                .append($("<span>").addClass("fa fa-small fa-rotate"));
             this.button_group.append(this.regenerate_button);
         } else {
         }

@@ -98,6 +98,12 @@
     color: lightsalmon;
 }
 
+.fa-small {
+    font-size: small;
+    margin: 0;
+    padding: 0;
+}
+
 .icon-success {
     color: green;
 }
