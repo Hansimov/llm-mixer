@@ -206,11 +206,21 @@ class ScreenshotButtonBinder {
         const button = $("#screenshot-button");
         button.attr("title", "Take screenshot for whole chat");
         button.click(() => {
-            let screenshot_padding = 10;
+            let screenshot_padding = 20;
+            let container_padding = 12;
+            let right_offset = 0;
+            if (window.innerWidth < 768) {
+                right_offset = 48;
+            }
             html2canvas($("#messagers-container")[0], {
-                x: -screenshot_padding,
+                x: -(container_padding + screenshot_padding),
                 width:
-                    $("#messagers-container").width() + 2 * screenshot_padding,
+                    $("#messagers-container").width() +
+                    container_padding * 2 +
+                    screenshot_padding * 2 +
+                    right_offset,
+                // default padding is 0.75em (12px)
+                // p-1 (4px)(0.25em); p-2 (8px)(0.5em); p-3 (16px)(1em);
             }).then((canvas) => {
                 var link = document.createElement("a");
                 let date = new Date();
