@@ -2,7 +2,7 @@ import {
     setup_available_models_on_select,
     setup_temperature_on_select,
 } from "./components/llm_models_loader.js";
-import { bind_chat_buttons } from "./components/buttons_binder.js";
+import { ButtonsBinder } from "./components/buttons_binder.js";
 
 function auto_resize_user_input() {
     // https://stackoverflow.com/questions/37629860/automatically-resizing-textarea-in-bootstrap
@@ -28,7 +28,8 @@ function setup_interactive_components() {
     setup_available_models_on_select();
     setup_temperature_on_select();
     auto_resize_user_input();
-    bind_chat_buttons();
+    let buttons_binder = new ButtonsBinder();
+    buttons_binder.bind();
     adjust_messagers_container_max_height();
     $(window).on("resize", adjust_messagers_container_max_height);
 }

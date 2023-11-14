@@ -8,26 +8,29 @@ import {
     set_user_scroll_status,
 } from "./chat_operator.js";
 
-export function bind_chat_buttons() {
-    let send_user_input_binder = new SendUserInputButtonBinder();
-    send_user_input_binder.bind();
-    let new_chat_binder = new NewChatButtonBinder();
-    new_chat_binder.bind();
-    let openai_endpoint_binder = new OpenaiEndpointButtonBinder();
-    openai_endpoint_binder.bind();
-    let openai_api_key_binder = new OpenaiAPIKeyButtonBinder();
-    openai_api_key_binder.bind();
-    let show_endpoint_and_key_binder = new ShowEndpointAndKeyButtonBinder();
-    show_endpoint_and_key_binder.bind();
-    let scroll_to_bottom_binder = new ScrollToBottomButtonBinder();
-    scroll_to_bottom_binder.bind();
-    let chat_session_container_scroll_binder =
-        new ChatSessionContainerScrollBinder();
-    chat_session_container_scroll_binder.bind();
-    let screenshot_button_binder = new ScreenshotButtonBinder();
-    screenshot_button_binder.bind();
-    let available_models_select_binder = new AvailableModelsSelectBinder();
-    available_models_select_binder.bind();
+export class ButtonsBinder {
+    constructor() {}
+    bind() {
+        let send_user_input_binder = new SendUserInputButtonBinder();
+        send_user_input_binder.bind();
+        let new_chat_binder = new NewChatButtonBinder();
+        new_chat_binder.bind();
+        let openai_endpoint_binder = new OpenaiEndpointButtonBinder();
+        openai_endpoint_binder.bind();
+        let openai_api_key_binder = new OpenaiAPIKeyButtonBinder();
+        openai_api_key_binder.bind();
+        let show_endpoint_and_key_binder = new ShowEndpointAndKeyButtonBinder();
+        show_endpoint_and_key_binder.bind();
+        let scroll_to_bottom_binder = new ScrollToBottomButtonBinder();
+        scroll_to_bottom_binder.bind();
+        let chat_session_container_scroll_binder =
+            new ChatSessionContainerScrollBinder();
+        chat_session_container_scroll_binder.bind();
+        let screenshot_button_binder = new ScreenshotButtonBinder();
+        screenshot_button_binder.bind();
+        let available_models_select_binder = new AvailableModelsSelectBinder();
+        available_models_select_binder.bind();
+    }
 }
 
 class SendUserInputButtonBinder {
