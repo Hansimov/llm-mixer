@@ -43,9 +43,10 @@ class MessagerViewer {
             .css("z-index", "1")
             .css("padding", "auto");
 
+        let btn_class = "btn pt-0 pl-3";
         if (this.message.role === "assistant") {
             this.regenerate_button = $("<button>")
-                .addClass("btn pt-0 px-2")
+                .addClass(btn_class)
                 .addClass("regenerate-button")
                 .attr("title", "Regenerate")
                 .append($("<span>").addClass("fa fa-small fa-rotate"));
@@ -54,14 +55,14 @@ class MessagerViewer {
         }
 
         this.edit_button = $("<button>")
-            .addClass("btn pt-0 px-2")
+            .addClass(btn_class)
             .addClass("edit-button")
             .attr("title", "Edit")
             .append($("<span>").addClass("fa fa-small fa-edit"));
         this.button_group.append(this.edit_button);
 
         this.copy_button = $("<button>")
-            .addClass("btn pt-0 px-2")
+            .addClass(btn_class)
             .addClass("copy-button")
             .attr("title", "Copy")
             .append($("<span>").addClass("fa fa-small fa-copy"));

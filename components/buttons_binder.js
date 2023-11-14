@@ -210,12 +210,14 @@ class ScreenshotButtonBinder {
             // default padding is 0.75em (12px)
             // p-1 (4px)(0.25em); p-2 (8px)(0.5em); p-3 (16px)(1em);
             let container_padding = 12;
+            let right_offset = 20;
             html2canvas($("#messagers-container")[0], {
                 x: -(container_padding + screenshot_padding),
                 width:
                     $("#messagers-container").width() +
                     container_padding * 2 +
-                    screenshot_padding * 2,
+                    screenshot_padding * 2 +
+                    right_offset,
             }).then((canvas) => {
                 var link = document.createElement("a");
                 let date = new Date();
