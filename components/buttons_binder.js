@@ -4,9 +4,9 @@ import {
     start_latest_message_animation,
     create_new_chat_session,
     get_latest_message_content_displayer,
-    scroll_to_bottom,
-    set_user_scroll_status,
 } from "./chat_operator.js";
+
+import { screen_scroller } from "../storage/states.js";
 
 export class ButtonsBinder {
     constructor() {}
@@ -100,7 +100,7 @@ class SendUserInputButtonBinder {
             .addClass("icon-success");
         hljs.highlightAll();
         console.log(get_latest_message_content_displayer().data("raw_content"));
-        set_user_scroll_status(false);
+        screen_scroller.set_user_scrolling(false);
     }
 }
 
@@ -183,8 +183,8 @@ class ScrollToBottomButtonBinder {
         const button = $("#scroll-to-bottom-button");
         button.attr("title", "Scroll to bottom");
         button.click(() => {
-            set_user_scroll_status(false);
-            scroll_to_bottom(true);
+            screen_scroller.set_user_scrolling(false);
+            screen_scroller.scroll_to_bottom(true);
         });
     }
 }
@@ -194,7 +194,7 @@ class ChatSessionContainerScrollBinder {
     bind() {
         $("#chat-session-container").on("wheel touchmove", function () {
             if ($("#send-user-input").attr("status") === "stop") {
-                set_user_scroll_status(true);
+                screen_scroller.set_user_scrolling(true);
             }
         });
     }
