@@ -23,9 +23,6 @@ export class ButtonsBinder {
         show_endpoint_and_key_binder.bind();
         let scroll_to_bottom_binder = new ScrollToBottomButtonBinder();
         scroll_to_bottom_binder.bind();
-        let chat_session_container_scroll_binder =
-            new ChatSessionContainerScrollBinder();
-        chat_session_container_scroll_binder.bind();
         let screenshot_button_binder = new ScreenshotButtonBinder();
         screenshot_button_binder.bind();
         let available_models_select_binder = new AvailableModelsSelectBinder();
@@ -185,17 +182,6 @@ class ScrollToBottomButtonBinder {
         button.click(() => {
             screen_scroller.set_user_scrolling(false);
             screen_scroller.scroll_to_bottom(true);
-        });
-    }
-}
-
-class ChatSessionContainerScrollBinder {
-    constructor() {}
-    bind() {
-        $("#chat-session-container").on("wheel touchmove", function () {
-            if ($("#send-user-input").attr("status") === "stop") {
-                screen_scroller.set_user_scrolling(true);
-            }
         });
     }
 }

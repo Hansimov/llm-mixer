@@ -2,6 +2,14 @@ class ScreenScroller {
     constructor() {
         this.is_user_scrolling = false;
     }
+    bind() {
+        let self = this;
+        $("#chat-session-container").on("wheel touchmove", function () {
+            if ($("#send-user-input").attr("status") === "stop") {
+                self.set_user_scrolling(true);
+            }
+        });
+    }
     get_user_scrolling() {
         return this.is_user_scrolling;
     }
@@ -12,7 +20,6 @@ class ScreenScroller {
         if (this.get_user_scrolling()) {
             return;
         }
-        console.log("scroll_to_bottom");
         if (animate) {
             $("#chat-session-container").animate(
                 {
@@ -32,3 +39,4 @@ class ScreenScroller {
 }
 
 export let screen_scroller = new ScreenScroller();
+screen_scroller.bind();
