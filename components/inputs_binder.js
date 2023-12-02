@@ -1,12 +1,12 @@
 import {
-    setup_available_models_on_select,
+    setup_hardcoded_available_models_on_select,
     setup_temperature_on_select,
 } from "../components/llm_models_loader.js";
 
 export class InputsBinder {
     constructor() {}
     bind() {
-        setup_available_models_on_select();
+        setup_hardcoded_available_models_on_select();
         setup_temperature_on_select();
         let user_input_resizer = new UserInputResizer();
         user_input_resizer.bind();

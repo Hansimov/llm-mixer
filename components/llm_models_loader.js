@@ -3,6 +3,35 @@ import {
     available_models,
 } from "../networks/llm_requester.js";
 
+export async function setup_hardcoded_available_models_on_select(
+    default_option = null
+) {
+    var select = $("#available-models-select");
+    select.empty();
+    const hardcoded_models = [
+        "pplx-7b-chat",
+        "pplx-70b-chat",
+        "pplx-7b-online",
+        "pplx-70b-online",
+        "llama-2-70b-chat",
+        "codellama-34b-instruct",
+        "mistral-7b-instruct",
+    ];
+    hardcoded_models.forEach((value, index) => {
+        const option = new Option(value, value);
+        select.append(option);
+    });
+    let default_model = "pplx-7b-chat";
+    let local_default_model = localStorage.getItem("default_model");
+    if (local_default_model && hardcoded_models.includes(local_default_model)) {
+        default_model = local_default_model;
+    } else {
+        localStorage.setItem("default_model", default_model);
+    }
+    select.val(default_model);
+    console.log(`Default model: ${select.val()}`);
+}
+
 export async function setup_available_models_on_select(default_option = null) {
     var select = $("#available-models-select");
     select.empty();
