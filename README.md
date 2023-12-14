@@ -3,9 +3,9 @@ title: LLM Mixer
 emoji: 🔀
 colorFrom: gray
 colorTo: gray
-sdk: static
+sdk: docker
+app_port: 12345
 ---
 
 Mirrors:
-* https://hansimov-llm-mixer.static.hf.space
-* https://hansimov.github.io/llm-mixer/
+* https://hansimov-llm-mixer.hf.space
