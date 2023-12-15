@@ -24,53 +24,50 @@ export class ChatCompletionsRequester {
         prompt,
         model = null,
         temperature = null,
-        endpoint = null,
-        cors_proxy = null
+        openai_endpoint = null
     ) {
         this.prompt = prompt;
         this.model = model || get_selected_llm_model() || "gpt-turbo-3.5";
         this.temperature =
             temperature !== null ? temperature : get_selected_temperature();
 
-        this.endpoint = endpoint || localStorage.getItem("openai_endpoint");
-        if (cors_proxy !== null) {
-            this.cors_proxy = cors_proxy;
-        } else {
-            this.cors_proxy = window.location.href.replace(/\/*(:\d+)*\/?$/, "") + ":12349";
-        }
-        this.request_endpoint = concat_urls(
-            this.cors_proxy,
-            this.endpoint,
-            "/chat/completions"
-        );
+        this.openai_endpoint =
+            openai_endpoint || localStorage.getItem("openai_endpoint");
+        this.backend_request_endpoint = "/chat/completions";
         this.controller = new AbortController();
     }
-    construct_request_messages() {
-        this.request_messages = get_request_messages();
-    }
-    construct_request_headers() {
-        this.request_headers = {
+    construct_openai_request_headers() {
+        this.backend_request_headers = {
+            "Content-Type": "application/json",
+        };
+        this.openai_request_headers = {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("openai_api_key")}`,
         };
     }
-    construct_request_body() {
-        this.construct_request_messages();
-        this.request_body = {
-            model: this.model,
-            messages: this.request_messages,
-            temperature: this.temperature,
-            stream: true,
+    construct_backend_request_body() {
+        this.openai_request_messages = get_request_messages();
+        this.backend_request_body = {
+            openai_endpoint: this.openai_endpoint,
+            openai_request_method: "POST",
+            openai_request_headers: this.openai_request_headers,
+            openai_request_body: {
+                model: this.model,
+                messages: this.openai_request_messages,
+                temperature: this.temperature,
+                stream: true,
+            },
         };
     }
     construct_request_params() {
-        this.construct_request_headers();
-        this.construct_request_body();
-        this.request_params = {
+        this.construct_openai_request_headers();
+        this.construct_backend_request_body();
+        this.backend_request_params = {
             method: "POST",
-            headers: this.request_headers,
-            body: JSON.stringify(this.request_body),
+            headers: this.backend_request_headers,
+            body: JSON.stringify(this.backend_request_body),
             signal: this.controller.signal,
+            stream: true,
         };
     }
     create_messager_components() {
@@ -79,7 +76,7 @@ export class ChatCompletionsRequester {
     }
     post() {
         this.construct_request_params();
-        return fetch(this.request_endpoint, this.request_params)
+        return fetch(this.backend_request_endpoint, this.backend_request_params)
             .then((response) => response.body)
             .then((rb) => {
                 const reader = rb.getReader();
