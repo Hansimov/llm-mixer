@@ -32,12 +32,11 @@ app.post("/chat/completions", async (req, res) => {
         response.data.pipe(res);
     } catch (error) {
         console.error(error);
-        console.log(error.response.data);
-        res.status(500).json({ error: "Error calling OpenAI API" });
+        res.status(500).json({ error: "Failed to requests OpenAI Endpoint" });
     }
 });
 
 const port = 12345;
 app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
+    console.log(`Server is running on http://127.0.0.1:${port}`);
 });
