@@ -14,8 +14,12 @@ export function jsonize_stream_data(data) {
             return line.trim().length > 0;
         })
         .map(function (line) {
-            console.log(line);
-            json_chunks.push(JSON.parse(line.trim()));
+            try {
+                // ToFix: Single line broken into multiple chunks
+                json_chunks.push(JSON.parse(line.trim()));
+            } catch {
+                console.log(`Failed to parse: ${line}`);
+            }
         });
     return json_chunks;
 }
