@@ -36,7 +36,7 @@ export class ChatCompletionsRequester {
         if (cors_proxy !== null) {
             this.cors_proxy = cors_proxy;
         } else {
-            this.cors_proxy = "http://127.0.0.1:12349";
+            this.cors_proxy = window.location.href.replace(/\/*(:\d+)*\/?$/, "") + ":12349";
         }
         this.request_endpoint = concat_urls(
             this.cors_proxy,
