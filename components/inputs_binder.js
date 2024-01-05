@@ -1,12 +1,8 @@
-import {
-    setup_hardcoded_available_models_on_select,
-    setup_temperature_on_select,
-} from "../components/llm_models_loader.js";
+import { setup_temperature_on_select } from "../components/llm_models_loader.js";
 
 export class InputsBinder {
-    constructor() {}
+    constructor() { }
     bind() {
-        setup_hardcoded_available_models_on_select();
         setup_temperature_on_select();
         let user_input_resizer = new UserInputResizer();
         user_input_resizer.bind();
@@ -17,7 +13,7 @@ export class InputsBinder {
 }
 
 class UserInputResizer {
-    constructor() {}
+    constructor() { }
     bind() {
         // https://stackoverflow.com/questions/37629860/automatically-resizing-textarea-in-bootstrap
         document.getElementById("user-input").addEventListener(
@@ -32,7 +28,7 @@ class UserInputResizer {
 }
 
 class ChatSessionContainerResizeBinder {
-    constructor() {}
+    constructor() { }
     bind() {
         this.resize();
         $(window).on("resize", this.resize);

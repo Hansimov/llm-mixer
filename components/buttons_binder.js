@@ -5,11 +5,12 @@ import {
     create_new_chat_session,
     get_latest_message_content_displayer,
 } from "./chat_operator.js";
+import { setup_available_models_on_select } from "./llm_models_loader.js";
 
 import { screen_scroller } from "../storage/states.js";
 
 export class ButtonsBinder {
-    constructor() {}
+    constructor() { }
     bind() {
         let send_user_input_binder = new SendUserInputButtonBinder();
         send_user_input_binder.bind();
@@ -102,7 +103,7 @@ class SendUserInputButtonBinder {
 }
 
 class NewChatButtonBinder {
-    constructor() {}
+    constructor() { }
     bind() {
         const button = $("#new-chat-session");
         button.attr("status", "new").attr("title", "New Chat");
@@ -113,13 +114,14 @@ class NewChatButtonBinder {
 }
 
 class OpenaiEndpointButtonBinder {
-    constructor() {}
+    constructor() { }
     bind() {
         const button = $("#openai-endpoint-button");
         button.attr("title", "Submit Endpoint");
         const stored_openai_endpoint = localStorage.getItem("openai_endpoint");
         if (stored_openai_endpoint) {
             $("#openai-endpoint").val(stored_openai_endpoint);
+            setup_available_models_on_select();
             console.log(`GET OpenAI Endpoint: ${stored_openai_endpoint}`);
         }
         button.click(() => {
@@ -128,12 +130,13 @@ class OpenaiEndpointButtonBinder {
                 "openai_endpoint",
                 $("#openai-endpoint").val()
             );
+            setup_available_models_on_select();
         });
     }
 }
 
 class OpenaiAPIKeyButtonBinder {
-    constructor() {}
+    constructor() { }
     bind() {
         const button = $("#openai-api-key-button");
         button.attr("title", "Submit API Key");
@@ -150,7 +153,7 @@ class OpenaiAPIKeyButtonBinder {
 }
 
 class ShowEndpointAndKeyButtonBinder {
-    constructor() {}
+    constructor() { }
     bind() {
         const button = $("#show-endpoint-and-key-button");
         button.attr("title", "Show endpoint and api key");
@@ -175,7 +178,7 @@ class ShowEndpointAndKeyButtonBinder {
 }
 
 class ScrollToBottomButtonBinder {
-    constructor() {}
+    constructor() { }
     bind() {
         const button = $("#scroll-to-bottom-button");
         button.attr("title", "Scroll to bottom");
@@ -187,7 +190,7 @@ class ScrollToBottomButtonBinder {
 }
 
 class ScreenshotButtonBinder {
-    constructor() {}
+    constructor() { }
     bind() {
         const button = $("#screenshot-button");
         button.attr("title", "Take screenshot for whole chat");
@@ -222,7 +225,7 @@ class ScreenshotButtonBinder {
 }
 
 class AvailableModelsSelectBinder {
-    constructor() {}
+    constructor() { }
     bind() {
         const select = $("#available-models-select");
         select.change(() => {
