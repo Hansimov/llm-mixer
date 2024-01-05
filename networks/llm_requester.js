@@ -145,6 +145,7 @@ export class AvailableModelsRequester {
                     }
                 });
                 available_models.sort();
+                available_models = [...new Set(available_models)];
                 console.log(available_models);
             })
             .catch((error) => {
