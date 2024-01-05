@@ -98,22 +98,60 @@ export class ChatCompletionsRequester {
     }
 }
 
+
 export var available_models = [];
-export function request_available_models() {
-    var url = "https://magic-api.ninomae.live/v1/models";
-    let request_options = {
-        method: "GET",
-    };
-    return fetch(url, request_options)
-        .then((response) => response.json())
-        .then((response_json) => {
-            response_json.data.forEach((item) => {
-                available_models.push(item.id);
+export class AvailableModelsRequester {
+    constructor(
+        openai_endpoint = null
+    ) {
+        this.openai_endpoint =
+            openai_endpoint || localStorage.getItem("openai_endpoint");
+        this.backend_request_endpoint = "/models";
+        this.controller = new AbortController();
+    }
+    construct_openai_request_headers() {
+        this.backend_request_headers = {
+            "Content-Type": "application/json",
+        };
+        this.openai_request_headers = {
+            "Content-Type": "application/json",
+        };
+    }
+    construct_backend_request_body() {
+        this.backend_request_body = {
+            openai_endpoint: this.openai_endpoint,
+            openai_request_method: "GET",
+            openai_request_headers: this.openai_request_headers,
+        };
+    }
+    construct_request_params() {
+        this.construct_openai_request_headers();
+        this.construct_backend_request_body();
+        this.backend_request_params = {
+            method: "POST",
+            headers: this.backend_request_headers,
+            body: JSON.stringify(this.backend_request_body),
+            signal: this.controller.signal,
+        };
+    }
+    get() {
+        this.construct_request_params();
+        return fetch(this.backend_request_endpoint, this.backend_request_params)
+            .then((response) => response.json())
+            .then((response_json) => {
+                response_json.forEach((item) => {
+                    if (!(item.id in available_models)) {
+                        available_models.push(item.id);
+                    }
+                });
+                available_models.sort();
+                console.log(available_models);
+            })
+            .catch((error) => {
+                console.error("Error:", error);
             });
-            available_models.sort();
-            console.log(available_models);
-        })
-        .catch((error) => {
-            console.error("Error:", error);
-        });
+    }
+    stop() {
+        this.controller.abort();
+    }
 }

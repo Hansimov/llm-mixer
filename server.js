@@ -32,7 +32,28 @@ app.post("/chat/completions", async (req, res) => {
         response.data.pipe(res);
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: "Failed to requests OpenAI Endpoint" });
+        res.status(500).json({ error: "Failed to request OpenAI Endpoint" });
+    }
+});
+
+app.post("/models", async (req, res) => {
+    try {
+        const {
+            openai_endpoint,
+            openai_request_method,
+            openai_request_headers,
+        } = req.body;
+
+        const response = await axios({
+            method: openai_request_method,
+            url: openai_endpoint + "/models",
+            headers: openai_request_headers,
+        });
+        res.json(response.data);
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Failed to request OpenAI Endpoint" });
     }
 });
 
