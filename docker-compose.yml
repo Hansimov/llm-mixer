@@ -1,9 +1,0 @@
-version: '3'
-services:
-  your_service:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - "443:12345"
-      - "12349:12349"

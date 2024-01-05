@@ -2,5 +2,5 @@ FROM node:18-slim
 WORKDIR $HOME/app
 COPY . .
 RUN npm install
-EXPOSE 12345
+EXPOSE 23456
 CMD node server.js
