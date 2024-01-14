@@ -80,18 +80,22 @@
 
 @keyframes blink {
     0% {
-        border-color: transparent;
+        background-color: transparent;
     }
     50% {
-        border-color: antiquewhite;
+        background-color: antiquewhite;
     }
     100% {
-        border-color: transparent;
+        background-color: transparent;
     }
 }
 
 .blinking {
     animation: blink 2s infinite;
+}
+
+.inferring {
+    background-color: rgba(255, 147, 40, 0.25);
 }
 
 .fa:hover {

@@ -62,7 +62,7 @@ export function get_latest_assistant_messager() {
 export function start_latest_message_animation() {
     get_latest_assistant_messager()
         .find(".content-displayer")
-        .addClass("blinking");
+        .addClass("inferring");
     get_latest_assistant_messager()
         .find(".button-group")
         .find(".regenerate-button")
@@ -73,7 +73,7 @@ export function start_latest_message_animation() {
 export function stop_latest_message_animation() {
     get_latest_assistant_messager()
         .find(".content-displayer")
-        .removeClass("blinking");
+        .removeClass("inferring");
     get_latest_assistant_messager()
         .find(".button-group")
         .find(".regenerate-button")
