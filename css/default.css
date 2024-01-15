@@ -28,6 +28,7 @@
     color: black;
     border: lightgray 1px solid;
     background-color: #eafaf1;
+    white-space: pre-wrap;
 }
 
 .chat-assistant {
