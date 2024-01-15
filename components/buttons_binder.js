@@ -4,6 +4,8 @@ import {
     start_latest_message_animation,
     create_new_chat_session,
     get_latest_message_content_displayer,
+    get_selected_llm_model,
+    create_messager,
 } from "./chat_operator.js";
 import { setup_available_models_on_select } from "./llm_models_loader.js";
 
@@ -81,11 +83,15 @@ class SendUserInputButtonBinder {
     async post_user_input() {
         let user_input_content = $("#user-input").val();
         console.log(user_input_content);
-        this.requester = new ChatCompletionsRequester(user_input_content);
-        this.requester.create_messager_components();
-        start_latest_message_animation();
-        await this.requester.post();
-        this.requester.stop();
+        if (get_selected_llm_model() == "notes") {
+            create_messager("user", user_input_content);
+        } else {
+            this.requester = new ChatCompletionsRequester(user_input_content);
+            this.requester.create_messager_components();
+            start_latest_message_animation();
+            await this.requester.post();
+            this.requester.stop();
+        }
     }
 
     async stop(button) {

@@ -98,12 +98,9 @@ export class ChatCompletionsRequester {
     }
 }
 
-
-export var available_models = [];
+export var available_models = ["notes"];
 export class AvailableModelsRequester {
-    constructor(
-        openai_endpoint = null
-    ) {
+    constructor(openai_endpoint = null) {
         this.openai_endpoint =
             openai_endpoint || localStorage.getItem("openai_endpoint");
         this.backend_request_endpoint = "/models";
