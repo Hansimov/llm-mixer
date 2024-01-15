@@ -10,7 +10,7 @@ import { setup_available_models_on_select } from "./llm_models_loader.js";
 import { screen_scroller } from "../storage/states.js";
 
 export class ButtonsBinder {
-    constructor() { }
+    constructor() {}
     bind() {
         let send_user_input_binder = new SendUserInputButtonBinder();
         send_user_input_binder.bind();
@@ -69,6 +69,15 @@ class SendUserInputButtonBinder {
         }
     }
 
+    async send(button) {
+        // console.log("Send");
+        let button_icon = button.find("i");
+        button.attr("status", "stop").attr("title", "Stop");
+        button_icon.removeClass().addClass("fa fa-circle-pause fa-fade-fast");
+        await this.post_user_input();
+        await this.stop(button);
+    }
+
     async post_user_input() {
         let user_input_content = $("#user-input").val();
         console.log(user_input_content);
@@ -76,20 +85,12 @@ class SendUserInputButtonBinder {
         this.requester.create_messager_components();
         start_latest_message_animation();
         await this.requester.post();
+        this.requester.stop();
     }
 
-    async send(button) {
-        console.log("Send");
-        let button_icon = button.find("i");
-        button.attr("status", "stop").attr("title", "Stop");
-        button_icon.removeClass().addClass("fa fa-circle-pause fa-fade-fast");
-        await this.post_user_input();
-        await this.stop(button);
-    }
     async stop(button) {
-        console.log("Stop");
+        // console.log("Stop");
         let button_icon = button.find("i");
-        this.requester.stop();
         stop_latest_message_animation();
         button.attr("status", "send").attr("title", "Send");
         button_icon
@@ -103,7 +104,7 @@ class SendUserInputButtonBinder {
 }
 
 class NewChatButtonBinder {
-    constructor() { }
+    constructor() {}
     bind() {
         const button = $("#new-chat-session");
         button.attr("status", "new").attr("title", "New Chat");
@@ -114,7 +115,7 @@ class NewChatButtonBinder {
 }
 
 class OpenaiEndpointButtonBinder {
-    constructor() { }
+    constructor() {}
     bind() {
         const button = $("#openai-endpoint-button");
         button.attr("title", "Submit Endpoint");
@@ -136,7 +137,7 @@ class OpenaiEndpointButtonBinder {
 }
 
 class OpenaiAPIKeyButtonBinder {
-    constructor() { }
+    constructor() {}
     bind() {
         const button = $("#openai-api-key-button");
         button.attr("title", "Submit API Key");
@@ -153,7 +154,7 @@ class OpenaiAPIKeyButtonBinder {
 }
 
 class ShowEndpointAndKeyButtonBinder {
-    constructor() { }
+    constructor() {}
     bind() {
         const button = $("#show-endpoint-and-key-button");
         button.attr("title", "Show endpoint and api key");
@@ -178,7 +179,7 @@ class ShowEndpointAndKeyButtonBinder {
 }
 
 class ScrollToBottomButtonBinder {
-    constructor() { }
+    constructor() {}
     bind() {
         const button = $("#scroll-to-bottom-button");
         button.attr("title", "Scroll to bottom");
@@ -190,7 +191,7 @@ class ScrollToBottomButtonBinder {
 }
 
 class ScreenshotButtonBinder {
-    constructor() { }
+    constructor() {}
     bind() {
         const button = $("#screenshot-button");
         button.attr("title", "Take screenshot for whole chat");
@@ -225,7 +226,7 @@ class ScreenshotButtonBinder {
 }
 
 class AvailableModelsSelectBinder {
-    constructor() { }
+    constructor() {}
     bind() {
         const select = $("#available-models-select");
         select.change(() => {

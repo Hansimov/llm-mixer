@@ -102,7 +102,7 @@ export function update_message(json_chunks, content_displayer = null) {
             console.log("role: " + role);
         }
         if (content) {
-            console.log(content);
+            // console.log(content);
             content_displayer.data(
                 "raw_content",
                 content_displayer.data("raw_content") + content
@@ -122,7 +122,7 @@ export function update_message(json_chunks, content_displayer = null) {
         if (finish_reason === "stop") {
             console.log("[STOP]");
         }
-        console.log(item);
+        // console.log(item);
     });
     return json_chunks;
 }
