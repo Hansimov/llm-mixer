@@ -90,9 +90,9 @@ export function pop_messager(n = 2) {
 }
 
 export function update_message(json_chunks, content_displayer = null) {
-    if (content_displayer === null) {
-        content_displayer = get_latest_message_content_displayer();
-    }
+    let content_displayer_updater = new ContentDisplayerUpdater(
+        content_displayer
+    );
     json_chunks.forEach(function (item) {
         let choice = item.choices[0];
         let content = choice.delta.content;
@@ -102,22 +102,7 @@ export function update_message(json_chunks, content_displayer = null) {
             console.log("role: " + role);
         }
         if (content) {
-            // console.log(content);
-            content_displayer.data(
-                "raw_content",
-                content_displayer.data("raw_content") + content
-            );
-            get_active_messager_list().messagers.slice(-1)[0].message.content +=
-                content;
-            content_displayer.html(
-                md_to_html_converter.makeHtml(
-                    transform_footnote(content_displayer.data("raw_content"))
-                )
-            );
-            content_displayer
-                .find("table")
-                .addClass("table table-bordered table-hover");
-            screen_scroller.scroll_to_bottom();
+            content_displayer_updater.update_with_chunk_content(content);
         }
         if (finish_reason === "stop") {
             console.log("[STOP]");
@@ -131,4 +116,31 @@ export function create_new_chat_session() {
     let new_messager_list = new MessagerList(messagers_container);
     chat_history.push(new_messager_list);
     messagers_container.empty();
+}
+
+export class ContentDisplayerUpdater {
+    constructor(content_displayer = null) {
+        if (content_displayer === null) {
+            self.content_displayer = get_latest_message_content_displayer();
+        } else {
+            self.content_displayer = content_displayer;
+        }
+    }
+    update_with_chunk_content(content) {
+        self.content_displayer.data(
+            "raw_content",
+            self.content_displayer.data("raw_content") + content
+        );
+        get_active_messager_list().messagers.slice(-1)[0].message.content +=
+            content;
+        self.content_displayer.html(
+            md_to_html_converter.makeHtml(
+                transform_footnote(self.content_displayer.data("raw_content"))
+            )
+        );
+        self.content_displayer
+            .find("table")
+            .addClass("table table-bordered table-hover");
+        screen_scroller.scroll_to_bottom();
+    }
 }
