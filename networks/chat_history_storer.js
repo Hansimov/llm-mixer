@@ -1,3 +1,36 @@
+class ChatStorageItem {
+    constructor(chat_history_storer) {
+        this.chat_history_storer = chat_history_storer;
+    }
+    create_index() {
+        let datetime_string = moment().format("YYYY-MM-DD_HH-mm-ss_SSS");
+        let chat_index = `chat_${datetime_string}`;
+        return chat_index;
+    }
+    create_title() {
+        let chat_title = moment().format("YYYY-MM-DD HH:mm:ss");
+        return chat_title;
+    }
+    get_messagers_container_html() {
+        let messagers_container = $("#messagers-container");
+        if (messagers_container.children().length > 0) {
+            return messagers_container[0].outHTML;
+        } else {
+            return null;
+        }
+    }
+    get_current_datetime_string() {
+        return moment().format("YYYY-MM-DD HH:mm:ss.SSS");
+    }
+    construct() {
+        this.html = this.get_messagers_container_html();
+        this.index = this.create_index();
+        this.title = this.create_title();
+        this.saved_datetime = this.get_current_datetime_string();
+        this.message_count = $("#messagers-container").children().length;
+    }
+}
+
 class ChatHistoryStorer {
     constructor() {
         this.init_database();
@@ -17,27 +50,6 @@ class ChatHistoryStorer {
         this.render_chat_history_sidebar_items();
         console.log("chat_history cleared.");
     }
-
-    get_current_datetime_string() {
-        return moment().format("YYYY-MM-DD HH:mm:ss.SSS");
-    }
-    get_chat_container_html() {
-        let messagers_container = $("#messagers-container");
-        if (messagers_container.children().length > 0) {
-            return messagers_container[0].outHTML;
-        } else {
-            return null;
-        }
-    }
-    create_chat_index() {
-        let datetime_string = moment().format("YYYY-MM-DD_HH-mm-ss_SSS");
-        let chat_index = `chat_${datetime_string}`;
-        return chat_index;
-    }
-    create_chat_title() {
-        let chat_title = moment().format("YYYY-MM-DD HH:mm:ss");
-        return chat_title;
-    }
     render_chat_history_sidebar_items() {
         let chat_history_sidebar_items = $("#chat-history-sidebar-items");
         let chat_history = this.db.chat_history;
@@ -54,26 +66,21 @@ class ChatHistoryStorer {
         });
     }
     save_current_chat_session() {
-        let chat_container_html = this.get_chat_container_html();
-        if (chat_container_html === null) {
+        let chat_storage_item = new ChatStorageItem(this);
+        chat_storage_item.construct();
+        if (chat_storage_item.html === null) {
             console.log("Empty messagers_container, no chat session to save.");
             return;
         } else {
-            let chat_index = this.create_chat_index();
-            let chat_title = this.create_chat_title();
-            let chat_saved_datetime = this.get_current_datetime_string();
             this.db.chat_history.put({
-                index: chat_index,
-                title: chat_title,
-                html: chat_container_html,
-                saved_datetime: chat_saved_datetime,
+                index: chat_storage_item.index,
+                title: chat_storage_item.title,
+                html: chat_storage_item.html,
+                saved_datetime: chat_storage_item.saved_datetime,
             });
             this.render_chat_history_sidebar_items();
-
-            let messagers_container = $("#messagers-container");
-            let messages_count = messagers_container.children().length;
             console.log(
-                `${messages_count} messages saved at ${chat_saved_datetime}.`
+                `${chat_storage_item.message_count} messages saved at ${chat_storage_item.saved_datetime}.`
             );
         }
     }
