@@ -10,6 +10,7 @@ import {
 import { setup_available_models_on_select } from "./llm_models_loader.js";
 
 import { screen_scroller } from "./screen_scroller.js";
+import { chat_history_storer } from "../networks/chat_history_storer.js";
 
 export class ButtonsBinder {
     constructor() { }
@@ -118,6 +119,7 @@ class NewChatButtonBinder {
         const button = $("#new-chat-session");
         button.attr("status", "new").attr("title", "New Chat");
         button.click(() => {
+            chat_history_storer.save_current_chat_session();
             create_new_chat_session();
         });
     }
