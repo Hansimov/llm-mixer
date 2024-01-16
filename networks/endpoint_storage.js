@@ -15,7 +15,7 @@ class EndpointStorage {
         this.db = new Dexie("endpoints");
         this.db.version(1).stores({
             endpoints: "index, endpoint, api_key",
-            default_model: "model",
+            data: "",
         });
         this.db.endpoints.count((count) => {
             console.log(`${count} endpoints loaded.`);
@@ -54,9 +54,10 @@ class EndpointStorage {
     }
     add_endpoint_and_api_key_item() {
         let endpoint_and_api_key_items = $("#endpoint-and-api-key-items");
-        endpoint_and_api_key_items.prepend(
+        let endpoint_and_api_key_item = $(
             this.get_endpoint_and_api_key_item_html()
         );
+        endpoint_and_api_key_items.prepend(endpoint_and_api_key_item);
         this.bind_endpoint_and_api_key_buttons();
     }
     create_endpoint_and_api_key_items() {
@@ -123,25 +124,32 @@ class EndpointStorage {
                 const option = new Option(value, value);
                 select.append(option);
             });
+
+            // set default model
+            let default_model = "";
+            let db_default_model = "";
+            this.db.data.get("default_model").then((value) => {
+                db_default_model = value;
+                console.log("db_default_model:", db_default_model);
+                if (
+                    db_default_model &&
+                    available_models.includes(db_default_model)
+                ) {
+                    default_model = db_default_model;
+                } else if (available_models) {
+                    default_model = available_models[0];
+                    this.db.data.put({
+                        key: "default_model",
+                        value: default_model,
+                    });
+                } else {
+                    default_model = "";
+                }
+
+                select.val(default_model);
+                console.log(`default_model: ${select.val()}`);
+            });
         });
-
-        // set default model
-        let default_model = "";
-        let local_default_model = endpoint_storage.db.default_model;
-        if (
-            local_default_model &&
-            available_models.includes(local_default_model)
-        ) {
-            default_model = local_default_model;
-        } else if (available_models) {
-            default_model = available_models[0];
-            endpoint_storage.db.default_model = default_model;
-        } else {
-            default_model = "";
-        }
-
-        select.val(default_model);
-        console.log(`default_model: ${select.val()}`);
     }
     render_endpoint_and_api_key_items() {
         this.create_endpoint_and_api_key_items();
