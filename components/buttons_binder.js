@@ -12,7 +12,7 @@ import { setup_available_models_on_select } from "./llm_models_loader.js";
 import { screen_scroller } from "../storage/states.js";
 
 export class ButtonsBinder {
-    constructor() {}
+    constructor() { }
     bind() {
         let send_user_input_binder = new SendUserInputButtonBinder();
         send_user_input_binder.bind();
@@ -28,6 +28,9 @@ export class ButtonsBinder {
         scroll_to_bottom_binder.bind();
         let screenshot_button_binder = new ScreenshotButtonBinder();
         screenshot_button_binder.bind();
+        let chat_history_sidebar_toggle_button_binder =
+            new ChatHistorySidebarToggleButtonBinder();
+        chat_history_sidebar_toggle_button_binder.bind();
         let available_models_select_binder = new AvailableModelsSelectBinder();
         available_models_select_binder.bind();
     }
@@ -110,7 +113,7 @@ class SendUserInputButtonBinder {
 }
 
 class NewChatButtonBinder {
-    constructor() {}
+    constructor() { }
     bind() {
         const button = $("#new-chat-session");
         button.attr("status", "new").attr("title", "New Chat");
@@ -121,7 +124,7 @@ class NewChatButtonBinder {
 }
 
 class OpenaiEndpointButtonBinder {
-    constructor() {}
+    constructor() { }
     bind() {
         const button = $("#openai-endpoint-button");
         button.attr("title", "Submit Endpoint");
@@ -143,7 +146,7 @@ class OpenaiEndpointButtonBinder {
 }
 
 class OpenaiAPIKeyButtonBinder {
-    constructor() {}
+    constructor() { }
     bind() {
         const button = $("#openai-api-key-button");
         button.attr("title", "Submit API Key");
@@ -160,7 +163,7 @@ class OpenaiAPIKeyButtonBinder {
 }
 
 class ShowEndpointAndKeyButtonBinder {
-    constructor() {}
+    constructor() { }
     bind() {
         const button = $("#show-endpoint-and-key-button");
         button.attr("title", "Show endpoint and api key");
@@ -185,7 +188,7 @@ class ShowEndpointAndKeyButtonBinder {
 }
 
 class ScrollToBottomButtonBinder {
-    constructor() {}
+    constructor() { }
     bind() {
         const button = $("#scroll-to-bottom-button");
         button.attr("title", "Scroll to bottom");
@@ -197,7 +200,7 @@ class ScrollToBottomButtonBinder {
 }
 
 class ScreenshotButtonBinder {
-    constructor() {}
+    constructor() { }
     bind() {
         const button = $("#screenshot-button");
         button.attr("title", "Take screenshot for whole chat");
@@ -231,8 +234,41 @@ class ScreenshotButtonBinder {
     }
 }
 
+class ChatHistorySidebarToggleButtonBinder {
+    constructor() { }
+    get_show_sidebar_storage() {
+        return localStorage.getItem("show_chat_history_sidebar");
+    }
+    bind() {
+        const sidebar = $("#chat-history-sidebar");
+
+        // this line is not to check value as false,
+        // but to check item not existed in localStorage
+        if (!this.get_show_sidebar_storage()) {
+            localStorage.setItem("show_chat_history_sidebar", "true");
+        }
+        if (this.get_show_sidebar_storage() === "true") {
+            sidebar.addClass("show");
+        }
+
+        const toggle_button = $("#chat-history-sidebar-toggle-button");
+        toggle_button.click(() => {
+            sidebar.toggleClass("show");
+            localStorage.setItem(
+                "show_chat_history_sidebar", sidebar.hasClass("show").toString()
+            );
+        });
+
+        const close_button = $("#chat-history-sidebar-close-button");
+        close_button.click(() => {
+            sidebar.removeClass("show");
+            localStorage.setItem("show_chat_history_sidebar", "false");
+        });
+    }
+}
+
 class AvailableModelsSelectBinder {
-    constructor() {}
+    constructor() { }
     bind() {
         const select = $("#available-models-select");
         select.change(() => {

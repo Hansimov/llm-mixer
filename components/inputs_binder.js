@@ -66,12 +66,15 @@ class ChatHistorySidebarResizeBinder {
     get_side_margin() {
         return (this.get_window_width() - this.get_user_interations_width()) / 2 - this.SIDEBAR_GAP;
     }
+    need_to_show() {
+        let sidebar = $("#chat-history-sidebar");
+        return (!sidebar.hasClass("show")) && localStorage.getItem("show_chat_history_sidebar") === "true";
+    }
     resize() {
         let sidebar = $("#chat-history-sidebar");
-        let user_interactions = $("#user-interactions");
         let is_sidebar_show = sidebar[0].classList.contains("show");
         if (this.get_side_margin() >= this.SIDEBAR_MAX_WIDTH) {
-            if (!is_sidebar_show) {
+            if (this.need_to_show()) {
                 sidebar.addClass("show");
             }
             sidebar.css("max-width", this.SIDEBAR_MAX_WIDTH + "px");
@@ -83,7 +86,7 @@ class ChatHistorySidebarResizeBinder {
             sidebar.css("max-width", this.SIDEBAR_MAX_WIDTH + "px");
             sidebar.css("min-width", this.SIDEBAR_MIN_WIDTH + "px");
         } else {
-            if (!is_sidebar_show) {
+            if (this.need_to_show()) {
                 sidebar.addClass("show");
             }
             sidebar.css("max-width", this.get_side_margin());
