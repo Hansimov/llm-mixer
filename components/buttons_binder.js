@@ -132,7 +132,7 @@ class OpenaiEndpointButtonBinder {
         if (stored_openai_endpoint) {
             $("#openai-endpoint").val(stored_openai_endpoint);
             setup_available_models_on_select();
-            console.log(`GET OpenAI Endpoint: ${stored_openai_endpoint}`);
+            console.log(`openai_endpoint: ${stored_openai_endpoint}`);
         }
         button.click(() => {
             console.log($("#openai-endpoint").val());
@@ -153,7 +153,7 @@ class OpenaiAPIKeyButtonBinder {
         const stored_openai_api_key = localStorage.getItem("openai_api_key");
         if (stored_openai_api_key) {
             $("#openai-api-key").val(stored_openai_api_key);
-            console.log(`GET OpenAI API Key: ${stored_openai_api_key}`);
+            console.log(`openai_api_key: ${stored_openai_api_key}`);
         }
         button.click(() => {
             console.log($("#openai-api-key").val());
