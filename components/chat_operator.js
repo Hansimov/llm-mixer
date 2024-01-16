@@ -1,6 +1,6 @@
 import { Messager, MessagerList } from "./messager.js";
-import { transform_footnote } from "../converters/stream_jsonizer.js";
-import { screen_scroller } from "../storage/states.js";
+import { transform_footnote } from "../networks/stream_jsonizer.js";
+import { screen_scroller } from "./screen_scroller.js";
 
 let messagers_container = $("#messagers-container");
 let available_models_select = $("#available-models-select");

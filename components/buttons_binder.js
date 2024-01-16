@@ -9,7 +9,7 @@ import {
 } from "./chat_operator.js";
 import { setup_available_models_on_select } from "./llm_models_loader.js";
 
-import { screen_scroller } from "../storage/states.js";
+import { screen_scroller } from "./screen_scroller.js";
 
 export class ButtonsBinder {
     constructor() { }
