@@ -11,20 +11,21 @@ import { setup_available_models_on_select } from "./llm_models_loader.js";
 
 import { screen_scroller } from "./screen_scroller.js";
 import { chat_history_storer } from "../networks/chat_history_storer.js";
+import { endpoint_storage } from "../networks/endpoint_storage.js";
 
 export class ButtonsBinder {
-    constructor() { }
+    constructor() {}
     bind() {
         let send_user_input_binder = new SendUserInputButtonBinder();
         send_user_input_binder.bind();
         let new_chat_binder = new NewChatButtonBinder();
         new_chat_binder.bind();
-        let openai_endpoint_binder = new OpenaiEndpointButtonBinder();
-        openai_endpoint_binder.bind();
-        let openai_api_key_binder = new OpenaiAPIKeyButtonBinder();
-        openai_api_key_binder.bind();
-        let show_endpoint_and_key_binder = new ShowEndpointAndKeyButtonBinder();
-        show_endpoint_and_key_binder.bind();
+        let toggle_endpoint_and_api_key_items_button_binder =
+            new ToggleEndpointAndApiKeyItemsButtonBinder();
+        toggle_endpoint_and_api_key_items_button_binder.bind();
+        let add_endpoint_and_api_key_item_button_binder =
+            new AddEndpointAndApiKeyItemButtonBinder();
+        add_endpoint_and_api_key_item_button_binder.bind();
         let scroll_to_bottom_binder = new ScrollToBottomButtonBinder();
         scroll_to_bottom_binder.bind();
         let screenshot_button_binder = new ScreenshotButtonBinder();
@@ -117,7 +118,7 @@ class SendUserInputButtonBinder {
 }
 
 class NewChatButtonBinder {
-    constructor() { }
+    constructor() {}
     bind() {
         const button = $("#new-chat-session");
         button.attr("status", "new").attr("title", "New Chat");
@@ -128,72 +129,29 @@ class NewChatButtonBinder {
     }
 }
 
-class OpenaiEndpointButtonBinder {
-    constructor() { }
+class ToggleEndpointAndApiKeyItemsButtonBinder {
+    constructor() {}
     bind() {
-        const button = $("#openai-endpoint-button");
-        button.attr("title", "Submit Endpoint");
-        const stored_openai_endpoint = localStorage.getItem("openai_endpoint");
-        if (stored_openai_endpoint) {
-            $("#openai-endpoint").val(stored_openai_endpoint);
-            setup_available_models_on_select();
-            console.log(`openai_endpoint: ${stored_openai_endpoint}`);
-        }
+        const button = $("#toggle-endpoint-and-api-key-items-button");
+        button.attr("title", "Toggle endpoint and api key items");
         button.click(() => {
-            console.log($("#openai-endpoint").val());
-            localStorage.setItem(
-                "openai_endpoint",
-                $("#openai-endpoint").val()
-            );
-            setup_available_models_on_select();
+            $("#endpoint-and-api-key-items").toggle();
         });
     }
 }
-
-class OpenaiAPIKeyButtonBinder {
-    constructor() { }
+class AddEndpointAndApiKeyItemButtonBinder {
+    constructor() {}
     bind() {
-        const button = $("#openai-api-key-button");
-        button.attr("title", "Submit API Key");
-        const stored_openai_api_key = localStorage.getItem("openai_api_key");
-        if (stored_openai_api_key) {
-            $("#openai-api-key").val(stored_openai_api_key);
-            console.log(`openai_api_key: ${stored_openai_api_key}`);
-        }
+        const button = $("#add-endpoint-and-api-key-item-button");
+        button.attr("title", "Add endpoint and api key item");
         button.click(() => {
-            console.log($("#openai-api-key").val());
-            localStorage.setItem("openai_api_key", $("#openai-api-key").val());
-        });
-    }
-}
-
-class ShowEndpointAndKeyButtonBinder {
-    constructor() { }
-    bind() {
-        const button = $("#show-endpoint-and-key-button");
-        button.attr("title", "Show endpoint and api key");
-
-        if (localStorage.getItem("openai_endpoint")) {
-            $("#openai-endpoint").parent().hide();
-            $("#openai-endpoint-button").parent().hide();
-        }
-
-        if (localStorage.getItem("openai_api_key")) {
-            $("#openai-api-key").parent().hide();
-            $("#openai-api-key-button").parent().hide();
-        }
-
-        button.click(() => {
-            $("#openai-endpoint").parent().toggle();
-            $("#openai-endpoint-button").parent().toggle();
-            $("#openai-api-key").parent().toggle();
-            $("#openai-api-key-button").parent().toggle();
+            endpoint_storage.add_endpoint_and_api_key_item();
         });
     }
 }
 
 class ScrollToBottomButtonBinder {
-    constructor() { }
+    constructor() {}
     bind() {
         const button = $("#scroll-to-bottom-button");
         button.attr("title", "Scroll to bottom");
@@ -205,7 +163,7 @@ class ScrollToBottomButtonBinder {
 }
 
 class ScreenshotButtonBinder {
-    constructor() { }
+    constructor() {}
     bind() {
         const button = $("#screenshot-button");
         button.attr("title", "Take screenshot for whole chat");
@@ -240,7 +198,7 @@ class ScreenshotButtonBinder {
 }
 
 class ChatHistorySidebarToggleButtonBinder {
-    constructor() { }
+    constructor() {}
     get_show_sidebar_storage() {
         return localStorage.getItem("show_chat_history_sidebar");
     }
@@ -260,7 +218,8 @@ class ChatHistorySidebarToggleButtonBinder {
         toggle_button.click(() => {
             sidebar.toggleClass("show");
             localStorage.setItem(
-                "show_chat_history_sidebar", sidebar.hasClass("show").toString()
+                "show_chat_history_sidebar",
+                sidebar.hasClass("show").toString()
             );
         });
 
@@ -273,7 +232,7 @@ class ChatHistorySidebarToggleButtonBinder {
 }
 
 class ClearChatHistoryButtonBinder {
-    constructor() { }
+    constructor() {}
     bind() {
         const button = $("#clear-chat-history-button");
         button.attr("title", "Clear chat history");
@@ -284,7 +243,7 @@ class ClearChatHistoryButtonBinder {
 }
 
 class AvailableModelsSelectBinder {
-    constructor() { }
+    constructor() {}
     bind() {
         const select = $("#available-models-select");
         select.change(() => {

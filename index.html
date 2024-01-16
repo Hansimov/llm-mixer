@@ -47,30 +47,17 @@
             <div id="messagers-container" class="container my-3 py-1"></div>
         </div>
         <div id="user-interactions" class="container fixed-bottom mb-3">
-            <div class="row mt-2 no-gutters">
-                <div class="col px-0">
-                    <input id="openai-endpoint" class="form-control" rows="1"
-                        placeholder="Input Endpoint URL, then click √"></input>
-                </div>
-                <div class="col-auto px-0">
-                    <button id="openai-endpoint-button" class="btn">
-                        <i class="fa fa-check"></i>
-                    </button>
-                </div>
-                <div class="col px-0">
-                    <input id="openai-api-key" class="form-control" rows="1"
-                        placeholder="Input API Key, then click √"></input>
-                </div>
-                <div class="col-auto px-0">
-                    <button id="openai-api-key-button" class="btn">
-                        <i class="fa fa-check"></i>
-                    </button>
-                </div>
+            <div id="endpoint-and-api-key-items">
             </div>
             <div class="mt-2 row no-gutters">
                 <div class="col-auto">
-                    <button id="show-endpoint-and-key-button" class="btn px-0">
+                    <button id="toggle-endpoint-and-api-key-items-button" class="btn px-0">
                         <i class="fa fa-key"></i>
+                    </button>
+                </div>
+                <div class="col-auto">
+                    <button id="add-endpoint-and-api-key-item-button" class="btn px-0 ">
+                        <i class="fa fa-circle-plus"></i>
                     </button>
                 </div>
                 <div class="col px-0">
