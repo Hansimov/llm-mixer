@@ -24,7 +24,7 @@ export async function setup_available_models_on_select(default_option = null) {
     }
 
     select.val(default_model);
-    console.log(`Default model: ${select.val()}`);
+    console.log(`default_ model: ${select.val()}`);
 }
 
 export async function setup_temperature_on_select(default_option = null) {

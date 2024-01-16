@@ -136,14 +136,15 @@ export class AvailableModelsRequester {
         return fetch(this.backend_request_endpoint, this.backend_request_params)
             .then((response) => response.json())
             .then((response_json) => {
-                response_json.forEach((item) => {
+                let data = response_json.data;
+                data.forEach((item) => {
                     if (!(item.id in available_models)) {
                         available_models.push(item.id);
                     }
                 });
                 available_models.sort();
                 available_models = [...new Set(available_models)];
-                console.log(available_models);
+                console.log("available_models:", available_models);
             })
             .catch((error) => {
                 console.error("Error:", error);
