@@ -4,11 +4,27 @@
     grid-gap: 10px;
 }
 
+.container {
+    max-width: 100vw;
+}
+
+#chat-history-sidebar {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Adaptation for mobile */
+@media (min-width: 900px) {
+    .container {
+        max-width: 900px;
+    }
+}
+
 .available-model-item {
     display: flex;
     align-items: center;
     justify-content: center;
 }
+
 .available-model-item:hover {
     background-color: #dbedff;
     cursor: pointer;

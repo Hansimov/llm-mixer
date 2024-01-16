@@ -20,19 +20,21 @@
 </head>
 
 <body>
-
     <div id="main-container">
-        <div class="offcanvas offcanvas-start text-bg-dark" tabindex="-1" id="chat-history-sidebar">
+        <div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
+            id="chat-history-sidebar" aria-labelledby="chat-history-sidebar-label">
             <div class="offcanvas-header">
-                <h5 class="offcanvas-title" id="chat-history-label">Chat History</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas">
+                <h5 class="offcanvas-title" id="chat-history-label">
+                    <a style="text-decoration: none; color:inherit;" href="#">Chat History</a>
+                </h5>
+                <button id="chat-history-close-button" class="btn-close" data-bs-dismiss="offcanvas">
                 </button>
             </div>
             <div class="offcanvas-body">
-                <form class="d-flex" role="search">
+                <!-- <form class="d-flex" role="search" id="chat-history-search-form">
                     <input class="form-control" type="search" placeholder="Search chats">
                     <button class="btn btn-success" type="submit">Search</button>
-                </form>
+                </form> -->
                 <ul class="navbar-nav justify-content-end flex-grow-1">
                     <li class="nav-item">
                         <a class="nav-link active" href="#chat-session-example-1">Chat-Session-Example-1</a>
@@ -68,12 +70,6 @@
                 </div>
             </div>
             <div class="mt-2 row no-gutters">
-                <div class="col-auto pr-0">
-                    <button id="chat-history-sidebar-button" class="btn px-0" data-bs-toggle="offcanvas"
-                        data-bs-target="#chat-history-sidebar">
-                        <i class="fa fa-bars"></i>
-                    </button>
-                </div>
                 <div class="col-auto">
                     <button id="show-endpoint-and-key-button" class="btn px-0">
                         <i class="fa fa-key"></i>
@@ -93,6 +89,12 @@
                 <div class="col-auto">
                     <button id="scroll-to-bottom-button" class="btn px-0">
                         <i class="fa fa-angles-down"></i>
+                    </button>
+                </div>
+                <div class="col-auto">
+                    <button id="chat-history-sidebar-toggle-button" class="btn px-0" data-bs-toggle="offcanvas"
+                        data-bs-target="#chat-history-sidebar">
+                        <i class="fa fa-bars"></i>
                     </button>
                 </div>
             </div>
