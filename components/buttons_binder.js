@@ -32,6 +32,9 @@ export class ButtonsBinder {
         let chat_history_sidebar_toggle_button_binder =
             new ChatHistorySidebarToggleButtonBinder();
         chat_history_sidebar_toggle_button_binder.bind();
+        let clear_chat_history_button_binder =
+            new ClearChatHistoryButtonBinder();
+        clear_chat_history_button_binder.bind();
         let available_models_select_binder = new AvailableModelsSelectBinder();
         available_models_select_binder.bind();
     }
@@ -265,6 +268,17 @@ class ChatHistorySidebarToggleButtonBinder {
         close_button.click(() => {
             sidebar.removeClass("show");
             localStorage.setItem("show_chat_history_sidebar", "false");
+        });
+    }
+}
+
+class ClearChatHistoryButtonBinder {
+    constructor() { }
+    bind() {
+        const button = $("#clear-chat-history-button");
+        button.attr("title", "Clear chat history");
+        button.click(() => {
+            chat_history_storer.clear_database();
         });
     }
 }
