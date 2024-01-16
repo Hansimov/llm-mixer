@@ -7,7 +7,6 @@ import {
     get_selected_llm_model,
     create_messager,
 } from "./chat_operator.js";
-import { setup_available_models_on_select } from "./llm_models_loader.js";
 
 import { screen_scroller } from "./screen_scroller.js";
 import { chat_history_storer } from "../networks/chat_history_storer.js";
@@ -248,7 +247,7 @@ class AvailableModelsSelectBinder {
         const select = $("#available-models-select");
         select.change(() => {
             console.log(select.val());
-            localStorage.setItem("default_model", select.val());
+            endpoint_storage.db.default_model = select.val();
         });
     }
 }

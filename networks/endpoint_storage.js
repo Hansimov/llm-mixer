@@ -1,9 +1,15 @@
+import {
+    available_models,
+    AvailableModelsRequester,
+} from "../networks/llm_requester.js";
+
 class EndpointStorageItem {}
 
 class EndpointStorage {
     constructor() {
         this.init_database();
         this.render_endpoint_and_api_key_items();
+        this.fill_available_models_select();
     }
     init_database() {
         this.db = new Dexie("endpoints");
@@ -98,6 +104,44 @@ class EndpointStorage {
                 console.log(`new_endpoint: ${endpoint_input_value}`);
             }
         });
+    }
+    fill_available_models_select() {
+        var select = $("#available-models-select");
+        select.empty();
+
+        // for loop the endpoints in endpoint_storage.db.endpoints
+        this.db.endpoints.toArray().then(async (entries) => {
+            for (const entry of entries) {
+                let endpoint = entry.endpoint;
+                console.log("fetch available models for endpoint:", endpoint);
+                let available_models_requester = new AvailableModelsRequester(
+                    endpoint
+                );
+                await available_models_requester.get();
+            }
+            available_models.forEach((value, index) => {
+                const option = new Option(value, value);
+                select.append(option);
+            });
+        });
+
+        // set default model
+        let default_model = "";
+        let local_default_model = endpoint_storage.db.default_model;
+        if (
+            local_default_model &&
+            available_models.includes(local_default_model)
+        ) {
+            default_model = local_default_model;
+        } else if (available_models) {
+            default_model = available_models[0];
+            endpoint_storage.db.default_model = default_model;
+        } else {
+            default_model = "";
+        }
+
+        select.val(default_model);
+        console.log(`default_model: ${select.val()}`);
     }
     render_endpoint_and_api_key_items() {
         this.create_endpoint_and_api_key_items();
