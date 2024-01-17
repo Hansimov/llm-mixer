@@ -9,6 +9,7 @@ class EndpointStorage {
     constructor() {
         this.init_database();
         this.create_endpoint_and_api_key_items();
+        this.fill_available_models_select("user-customized");
     }
     init_database() {
         this.db = new Dexie("endpoints");
@@ -82,7 +83,7 @@ class EndpointStorage {
     }
     bind_endpoint_and_api_key_buttons(endpoint_and_api_key_item) {
         let self = this;
-        console.log("endpoint_and_api_key_item:", endpoint_and_api_key_item);
+        // console.log("endpoint_and_api_key_item:", endpoint_and_api_key_item);
         let endpoint_submit_button = endpoint_and_api_key_item.find(
             ".submit-endpoint-button"
         );
@@ -132,11 +133,17 @@ class EndpointStorage {
         console.log("fetch available models for endpoint:", endpoint);
         let available_models_requester = new AvailableModelsRequester(endpoint);
         await available_models_requester.get();
-        select.empty();
-        available_models.forEach((value, index) => {
+        available_models[endpoint].forEach((value, index) => {
             const option = new Option(value, value);
             select.append(option);
         });
+
+        let flatten_available_models = [];
+        Object.entries(available_models).forEach(([key, value]) => {
+            flatten_available_models.push(...value);
+        });
+        flatten_available_models = [...new Set(flatten_available_models)];
+        // console.log("flatten_available_models:", flatten_available_models);
 
         // set default model
         let default_model = "";
@@ -144,11 +151,11 @@ class EndpointStorage {
         console.log("storage_default_model:", storage_default_model);
         if (
             storage_default_model &&
-            available_models.includes(storage_default_model)
+            flatten_available_models.includes(storage_default_model)
         ) {
             default_model = storage_default_model;
-        } else if (available_models) {
-            default_model = available_models[0];
+        } else if (flatten_available_models) {
+            default_model = flatten_available_models[0];
             localStorage.setItem("default_model", default_model);
         } else {
             default_model = "";
