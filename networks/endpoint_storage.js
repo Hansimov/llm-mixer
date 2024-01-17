@@ -8,7 +8,7 @@ class EndpointStorageItem {}
 class EndpointStorage {
     constructor() {
         this.init_database();
-        this.render_endpoint_and_api_key_items();
+        this.create_endpoint_and_api_key_items();
         this.fill_available_models_select();
     }
     init_database() {
@@ -43,7 +43,7 @@ class EndpointStorage {
                     ></input>
                 </div>
                 <div class="col-auto px-0">
-                    <button class="btn endpoint-submit-button">
+                    <button class="btn submit-endpoint-button">
                         <i class="fa fa-check"></i>
                     </button>
                 </div>
@@ -57,7 +57,7 @@ class EndpointStorage {
             this.get_endpoint_and_api_key_item_html()
         );
         endpoint_and_api_key_items.prepend(endpoint_and_api_key_item);
-        this.bind_endpoint_and_api_key_buttons();
+        this.bind_endpoint_and_api_key_buttons(endpoint_and_api_key_item);
     }
     create_endpoint_and_api_key_items() {
         let endpoint_and_api_key_items = $("#endpoint-and-api-key-items");
@@ -75,24 +75,24 @@ class EndpointStorage {
                 endpoint_and_api_key_item.find(".api-key-input");
             api_key_input.val(row.api_key);
             endpoint_and_api_key_items.prepend(endpoint_and_api_key_item);
+            this.bind_endpoint_and_api_key_buttons(endpoint_and_api_key_item);
         });
     }
-    bind_endpoint_and_api_key_buttons() {
-        let endpoint_submit_buttons = $(".endpoint-submit-button");
+    bind_endpoint_and_api_key_buttons(endpoint_and_api_key_item) {
         let self = this;
-        endpoint_submit_buttons.click(function () {
-            let endpoint_input = $(this)
-                .parent()
-                .parent()
-                .find(".endpoint-input");
+        console.log("endpoint_and_api_key_item:", endpoint_and_api_key_item);
+        let endpoint_submit_button = endpoint_and_api_key_item.find(
+            ".submit-endpoint-button"
+        );
+        endpoint_submit_button.click(function () {
+            let endpoint_input =
+                endpoint_and_api_key_item.find(".endpoint-input");
             let endpoint_input_value = endpoint_input.val().trim();
-            let api_key_input = $(this)
-                .parent()
-                .parent()
-                .find(".api-key-input");
+            let api_key_input =
+                endpoint_and_api_key_item.find(".api-key-input");
             let api_key_input_value = api_key_input.val().trim();
 
-            if (endpoint_input_value === "") {
+            if (endpoint_input_value.trim() === "") {
                 console.log("Endpoint is empty.");
                 return;
             } else {
@@ -142,11 +142,6 @@ class EndpointStorage {
             select.val(default_model);
             console.log(`default_model: ${select.val()}`);
         });
-    }
-
-    render_endpoint_and_api_key_items() {
-        this.create_endpoint_and_api_key_items();
-        this.bind_endpoint_and_api_key_buttons();
     }
 }
 
