@@ -3,7 +3,7 @@ import {
     AvailableModelsRequester,
 } from "../networks/llm_requester.js";
 
-class EndpointStorageItem {}
+class EndpointStorageItem { }
 
 class EndpointStorage {
     constructor() {
@@ -126,13 +126,19 @@ class EndpointStorage {
                 self.db.endpoints.delete(endpoint_input_value);
             }
             console.log(`remove endpoint: ${endpoint_input_value}`);
+
+            // TODO: remove models of current endpoint from available_models_select
         });
     }
     async fill_available_models_select(endpoint) {
         var select = $("#available-models-select");
         console.log("fetch available models for endpoint:", endpoint);
-        let available_models_requester = new AvailableModelsRequester(endpoint);
-        await available_models_requester.get();
+        // if endpoint not starts with http
+        if (endpoint.startsWith("http")) {
+            let available_models_requester = new AvailableModelsRequester(endpoint);
+            await available_models_requester.get();
+        } else {
+        }
         available_models[endpoint].forEach((value, index) => {
             const option = new Option(value, value);
             select.append(option);
