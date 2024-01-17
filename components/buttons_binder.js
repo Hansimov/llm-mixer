@@ -246,8 +246,8 @@ class AvailableModelsSelectBinder {
     bind() {
         const select = $("#available-models-select");
         select.change(() => {
-            console.log(select.val());
-            endpoint_storage.db.default_model = select.val();
+            localStorage.setItem("default_model", select.val());
+            console.log("set default_model:", select.val());
         });
     }
 }
