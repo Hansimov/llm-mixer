@@ -28,7 +28,7 @@ class EndpointStorage {
         let endpoint_and_api_key_item_html = `
             <div class="row mt-2 no-gutters">
                 <div class="col-auto">
-                    <button class="btn px-0 remove-endpoint-and-key-button">
+                    <button class="btn px-0 remove-endpoint-button">
                         <i class="fa fa-circle-minus"></i>
                     </button>
                 </div>
@@ -103,6 +103,25 @@ class EndpointStorage {
                 });
                 console.log(`new_endpoint: ${endpoint_input_value}`);
             }
+        });
+
+        let remove_endpoint_buttons = endpoint_and_api_key_item.find(
+            ".remove-endpoint-button"
+        );
+        remove_endpoint_buttons.click(function () {
+            let endpoint_input =
+                endpoint_and_api_key_item.find(".endpoint-input");
+            let endpoint_input_value = endpoint_input.val();
+            endpoint_and_api_key_item.remove();
+            if (
+                endpoint_input_value.trim() === "" ||
+                self.db.endpoints.get(endpoint_input_value) === undefined
+            ) {
+                console.log("Endpoint not in endpoints");
+            } else {
+                self.db.endpoints.delete(endpoint_input_value);
+            }
+            console.log(`remove endpoint: ${endpoint_input_value}`);
         });
     }
     fill_available_models_select() {
