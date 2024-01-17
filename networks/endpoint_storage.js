@@ -8,8 +8,8 @@ class EndpointStorageItem { }
 class EndpointStorage {
     constructor() {
         this.init_database();
-        this.create_endpoint_and_api_key_items();
         this.fill_available_models_select("user-customized");
+        this.create_endpoint_and_api_key_items();
     }
     init_database() {
         this.db = new Dexie("endpoints");
@@ -80,6 +80,7 @@ class EndpointStorage {
         endpoints.each((row) => {
             this.fill_available_models_select(row.endpoint);
         });
+        endpoint_and_api_key_items.hide();
     }
     bind_endpoint_and_api_key_buttons(endpoint_and_api_key_item) {
         let self = this;
@@ -131,7 +132,7 @@ class EndpointStorage {
         });
     }
     async fill_available_models_select(endpoint) {
-        var select = $("#available-models-select");
+        let select = $("#available-models-select");
         console.log("fetch available models for endpoint:", endpoint);
         // if endpoint not starts with http
         if (endpoint.startsWith("http")) {
@@ -143,15 +144,16 @@ class EndpointStorage {
             const option = new Option(value, value);
             select.append(option);
         });
+        this.set_default_model();
 
+    }
+    set_default_model() {
         let flatten_available_models = [];
         Object.entries(available_models).forEach(([key, value]) => {
             flatten_available_models.push(...value);
         });
         flatten_available_models = [...new Set(flatten_available_models)];
-        // console.log("flatten_available_models:", flatten_available_models);
 
-        // set default model
         let default_model = "";
         let storage_default_model = localStorage.getItem("default_model");
         console.log("storage_default_model:", storage_default_model);
@@ -161,13 +163,15 @@ class EndpointStorage {
         ) {
             default_model = storage_default_model;
         } else if (flatten_available_models) {
-            default_model = flatten_available_models[0];
-            localStorage.setItem("default_model", default_model);
+            // default_model = flatten_available_models[0];
+            // localStorage.setItem("default_model", default_model);
         } else {
             default_model = "";
         }
+
+        let select = $("#available-models-select");
         select.val(default_model);
-        console.log(`default_model: ${select.val()}`);
+        console.log(`default_model is set to: ${select.val()}`);
     }
 }
 
