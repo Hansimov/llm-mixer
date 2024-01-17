@@ -6,6 +6,7 @@ export function stringify_stream_bytes(bytes) {
 
 export function jsonize_stream_data(data) {
     var json_chunks = [];
+    var buffer = ""
     data = data
         .replace(/^data:\s*/gm, "")
         .replace(/\[DONE\]/gm, "")
@@ -15,9 +16,12 @@ export function jsonize_stream_data(data) {
         })
         .map(function (line) {
             try {
-                // ToFix: Single line broken into multiple chunks
-                json_chunks.push(JSON.parse(line.trim()));
+                // TODO: Single line broken into multiple chunks
+                let json_chunk = JSON.parse(line.trim());
+                json_chunks.push(json_chunk);
+                buffer = ""
             } catch {
+                buffer += line;
                 console.log(`Failed to parse: ${line}`);
             }
         });
