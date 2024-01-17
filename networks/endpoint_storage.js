@@ -9,7 +9,6 @@ class EndpointStorage {
     constructor() {
         this.init_database();
         this.create_endpoint_and_api_key_items();
-        this.fill_available_models_select();
     }
     init_database() {
         this.db = new Dexie("endpoints");
@@ -77,6 +76,9 @@ class EndpointStorage {
             endpoint_and_api_key_items.prepend(endpoint_and_api_key_item);
             this.bind_endpoint_and_api_key_buttons(endpoint_and_api_key_item);
         });
+        endpoints.each((row) => {
+            this.fill_available_models_select(row.endpoint);
+        });
     }
     bind_endpoint_and_api_key_buttons(endpoint_and_api_key_item) {
         let self = this;
@@ -103,6 +105,7 @@ class EndpointStorage {
                 });
                 console.log(`new_endpoint: ${endpoint_input_value}`);
             }
+            self.fill_available_models_select(endpoint_input_value);
         });
 
         let remove_endpoint_buttons = endpoint_and_api_key_item.find(
@@ -124,43 +127,34 @@ class EndpointStorage {
             console.log(`remove endpoint: ${endpoint_input_value}`);
         });
     }
-    fill_available_models_select() {
+    async fill_available_models_select(endpoint) {
         var select = $("#available-models-select");
+        console.log("fetch available models for endpoint:", endpoint);
+        let available_models_requester = new AvailableModelsRequester(endpoint);
+        await available_models_requester.get();
         select.empty();
-
-        // for loop the endpoints in endpoint_storage.db.endpoints
-        this.db.endpoints.toArray().then(async (entries) => {
-            for (const entry of entries) {
-                let endpoint = entry.endpoint;
-                console.log("fetch available models for endpoint:", endpoint);
-                let available_models_requester = new AvailableModelsRequester(
-                    endpoint
-                );
-                await available_models_requester.get();
-            }
-            available_models.forEach((value, index) => {
-                const option = new Option(value, value);
-                select.append(option);
-            });
-
-            // set default model
-            let default_model = "";
-            let storage_default_model = localStorage.getItem("default_model");
-            console.log("storage_default_model:", storage_default_model);
-            if (
-                storage_default_model &&
-                available_models.includes(storage_default_model)
-            ) {
-                default_model = storage_default_model;
-            } else if (available_models) {
-                default_model = available_models[0];
-                localStorage.setItem("default_model", default_model);
-            } else {
-                default_model = "";
-            }
-            select.val(default_model);
-            console.log(`default_model: ${select.val()}`);
+        available_models.forEach((value, index) => {
+            const option = new Option(value, value);
+            select.append(option);
         });
+
+        // set default model
+        let default_model = "";
+        let storage_default_model = localStorage.getItem("default_model");
+        console.log("storage_default_model:", storage_default_model);
+        if (
+            storage_default_model &&
+            available_models.includes(storage_default_model)
+        ) {
+            default_model = storage_default_model;
+        } else if (available_models) {
+            default_model = available_models[0];
+            localStorage.setItem("default_model", default_model);
+        } else {
+            default_model = "";
+        }
+        select.val(default_model);
+        console.log(`default_model: ${select.val()}`);
     }
 }
 
