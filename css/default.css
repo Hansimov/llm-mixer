@@ -9,24 +9,45 @@
 }
 
 body {
-    background-image: linear-gradient(90deg, #cdd9fd, #cdd9fd);
+    background-image: linear-gradient(90deg, #eef3ff, #ecf1ff);
 }
 
-.content-displayer {
-    box-shadow: 4px 4px 8px 0px rgba(122, 122, 122, 0.2);
-    background-image: linear-gradient(90deg, #e3eaff, #d6e0fd);
+.message-user,
+.message-assistant {
+    box-shadow: 0px 0px 8px 0px rgba(122, 122, 122, 0.4);
     border-radius: 5px;
+    margin: 30px 0px 30px 0px;
+    padding: 5px 0px 5px 0px;
+    margin: 0px 0px 12px 0px;
+}
+
+.message-user {
+    background-image: linear-gradient(-45deg, #f6f8fe, #e9efff);
+}
+.message-user .role-displayer {
+    color: #1679db;
+}
+
+.message-assistant {
+    background-image: linear-gradient(-45deg, #f4f6fe, #ecedff);
+}
+.message-assistant .role-displayer {
+    color: #d03afe;
+}
+
+.inferring {
+    background-image: linear-gradient(-45deg, #f6f8fe, #fff5e5);
 }
 
 #user-interactions {
-    box-shadow: 4px 4px 8px 0px rgba(122, 122, 122, 0.2);
-    background-image: linear-gradient(30deg, #e3eaff, #d6e0fd);
+    box-shadow: 0px 2px 8px 0px rgba(122, 122, 122, 0.4);
+    background-image: linear-gradient(-45deg, #eef3ff, #e9efff);
     border-radius: 10px;
 }
 
 #chat-history-sidebar {
-    box-shadow: 4px 4px 8px 0px rgba(122, 122, 122, 0.2);
-    background-image: linear-gradient(90deg, #cdd9fd, #d6e0fd);
+    box-shadow: 0px 0px 8px 0px rgba(122, 122, 122, 0.4);
+    background-image: linear-gradient(-45deg, #eef3ff, #e9efff);
     border-width: 0px;
     opacity: 0.8;
 }
@@ -52,6 +73,7 @@ body {
 #chat-session-container {
     overflow-y: auto;
     overflow-x: hidden;
+    padding: 0px;
 }
 
 #user-input {
@@ -61,14 +83,14 @@ body {
 
 .chat-user {
     color: black;
-    border: lightgray 1px solid;
-    background-color: #eafaf1;
+    /* border: lightgray 1px solid; */
+    /* background-color: #eafaf1; */
     white-space: pre-wrap;
 }
 
 .chat-assistant {
     /* color: blue; */
-    border: lightgray 1px solid;
+    /* border: lightgray 1px solid; */
 }
 
 #available-models-select {
@@ -128,10 +150,6 @@ body {
 
 .blinking {
     animation: blink 2s infinite;
-}
-
-.inferring {
-    background-color: rgba(255, 147, 40, 0.25);
 }
 
 .fa:hover {
