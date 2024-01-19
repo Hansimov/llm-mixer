@@ -1,7 +1,7 @@
 import { setup_temperature_on_select } from "../components/llm_models_loader.js";
 
 export class InputsBinder {
-    constructor() { }
+    constructor() {}
     bind() {
         setup_temperature_on_select();
         let user_input_resizer = new UserInputResizer();
@@ -16,7 +16,7 @@ export class InputsBinder {
 }
 
 class UserInputResizer {
-    constructor() { }
+    constructor() {}
     bind() {
         // https://stackoverflow.com/questions/37629860/automatically-resizing-textarea-in-bootstrap
         document.getElementById("user-input").addEventListener(
@@ -31,7 +31,7 @@ class UserInputResizer {
 }
 
 class ChatSessionContainerResizeBinder {
-    constructor() { }
+    constructor() {}
     bind() {
         this.resize();
         $(window).resize(this.resize.bind(this));
@@ -49,7 +49,7 @@ class ChatSessionContainerResizeBinder {
 class ChatHistorySidebarResizeBinder {
     constructor() {
         this.USER_INTERACTIONS_MAX_WIDTH = 900;
-        this.SIDEBAR_GAP = 10;
+        this.SIDEBAR_GAP = 20;
         this.SIDEBAR_MAX_WIDTH = 300;
         this.SIDEBAR_MIN_WIDTH = 120;
     }
@@ -64,11 +64,17 @@ class ChatHistorySidebarResizeBinder {
         return $("#user-interactions").width();
     }
     get_side_margin() {
-        return (this.get_window_width() - this.get_user_interations_width()) / 2 - this.SIDEBAR_GAP;
+        return (
+            (this.get_window_width() - this.get_user_interations_width()) / 2 -
+            this.SIDEBAR_GAP
+        );
     }
     need_to_show() {
         let sidebar = $("#chat-history-sidebar");
-        return (!sidebar.hasClass("show")) && localStorage.getItem("show_chat_history_sidebar") === "true";
+        return (
+            !sidebar.hasClass("show") &&
+            localStorage.getItem("show_chat_history_sidebar") === "true"
+        );
     }
     resize() {
         let sidebar = $("#chat-history-sidebar");

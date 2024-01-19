@@ -8,8 +8,27 @@
     max-width: 100vw;
 }
 
+body {
+    background-image: linear-gradient(90deg, #cdd9fd, #cdd9fd);
+}
+
+.content-displayer {
+    box-shadow: 4px 4px 8px 0px rgba(122, 122, 122, 0.2);
+    background-image: linear-gradient(90deg, #e3eaff, #d6e0fd);
+    border-radius: 5px;
+}
+
+#user-interactions {
+    box-shadow: 4px 4px 8px 0px rgba(122, 122, 122, 0.2);
+    background-image: linear-gradient(30deg, #e3eaff, #d6e0fd);
+    border-radius: 10px;
+}
+
 #chat-history-sidebar {
-    background-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 4px 4px 8px 0px rgba(122, 122, 122, 0.2);
+    background-image: linear-gradient(90deg, #cdd9fd, #d6e0fd);
+    border-width: 0px;
+    opacity: 0.8;
 }
 
 /* Adaptation for mobile */
@@ -117,6 +136,7 @@
 
 .fa:hover {
     color: lightsalmon;
+    transform: scale(1.25);
 }
 
 .fa-small {
