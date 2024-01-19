@@ -80,14 +80,19 @@ export class ChatCompletionsRequester {
             .then((response) => response.body)
             .then((rb) => {
                 const reader = rb.getReader();
+                let buffer = "";
                 return reader.read().then(function process({ done, value }) {
                     if (done) {
                         return;
                     }
-                    let json_chunks = jsonize_stream_data(
-                        stringify_stream_bytes(value)
-                    );
-                    update_message(json_chunks);
+                    buffer += stringify_stream_bytes(value);
+                    let boundary = buffer.lastIndexOf("\n");
+                    if (boundary !== -1) {
+                        let input = buffer.substring(0, boundary);
+                        buffer = buffer.substring(boundary + 1);
+                        let json_chunks = jsonize_stream_data(input);
+                        update_message(json_chunks);
+                    }
                     return reader.read().then(process);
                 });
             })
