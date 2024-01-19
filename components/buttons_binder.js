@@ -144,6 +144,9 @@ class AddEndpointAndApiKeyItemButtonBinder {
         const button = $("#add-endpoint-and-api-key-item-button");
         button.attr("title", "Add endpoint and api key item");
         button.click(() => {
+            if (!$("#endpoint-and-api-key-items").is(":visible")) {
+                $("#endpoint-and-api-key-items").toggle();
+            }
             endpoint_storage.add_endpoint_and_api_key_item();
         });
     }
@@ -236,7 +239,11 @@ class ClearChatHistoryButtonBinder {
         const button = $("#clear-chat-history-button");
         button.attr("title", "Clear chat history");
         button.click(() => {
-            chat_history_storer.clear_database();
+            if (confirm("Clear chat history?")) {
+                chat_history_storer.clear_database();
+            } else {
+                console.log("Clear chat history canceled.");
+            }
         });
     }
 }
