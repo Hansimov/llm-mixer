@@ -9,7 +9,8 @@
 }
 
 body {
-    background-image: linear-gradient(90deg, #eef3ff, #ecf1ff);
+    /* background-image: linear-gradient(90deg, #eef3ff, #ecf1ff); */
+    background-color: #ecf1ff;
 }
 
 .message-user,
@@ -22,34 +23,38 @@ body {
 }
 
 .message-user {
-    background-image: linear-gradient(-45deg, #f6f8fe, #e9efff);
+    /* background-image: linear-gradient(-45deg, #f6f8fe, #e9efff); */
+    background-color: #e9fbff;
 }
 .message-user .role-displayer {
-    color: #1679db;
+    color: #0f74da;
 }
 
 .message-assistant {
-    background-image: linear-gradient(-45deg, #f4f6fe, #ecedff);
+    /* background-image: linear-gradient(-45deg, #f4f6fe, #ecedff); */
+    background-color: #ecedff;
 }
 .message-assistant .role-displayer {
     color: #d03afe;
 }
 
 .inferring {
-    background-image: linear-gradient(-45deg, #f6f8fe, #fff5e5);
+    /* background-image: linear-gradient(-45deg, #f6f8fe, #fff5e5); */
+    background-color: #fff5e5;
 }
 
 #user-interactions {
     box-shadow: 0px 2px 8px 0px rgba(122, 122, 122, 0.4);
-    background-image: linear-gradient(-45deg, #eef3ff, #e9efff);
+    /* background-image: linear-gradient(-45deg, #eef3ff, #e9efff); */
+    background-color: #e9efff;
     border-radius: 10px;
 }
 
 #chat-history-sidebar {
     box-shadow: 0px 0px 8px 0px rgba(122, 122, 122, 0.4);
-    background-image: linear-gradient(-45deg, #eef3ff, #e9efff);
+    /* background-image: linear-gradient(-45deg, #eef3ff, #e9efff); */
+    background-color: rgba(233, 239, 255, 0.6);
     border-width: 0px;
-    opacity: 0.8;
 }
 
 /* Adaptation for mobile */
