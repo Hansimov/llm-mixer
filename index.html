@@ -37,22 +37,24 @@
                 <ul id="chat-history-sidebar-items" class="navbar-nav justify-content-end flex-grow-1">
                 </ul>
             </div>
-            <div class="d-flex justify-content-start mb-3">
+            <div class="my-2 row no-gutters justify-content-end">
+                <div class="col">
                 <button id="clear-chat-history-button" class="btn">
                     <i class="fa fa-trash"></i>
                 </button>
             </div>
+                <div class="col">
+                    <button id="screenshot-button" class="btn">
+                        <i class="fa fa-camera"></i>
+                    </button>
         </div>
-        <div id="chat-session-container" class="container">
-            <div id="messagers-container" class="container mt-3 py-1"></div>
-        </div>
-        <div id="user-interactions" class="container fixed-bottom mb-3">
-            <div id="endpoint-and-api-key-items">
             </div>
-            <div class="mt-2 row no-gutters">
+        </div>
+        <div id="top-toolbar" class="container fixed-top mt-2 pb-2">
+            <div class="mt-2 row no-gutters justify-content-start">
                 <div class="col-auto">
-                    <button id="add-endpoint-and-api-key-item-button" class="btn px-0 ">
-                        <i class="fa fa-circle-plus"></i>
+                    <button id="chat-history-sidebar-toggle-button" class="btn px-0">
+                        <i class="fa fa-bars"></i>
                     </button>
                 </div>
                 <div class="col-auto">
@@ -63,25 +65,31 @@
                 <div class="col px-0">
                     <select class="form-select" id="available-models-select" title="Available Models"></select>
                 </div>
-                <!-- <div class="col-auto pr-0">
-                    <select class="form-select" id="temperature-select" title="Temperature"></select>
-                </div> -->
-                <div class="col-auto">
-                    <button id="screenshot-button" class="btn px-0">
-                        <i class="fa fa-camera"></i>
-                    </button>
-                </div>
                 <div class="col-auto">
                     <button id="scroll-to-bottom-button" class="btn px-0">
                         <i class="fa fa-angles-down"></i>
                     </button>
                 </div>
                 <div class="col-auto">
-                    <button id="chat-history-sidebar-toggle-button" class="btn px-0">
-                        <i class="fa fa-bars"></i>
+                    <button id="toggle-agents-sidebar-button" class="btn px-0">
+                        <i class="fa fa-user"></i>
                     </button>
                 </div>
             </div>
+            <div class="row no-gutters justify-content-start">
+                <div id="endpoint-and-api-key-items">
+                </div>
+                <div class="col-auto mt-2">
+                    <button id="add-endpoint-and-api-key-item-button" class="btn px-0">
+                        <i class="fa fa-circle-plus"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="chat-session-container" class="container">
+            <div id="messagers-container" class="container"></div>
+        </div>
+        <div id="user-interactions" class="container fixed-bottom mb-3">
             <div class="my-2 row no-gutters">
                 <div class="col-auto pr-0">
                     <button id="new-chat-session" class="btn px-0">
