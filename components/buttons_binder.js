@@ -173,7 +173,7 @@ class ScreenshotButtonBinder {
         const button = $("#screenshot-button");
         button.attr("title", "Take screenshot for whole chat");
         button.click(() => {
-            let screenshot_padding = 20;
+            let screenshot_padding = 0;
             // default padding is 0.75em (12px)
             // p-1 (4px)(0.25em); p-2 (8px)(0.5em); p-3 (16px)(1em);
             let container_padding = 12;
