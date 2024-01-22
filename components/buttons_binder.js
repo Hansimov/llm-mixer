@@ -136,6 +136,7 @@ class ToggleEndpointAndApiKeyItemsButtonBinder {
         button.attr("title", "Toggle endpoint and api key items");
         button.click(() => {
             $("#endpoint-and-api-key-items").toggle();
+            $("#add-endpoint-and-api-key-item-button").parent().toggle();
         });
     }
 }
@@ -150,6 +151,7 @@ class AddEndpointAndApiKeyItemButtonBinder {
             }
             endpoint_storage.add_endpoint_and_api_key_item();
         });
+        button.parent().hide();
     }
 }
 

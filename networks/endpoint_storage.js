@@ -3,7 +3,7 @@ import {
     AvailableModelsRequester,
 } from "../networks/llm_requester.js";
 
-class EndpointStorageItem { }
+class EndpointStorageItem {}
 
 class EndpointStorage {
     constructor() {
@@ -56,7 +56,7 @@ class EndpointStorage {
         let endpoint_and_api_key_item = $(
             this.get_endpoint_and_api_key_item_html()
         );
-        endpoint_and_api_key_items.prepend(endpoint_and_api_key_item);
+        endpoint_and_api_key_items.append(endpoint_and_api_key_item);
         this.bind_endpoint_and_api_key_buttons(endpoint_and_api_key_item);
     }
     create_endpoint_and_api_key_items() {
@@ -74,7 +74,7 @@ class EndpointStorage {
             let api_key_input =
                 endpoint_and_api_key_item.find(".api-key-input");
             api_key_input.val(row.api_key);
-            endpoint_and_api_key_items.prepend(endpoint_and_api_key_item);
+            endpoint_and_api_key_items.append(endpoint_and_api_key_item);
             this.bind_endpoint_and_api_key_buttons(endpoint_and_api_key_item);
         });
         endpoints.each((row) => {
@@ -136,7 +136,9 @@ class EndpointStorage {
         console.log("fetch available models for endpoint:", endpoint);
         // if endpoint not starts with http
         if (endpoint.startsWith("http")) {
-            let available_models_requester = new AvailableModelsRequester(endpoint);
+            let available_models_requester = new AvailableModelsRequester(
+                endpoint
+            );
             await available_models_requester.get();
         } else {
         }
@@ -145,7 +147,6 @@ class EndpointStorage {
             select.append(option);
         });
         this.set_default_model();
-
     }
     set_default_model() {
         let flatten_available_models = [];
