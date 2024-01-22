@@ -6,7 +6,6 @@ export function stringify_stream_bytes(bytes) {
 
 export function jsonize_stream_data(data) {
     var json_chunks = [];
-    var buffer = ""
     data = data
         .replace(/^data:\s*/gm, "")
         .replace(/\[DONE\]/gm, "")
@@ -19,9 +18,7 @@ export function jsonize_stream_data(data) {
                 // TODO: Single line broken into multiple chunks
                 let json_chunk = JSON.parse(line.trim());
                 json_chunks.push(json_chunk);
-                buffer = ""
             } catch {
-                buffer += line;
                 console.log(`Failed to parse: ${line}`);
             }
         });
@@ -29,7 +26,5 @@ export function jsonize_stream_data(data) {
 }
 
 export function transform_footnote(text) {
-    return text
-        .replace(/\[\^(\d+)\^\]\[\d+\]/g, "[$1]")
-        .replace(/\[(\d+)\]:\s*(.*)\s*""/g, "[$1] $2 \n");
+    return text.replace(/([\[\(])\^(\d+)\^([\]\)])/g, "<sup>$1$2$3</sup>");
 }
