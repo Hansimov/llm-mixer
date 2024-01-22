@@ -90,6 +90,7 @@ class SendUserInputButtonBinder {
     async post_user_input() {
         let user_input_content = $("#user-input").val();
         console.log(user_input_content);
+        $("#user-input").val("");
         if (get_selected_llm_model() == "notes") {
             create_messager("user", user_input_content);
         } else {
