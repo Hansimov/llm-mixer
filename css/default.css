@@ -50,6 +50,10 @@ body {
     border-radius: 10px;
 }
 
+#top-toolbar {
+    background-color: #e9efff;
+}
+
 #chat-history-sidebar {
     box-shadow: 0px 0px 8px 0px rgba(122, 122, 122, 0.4);
     /* background-image: linear-gradient(-45deg, #eef3ff, #e9efff); */
@@ -106,14 +110,12 @@ body {
     max-width: 75px;
 }
 
-.fa-spin-fast {
-    animation: fa-spin 0.6s infinite linear;
-    color: orange;
+#messagers-container {
+    padding-top: 73px;
 }
 
-.fa-fade-fast {
-    animation: fa-fade 1.5s infinite linear;
-    color: orange;
+#scroll-to-bottom-button {
+    z-index: 100;
 }
 
 .message-viewer .edit-button,
@@ -170,4 +172,14 @@ body {
 
 .icon-success {
     color: green;
+}
+
+.fa-spin-fast {
+    animation: fa-spin 0.6s infinite linear;
+    color: orange;
+}
+
+.fa-fade-fast {
+    animation: fa-fade 1.5s infinite linear;
+    color: orange;
 }
