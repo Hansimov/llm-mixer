@@ -90,7 +90,9 @@ class SendUserInputButtonBinder {
     async post_user_input() {
         let user_input_content = $("#user-input").val();
         console.log(user_input_content);
+        // empty user input and reset height
         $("#user-input").val("");
+        $("#user-input").css("height", "auto");
         if (get_selected_llm_model() == "notes") {
             create_messager("user", user_input_content);
         } else {
