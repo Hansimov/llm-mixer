@@ -93,7 +93,10 @@ class SendUserInputButtonBinder {
             this.requester = new ChatCompletionsRequester(user_input_content);
             this.requester.create_messager_components();
             start_latest_message_animation();
-            this.requester.post();
+            let requester_post = this.requester.post();
+            requester_post.then(() => {
+                this.stop(button);
+            });
         }
     }
 
