@@ -58,7 +58,7 @@ class SendUserInputButtonBinder {
                 button.attr("status") === "send"
             ) {
                 event.preventDefault();
-                await this.send(button);
+                await this.handle_user_input(button);
             }
         });
     }
@@ -69,25 +69,19 @@ class SendUserInputButtonBinder {
         }
         let status = button.attr("status");
         if (status === "send") {
-            this.send(button);
+            await this.send(button);
+            await this.stop(button);
         } else if (status === "stop") {
-            this.stop(button);
-            return;
+            await this.stop(button);
         } else {
             console.log("No action");
         }
     }
 
     async send(button) {
-        // console.log("Send");
         let button_icon = button.find("i");
         button.attr("status", "stop").attr("title", "Stop");
         button_icon.removeClass().addClass("fa fa-circle-pause fa-fade-fast");
-        await this.post_user_input();
-        await this.stop(button);
-    }
-
-    async post_user_input() {
         let user_input_content = $("#user-input").val();
         console.log(user_input_content);
         // empty user input and reset height
@@ -100,12 +94,11 @@ class SendUserInputButtonBinder {
             this.requester.create_messager_components();
             start_latest_message_animation();
             await this.requester.post();
-            this.requester.stop();
         }
     }
 
     async stop(button) {
-        // console.log("Stop");
+        await this.requester.stop();
         let button_icon = button.find("i");
         stop_latest_message_animation();
         button.attr("status", "send").attr("title", "Send");
