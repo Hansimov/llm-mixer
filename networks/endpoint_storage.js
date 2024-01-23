@@ -34,12 +34,12 @@ class EndpointStorage {
                 </div>
                 <div class="col pl-0">
                     <input class="form-control endpoint-input" rows="1"
-                        placeholder="Input Endpoint URL"
+                        placeholder="Input Endpoint URL, don't add /v1"
                     ></input>
                 </div>
                 <div class="col pl-0">
                     <input class="form-control api-key-input" rows="1"
-                        placeholder="Input API Key, then click √"
+                        placeholder="Input API Key, then click ✔️"
                     ></input>
                 </div>
                 <div class="col-auto px-0">
