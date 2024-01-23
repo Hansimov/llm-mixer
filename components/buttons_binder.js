@@ -221,8 +221,8 @@ class ChatHistorySidebarToggleButtonBinder {
         if (this.get_show_history_sidebar_storage() === "true") {
             sidebar.addClass("show");
         }
-
         const toggle_button = $(`#${this.sidebar_name}-sidebar-toggle-button`);
+        toggle_button.attr("title", "Toggle chat history sidebar");
         toggle_button.click(() => {
             sidebar.toggleClass("show");
             localStorage.setItem(
@@ -273,8 +273,8 @@ class ChatAgentsSidebarToggleButtonBinder {
         if (this.get_show_sidebar_storage() === "true") {
             sidebar.addClass("show");
         }
-
         const toggle_button = $(`#${this.sidebar_name}-sidebar-toggle-button`);
+        toggle_button.attr("title", "Toggle chat agents sidebar");
         toggle_button.click(() => {
             sidebar.toggleClass("show");
             localStorage.setItem(

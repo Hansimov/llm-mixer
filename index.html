@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/v4-shims.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/2.1.0/showdown.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.11/clipboard.min.js"></script>
@@ -23,33 +24,32 @@
 </head>
 
 <body>
-
     <div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" id="chat-history-sidebar"
         aria-labelledby="chat-history-sidebar-label">
-            <div class="offcanvas-header">
-                <h5 class="offcanvas-title" id="chat-history-label">
-                    <a style="text-decoration: none; color:inherit;" href="#">Chat History</a>
-                </h5>
-                <button id="chat-history-sidebar-close-button" class="btn-close">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="chat-history-label">
+                <a style="text-decoration: none; color:inherit;" href="#">History</a>
+            </h5>
+            <button id="chat-history-sidebar-close-button" class="btn-close">
+            </button>
+        </div>
+        <div class="offcanvas-body">
+            <ul id="chat-history-sidebar-items" class="navbar-nav justify-content-end flex-grow-1">
+            </ul>
+        </div>
+        <div class="my-2 row no-gutters justify-content-end">
+            <div class="col">
+                <button id="clear-chat-history-button" class="btn">
+                    <i class="fa fa-trash"></i>
                 </button>
             </div>
-            <div class="offcanvas-body">
-                <ul id="chat-history-sidebar-items" class="navbar-nav justify-content-end flex-grow-1">
-                </ul>
-            </div>
-            <div class="my-2 row no-gutters justify-content-end">
-                <div class="col">
-                    <button id="clear-chat-history-button" class="btn">
-                        <i class="fa fa-trash"></i>
-                    </button>
-                </div>
-                <div class="col">
-                    <button id="screenshot-button" class="btn">
-                        <i class="fa fa-camera"></i>
-                    </button>
-                </div>
+            <div class="col">
+                <button id="screenshot-button" class="btn">
+                    <i class="fa fa-camera"></i>
+                </button>
             </div>
         </div>
+    </div>
     <div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" id="chat-agents-sidebar"
         aria-labelledby="chat-agents-sidebar-label">
         <div class="offcanvas-header">
@@ -77,7 +77,7 @@
             <div class="my-1 row no-gutters justify-content-start">
                 <div class="col-auto">
                     <button id="chat-history-sidebar-toggle-button" class="btn px-0">
-                        <i class="fa fa-bars"></i>
+                        <i class="fa fa-history"></i>
                     </button>
                 </div>
                 <div class="col-auto">
@@ -95,7 +95,7 @@
                 </div>
                 <div class="col-auto">
                     <button id="chat-agents-sidebar-toggle-button" class="btn px-0">
-                        <i class="fa fa-user"></i>
+                        <i class="fa fa-weixin"></i>
                     </button>
                 </div>
             </div>

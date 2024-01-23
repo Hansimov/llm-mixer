@@ -50,7 +50,7 @@ class ChatHistorySidebarResizeBinder {
     constructor() {
         this.USER_INTERACTIONS_MAX_WIDTH = 900;
         this.SIDEBAR_GAP = 20;
-        this.SIDEBAR_MAX_WIDTH = 300;
+        this.SIDEBAR_MAX_WIDTH = 250;
         this.SIDEBAR_MIN_WIDTH = 120;
     }
     bind() {
@@ -60,12 +60,12 @@ class ChatHistorySidebarResizeBinder {
     get_window_width() {
         return $(window).width();
     }
-    get_user_interations_width() {
+    get_user_interactions_width() {
         return $("#user-interactions").width();
     }
     get_side_margin() {
         return (
-            (this.get_window_width() - this.get_user_interations_width()) / 2 -
+            (this.get_window_width() - this.get_user_interactions_width()) / 2 -
             this.SIDEBAR_GAP
         );
     }
