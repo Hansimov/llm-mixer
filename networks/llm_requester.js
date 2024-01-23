@@ -74,29 +74,29 @@ export class ChatCompletionsRequester {
         create_messager("user", this.prompt);
         create_messager("assistant", "", this.model, this.temperature);
     }
-    post() {
+    async post() {
         this.construct_request_params();
-        return fetch(this.backend_request_endpoint, this.backend_request_params)
-            .then((response) => response.body)
-            .then((rb) => {
-                const reader = rb.getReader();
-                let buffer = "";
-                return reader.read().then(function process({ done, value }) {
-                    if (done) {
-                        return;
-                    }
-                    buffer += stringify_stream_bytes(value);
-                    let boundary = buffer.lastIndexOf("\n");
-                    if (boundary !== -1) {
-                        let input = buffer.substring(0, boundary);
-                        buffer = buffer.substring(boundary + 1);
-                        let json_chunks = jsonize_stream_data(input);
-                        update_message(json_chunks);
-                    }
-                    return reader.read().then(process);
-                });
-            })
-            .catch((error) => console.error("Error:", error));
+        const response = await fetch(
+            this.backend_request_endpoint,
+            this.backend_request_params
+        );
+        const reader = response.body.getReader();
+        let buffer = "";
+        return reader.read().then(function process({ done, value }) {
+            if (done) {
+                return;
+            }
+            buffer += stringify_stream_bytes(value);
+            let boundary = buffer.lastIndexOf("\n");
+            if (boundary !== -1) {
+                let input = buffer.substring(0, boundary);
+                buffer = buffer.substring(boundary + 1);
+                let json_chunks = jsonize_stream_data(input);
+                console.log(json_chunks);
+                update_message(json_chunks);
+            }
+            return reader.read().then(process);
+        });
     }
     stop() {
         this.controller.abort();

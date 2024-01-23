@@ -28,7 +28,6 @@ app.post("/chat/completions", async (req, res) => {
             headers: openai_request_headers,
             responseType: "stream",
         });
-
         response.data.pipe(res);
     } catch (error) {
         console.error(error);
@@ -50,7 +49,6 @@ app.post("/models", async (req, res) => {
             headers: openai_request_headers,
         });
         res.json(response.data);
-
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Failed to request OpenAI Endpoint" });
