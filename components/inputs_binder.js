@@ -69,18 +69,18 @@ class ChatHistorySidebarResizeBinder {
             this.SIDEBAR_GAP
         );
     }
-    need_to_show() {
-        let sidebar = $("#chat-history-sidebar");
+    need_to_show(sidebar_name = null) {
+        let sidebar = $(`#chat-${sidebar_name}-sidebar`);
         return (
             !sidebar.hasClass("show") &&
-            localStorage.getItem("show_chat_history_sidebar") === "true"
+            localStorage.getItem(`show_chat_${sidebar_name}_sidebar`) === "true"
         );
     }
-    resize() {
-        let sidebar = $("#chat-history-sidebar");
+    resize_sidebar(sidebar_name = null) {
+        let sidebar = $(`#chat-${sidebar_name}-sidebar`);
         let is_sidebar_show = sidebar[0].classList.contains("show");
         if (this.get_side_margin() >= this.SIDEBAR_MAX_WIDTH) {
-            if (this.need_to_show()) {
+            if (this.need_to_show(sidebar_name)) {
                 sidebar.addClass("show");
             }
             sidebar.css("max-width", this.SIDEBAR_MAX_WIDTH + "px");
@@ -92,11 +92,16 @@ class ChatHistorySidebarResizeBinder {
             sidebar.css("max-width", this.SIDEBAR_MAX_WIDTH + "px");
             sidebar.css("min-width", this.SIDEBAR_MIN_WIDTH + "px");
         } else {
-            if (this.need_to_show()) {
+            if (this.need_to_show(sidebar_name)) {
                 sidebar.addClass("show");
             }
             sidebar.css("max-width", this.get_side_margin());
             sidebar.css("min-width", this.SIDEBAR_MIN_WIDTH + "px");
+        }
+    }
+    resize() {
+        for (let sidebar_name of ["history", "agents"]) {
+            this.resize_sidebar(sidebar_name);
         }
     }
 }

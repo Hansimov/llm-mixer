@@ -32,6 +32,9 @@ export class ButtonsBinder {
         let chat_history_sidebar_toggle_button_binder =
             new ChatHistorySidebarToggleButtonBinder();
         chat_history_sidebar_toggle_button_binder.bind();
+        let chat_agents_sidebar_toggle_button_binder =
+            new ChatAgentsSidebarToggleButtonBinder();
+        chat_agents_sidebar_toggle_button_binder.bind();
         let clear_chat_history_button_binder =
             new ClearChatHistoryButtonBinder();
         clear_chat_history_button_binder.bind();
@@ -201,49 +204,105 @@ class ScreenshotButtonBinder {
 }
 
 class ChatHistorySidebarToggleButtonBinder {
-    constructor() {}
-    get_show_sidebar_storage() {
-        return localStorage.getItem("show_chat_history_sidebar");
+    constructor() {
+        this.storage_key = "show_chat_history_sidebar";
+        this.sidebar_name = "chat-history";
+    }
+    get_show_history_sidebar_storage() {
+        return localStorage.getItem(this.storage_key);
     }
     bind() {
-        const sidebar = $("#chat-history-sidebar");
-
+        const sidebar = $(`#${this.sidebar_name}-sidebar`);
         // this line is not to check value as false,
         // but to check item not existed in localStorage
-        if (!this.get_show_sidebar_storage()) {
-            localStorage.setItem("show_chat_history_sidebar", "true");
+        if (!this.get_show_history_sidebar_storage()) {
+            localStorage.setItem(this.storage_key, "true");
         }
-        if (this.get_show_sidebar_storage() === "true") {
+        if (this.get_show_history_sidebar_storage() === "true") {
             sidebar.addClass("show");
         }
 
-        const toggle_button = $("#chat-history-sidebar-toggle-button");
+        const toggle_button = $(`#${this.sidebar_name}-sidebar-toggle-button`);
         toggle_button.click(() => {
             sidebar.toggleClass("show");
             localStorage.setItem(
-                "show_chat_history_sidebar",
+                this.storage_key,
                 sidebar.hasClass("show").toString()
             );
         });
-
-        const close_button = $("#chat-history-sidebar-close-button");
+        const close_button = $(`#${this.sidebar_name}-sidebar-close-button`);
         close_button.click(() => {
             sidebar.removeClass("show");
-            localStorage.setItem("show_chat_history_sidebar", "false");
+            localStorage.setItem(this.storage_key, "false");
         });
     }
 }
 
 class ClearChatHistoryButtonBinder {
-    constructor() {}
+    constructor() {
+        this.sidebar_name = "chat-history";
+    }
     bind() {
-        const button = $("#clear-chat-history-button");
+        const button = $(`#clear-${this.sidebar_name}-button`);
         button.attr("title", "Clear chat history");
         button.click(() => {
             if (confirm("Clear chat history?")) {
                 chat_history_storer.clear_database();
             } else {
                 console.log("Clear chat history canceled.");
+            }
+        });
+    }
+}
+
+class ChatAgentsSidebarToggleButtonBinder {
+    constructor() {
+        this.storage_key = "show_chat_agents_sidebar";
+        this.sidebar_name = "chat-agents";
+    }
+    get_show_sidebar_storage() {
+        return localStorage.getItem(this.storage_key);
+    }
+    bind() {
+        const sidebar = $(`#${this.sidebar_name}-sidebar`);
+        // this line is not to check value as false,
+        // but to check item not existed in localStorage
+        if (!this.get_show_sidebar_storage()) {
+            localStorage.setItem(this.storage_key, "true");
+        }
+        if (this.get_show_sidebar_storage() === "true") {
+            sidebar.addClass("show");
+        }
+
+        const toggle_button = $(`#${this.sidebar_name}-sidebar-toggle-button`);
+        toggle_button.click(() => {
+            sidebar.toggleClass("show");
+            localStorage.setItem(
+                this.storage_key,
+                sidebar.hasClass("show").toString()
+            );
+        });
+
+        const close_button = $(`#${this.sidebar_name}-sidebar-close-button`);
+        close_button.click(() => {
+            sidebar.removeClass("show");
+            localStorage.setItem(this.storage_key, "false");
+        });
+    }
+}
+
+class ClearChatAgentsButtonBinder {
+    constructor() {
+        this.sidebar_name = "chat-agents";
+    }
+    bind() {
+        const button = $(`#clear-${this.sidebar_name}-button`);
+        button.attr("title", "Clear agents");
+        button.click(() => {
+            if (confirm("Clear agents?")) {
+                // chat_history_storer.clear_database();
+            } else {
+                console.log("Clear agents canceled.");
             }
         });
     }

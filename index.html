@@ -23,8 +23,9 @@
 </head>
 
 <body>
-        <div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
-            id="chat-history-sidebar" aria-labelledby="chat-history-sidebar-label">
+
+    <div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" id="chat-history-sidebar"
+        aria-labelledby="chat-history-sidebar-label">
             <div class="offcanvas-header">
                 <h5 class="offcanvas-title" id="chat-history-label">
                     <a style="text-decoration: none; color:inherit;" href="#">Chat History</a>
@@ -49,6 +50,28 @@
                 </div>
             </div>
         </div>
+    <div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" id="chat-agents-sidebar"
+        aria-labelledby="chat-agents-sidebar-label">
+        <div class="offcanvas-header">
+            <button id="chat-agents-sidebar-close-button" class="btn-close">
+            </button>
+            <h5 class="offcanvas-title" id="chat-agents-label">
+                <a style="text-decoration: none; color:inherit;" href="#">Agents</a>
+            </h5>
+        </div>
+        <div class="offcanvas-body">
+            <ul id="chat-agents-sidebar-items" class="navbar-nav justify-content-end flex-grow-1">
+            </ul>
+        </div>
+        <div class="my-2 row no-gutters justify-content-start">
+            <div class="col">
+                <button id="clear-chat-agents-button" class="btn">
+                    <i class="fa fa-trash"></i>
+                </button>
+            </div>
+
+        </div>
+    </div>
     <div id="main-container" class="container">
         <div id="top-toolbar" class="container mt-2">
             <div class="my-1 row no-gutters justify-content-start">
@@ -71,7 +94,7 @@
                     </button>
                 </div>
                 <div class="col-auto">
-                    <button id="toggle-agents-sidebar-button" class="btn px-0">
+                    <button id="chat-agents-sidebar-toggle-button" class="btn px-0">
                         <i class="fa fa-user"></i>
                     </button>
                 </div>
