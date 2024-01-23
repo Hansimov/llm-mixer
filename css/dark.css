@@ -1,10 +1,10 @@
 body {
-    background-color: #0f0f0f;
+    background-color: #161616;
     color: #cccccc;
 }
 
 #top-toolbar {
-    background-color: #373737;
+    background-color: #161616;
 }
 
 #chat-agents-sidebar,
@@ -16,14 +16,34 @@ body {
 
 #user-interactions {
     box-shadow: 0px 2px 8px 0px rgba(122, 122, 122, 0.4);
-    background-color: #373737;
+    background-color: #242424;
+}
+
+.message-user {
+    /* background-image: linear-gradient(-45deg, #f6f8fe, #e9efff); */
+    background-color: #3a4946;
+}
+.message-user .role-displayer {
+    color: #5facfa;
+}
+
+.message-assistant {
+    /* background-image: linear-gradient(-45deg, #f4f6fe, #ecedff); */
+    background-color: #3d3d50;
+}
+.message-assistant .role-displayer {
+    color: #dc68ff;
+}
+
+.content-displayer {
+    color: #cccccc;
 }
 
 input,
 textarea,
 .form-select,
 .form-control {
-    background-color: #373737;
+    background-color: #2e2e2e;
     color: #cccccc;
     border-color: #686868;
 }
