@@ -47,38 +47,38 @@ class SendUserInputButtonBinder {
     bind() {
         const button = $("#send-user-input");
         button.attr("status", "send").attr("title", "Send");
-        button.click(async () => {
-            await this.handle_user_input(button);
+        button.click(() => {
+            this.handle_user_input(button);
         });
 
-        $("#user-input").keypress(async (event) => {
+        $("#user-input").keypress((event) => {
             if (
                 event.key === "Enter" &&
                 !event.shiftKey &&
                 button.attr("status") === "send"
             ) {
                 event.preventDefault();
-                await this.handle_user_input(button);
+                this.handle_user_input(button);
             }
         });
     }
-    async handle_user_input(button) {
+    handle_user_input(button) {
         let user_input_content = $("#user-input").val();
-        if (user_input_content === "") {
-            return;
-        }
         let status = button.attr("status");
         if (status === "send") {
-            await this.send(button);
-            await this.stop(button);
+            if (user_input_content === "") {
+                return;
+            } else {
+                this.send(button);
+            }
         } else if (status === "stop") {
-            await this.stop(button);
+            this.stop(button);
         } else {
             console.log("No action");
         }
     }
 
-    async send(button) {
+    send(button) {
         let button_icon = button.find("i");
         button.attr("status", "stop").attr("title", "Stop");
         button_icon.removeClass().addClass("fa fa-circle-pause fa-fade-fast");
@@ -93,12 +93,12 @@ class SendUserInputButtonBinder {
             this.requester = new ChatCompletionsRequester(user_input_content);
             this.requester.create_messager_components();
             start_latest_message_animation();
-            await this.requester.post();
+            this.requester.post();
         }
     }
 
-    async stop(button) {
-        await this.requester.stop();
+    stop(button) {
+        this.requester.stop();
         let button_icon = button.find("i");
         stop_latest_message_animation();
         button.attr("status", "send").attr("title", "Send");
