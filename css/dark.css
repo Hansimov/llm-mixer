@@ -1,0 +1,33 @@
+body {
+    background-color: #0f0f0f;
+    color: #cccccc;
+}
+
+#top-toolbar {
+    background-color: #373737;
+}
+
+#chat-agents-sidebar,
+#chat-history-sidebar {
+    box-shadow: 0px 0px 8px 0px rgba(122, 122, 122, 0.4);
+    background-color: rgba(42, 42, 42, 0.6);
+    color: #cccccc;
+}
+
+#user-interactions {
+    box-shadow: 0px 2px 8px 0px rgba(122, 122, 122, 0.4);
+    background-color: #373737;
+}
+
+input,
+textarea,
+.form-select,
+.form-control {
+    background-color: #373737;
+    color: #cccccc;
+    border-color: #686868;
+}
+
+.fa {
+    color: #d2d2d2;
+}

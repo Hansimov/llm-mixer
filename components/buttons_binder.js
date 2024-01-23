@@ -40,6 +40,8 @@ export class ButtonsBinder {
         clear_chat_history_button_binder.bind();
         let available_models_select_binder = new AvailableModelsSelectBinder();
         available_models_select_binder.bind();
+        let dark_theme_toggle_button_binder = new DarkThemeToggleButtonBinder();
+        dark_theme_toggle_button_binder.bind();
     }
 }
 
@@ -316,5 +318,38 @@ class AvailableModelsSelectBinder {
             localStorage.setItem("default_model", select.val());
             console.log("set default_model:", select.val());
         });
+    }
+}
+
+class DarkThemeToggleButtonBinder {
+    constructor() {
+        this.storage_key = "theme";
+        this.set_theme();
+    }
+    bind() {
+        const toggle_button = $("#dark-theme-toggle-button");
+        toggle_button.click(() => {
+            let theme = localStorage.getItem(this.storage_key);
+            if (theme === "dark") {
+                localStorage.setItem(this.storage_key, "light");
+            } else {
+                localStorage.setItem(this.storage_key, "dark");
+            }
+            this.set_theme();
+        });
+    }
+    set_theme() {
+        let theme = localStorage.getItem(this.storage_key);
+        if (theme === "dark") {
+            // load dark.css
+            $("#dark-theme").remove();
+            $("head").append(
+                '<link id="dark-theme" rel="stylesheet" href="css/dark.css">'
+            );
+        } else {
+            // remove dark.css
+            $("#dark-theme").remove();
+        }
+        console.log("set theme:", theme);
     }
 }
