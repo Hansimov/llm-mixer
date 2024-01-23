@@ -92,7 +92,6 @@ export class ChatCompletionsRequester {
                 let input = buffer.substring(0, boundary);
                 buffer = buffer.substring(boundary + 1);
                 let json_chunks = jsonize_stream_data(input);
-                console.log(json_chunks);
                 update_message(json_chunks);
             }
             return reader.read().then(process);

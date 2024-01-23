@@ -23,7 +23,6 @@
 </head>
 
 <body>
-    <div id="main-container">
         <div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
             id="chat-history-sidebar" aria-labelledby="chat-history-sidebar-label">
             <div class="offcanvas-header">
@@ -50,8 +49,9 @@
                 </div>
             </div>
         </div>
-        <div id="top-toolbar" class="container fixed-top mt-2 pb-2">
-            <div class="mt-2 row no-gutters justify-content-start">
+    <div id="main-container" class="container">
+        <div id="top-toolbar" class="container mt-2">
+            <div class="my-1 row no-gutters justify-content-start">
                 <div class="col-auto">
                     <button id="chat-history-sidebar-toggle-button" class="btn px-0">
                         <i class="fa fa-bars"></i>
@@ -86,10 +86,10 @@
                 </div>
             </div>
         </div>
-        <div id="chat-session-container" class="container">
+        <div id="chat-session-container" class="container mt-1">
             <div id="messagers-container" class="container"></div>
         </div>
-        <div id="user-interactions" class="container fixed-bottom mb-3">
+        <div id="user-interactions" class="container mb-2">
             <div class="my-2 row no-gutters">
                 <div class="col-auto pr-0">
                     <button id="new-chat-session" class="btn px-0">

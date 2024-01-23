@@ -20,14 +20,30 @@ body {
     background-color: #ecf1ff;
 }
 
+#main-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
 #top-toolbar {
     background-color: #e9efff;
+    flex: 0 0 auto;
 }
 
 #chat-session-container {
     overflow-y: auto;
     overflow-x: hidden;
     padding: 0px;
+    flex: 1 1 auto;
+}
+
+#user-interactions {
+    box-shadow: 0px 2px 8px 0px rgba(122, 122, 122, 0.4);
+    /* background-image: linear-gradient(-45deg, #eef3ff, #e9efff); */
+    background-color: #e9efff;
+    border-radius: 10px;
+    flex: 0 0 auto;
 }
 
 .message-user,
@@ -58,14 +74,6 @@ body {
     /* background-image: linear-gradient(-45deg, #f6f8fe, #fff5e5); */
     background-color: #fff5e5;
 }
-
-#user-interactions {
-    box-shadow: 0px 2px 8px 0px rgba(122, 122, 122, 0.4);
-    /* background-image: linear-gradient(-45deg, #eef3ff, #e9efff); */
-    background-color: #e9efff;
-    border-radius: 10px;
-}
-
 
 #chat-history-sidebar {
     box-shadow: 0px 0px 8px 0px rgba(122, 122, 122, 0.4);
@@ -109,7 +117,6 @@ body {
 #temperature-select {
     max-width: 75px;
 }
-
 
 #scroll-to-bottom-button {
     z-index: 100;
