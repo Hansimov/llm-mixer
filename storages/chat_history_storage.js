@@ -1,6 +1,6 @@
 class ChatStorageItem {
-    constructor(chat_history_storer) {
-        this.chat_history_storer = chat_history_storer;
+    constructor(chat_history_storage) {
+        this.chat_history_storage = chat_history_storage;
     }
     create_index() {
         let datetime_string = moment().format("YYYY-MM-DD_HH-mm-ss_SSS");
@@ -31,7 +31,7 @@ class ChatStorageItem {
     }
 }
 
-class ChatHistoryStorer {
+class ChatHistoryStorage {
     constructor() {
         this.init_database();
         this.render_chat_history_sidebar_items();
@@ -86,4 +86,4 @@ class ChatHistoryStorer {
     }
 }
 
-export let chat_history_storer = new ChatHistoryStorer();
+export let chat_history_storage = new ChatHistoryStorage();

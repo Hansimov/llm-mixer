@@ -10,15 +10,6 @@ import {
     get_selected_temperature,
 } from "../components/chat_operator.js";
 
-function concat_urls(...urls) {
-    let new_url = urls
-        .map((url) => url.replace(/^\/|\/$/g, ""))
-        .filter((url) => url !== "")
-        .join("/");
-    console.log(new_url);
-    return new_url;
-}
-
 export class ChatCompletionsRequester {
     constructor(
         prompt,

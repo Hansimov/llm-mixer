@@ -9,8 +9,8 @@ import {
 } from "./chat_operator.js";
 
 import { screen_scroller } from "./screen_scroller.js";
-import { chat_history_storer } from "../networks/chat_history_storer.js";
-import { endpoint_storage } from "../networks/endpoint_storage.js";
+import { chat_history_storage } from "../storages/chat_history_storage.js";
+import { endpoint_storage } from "../storages/endpoint_storage.js";
 
 export class ButtonsBinder {
     constructor() {}
@@ -126,7 +126,7 @@ class NewChatButtonBinder {
         const button = $("#new-chat-session");
         button.attr("status", "new").attr("title", "New Chat");
         button.click(() => {
-            chat_history_storer.save_current_chat_session();
+            chat_history_storage.save_current_chat_session();
             create_new_chat_session();
         });
     }
@@ -249,7 +249,7 @@ class ClearChatHistoryButtonBinder {
         button.attr("title", "Clear chat history");
         button.click(() => {
             if (confirm("Clear chat history?")) {
-                chat_history_storer.clear_database();
+                chat_history_storage.clear_database();
             } else {
                 console.log("Clear chat history canceled.");
             }
@@ -302,7 +302,7 @@ class ClearChatAgentsButtonBinder {
         button.attr("title", "Clear agents");
         button.click(() => {
             if (confirm("Clear agents?")) {
-                // chat_history_storer.clear_database();
+                // chat_history_storage.clear_database();
             } else {
                 console.log("Clear agents canceled.");
             }
