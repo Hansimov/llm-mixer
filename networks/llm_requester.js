@@ -93,12 +93,13 @@ export class ChatCompletionsRequester {
     }
 }
 
-export var available_models = { "user-customized": ["notes"] };
+// export var available_models = { "user-customized": ["notes"] };
 export class AvailableModelsRequester {
     constructor(openai_endpoint) {
         this.openai_endpoint = openai_endpoint;
         this.backend_request_endpoint = "/models";
         this.controller = new AbortController();
+        this.available_models = [];
     }
     construct_openai_request_headers() {
         this.backend_request_headers = {
@@ -131,19 +132,16 @@ export class AvailableModelsRequester {
             .then((response) => response.json())
             .then((response_json) => {
                 let data = response_json.data;
-                if (!(this.openai_endpoint in available_models)) {
-                    available_models[this.openai_endpoint] = [];
-                }
                 data.forEach((item) => {
-                    if (
-                        !available_models[this.openai_endpoint].includes(
-                            item.id
-                        )
-                    ) {
-                        available_models[this.openai_endpoint].push(item.id);
+                    if (!this.available_models.includes(item.id)) {
+                        this.available_models.push(item.id);
                     }
                 });
-                console.log("available_models:", available_models);
+                console.log(
+                    `get available_models of ${this.openai_endpoint}:`,
+                    this.available_models
+                );
+                return this.available_models;
             })
             .catch((error) => {
                 console.error("Error:", error);
@@ -152,15 +150,4 @@ export class AvailableModelsRequester {
     stop() {
         this.controller.abort();
     }
-}
-
-export function get_endpoint_by_model(model) {
-    let endpoint = "";
-    Object.entries(available_models).forEach(([key, value]) => {
-        if (value.includes(model)) {
-            endpoint = key;
-            return endpoint;
-        }
-    });
-    return endpoint;
 }
