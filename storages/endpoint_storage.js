@@ -1,21 +1,17 @@
-import {
-    available_models,
-    AvailableModelsRequester,
-} from "../networks/llm_requester.js";
-
-class EndpointStorageItem {}
+import { AvailableModelsRequester } from "../networks/llm_requester.js";
 
 class EndpointStorage {
     constructor() {
         this.init_database();
-        this.fill_available_models_select("user-customized");
         this.load_local_endpoints();
         this.create_endpoint_and_api_key_items();
+        this.fill_available_models_select();
     }
     init_database() {
         this.db = new Dexie("endpoints");
         this.db.version(1).stores({
-            endpoints: "index, endpoint, api_key, need_protect",
+            endpoints:
+                "index, endpoint, api_key, need_protect, available_models",
         });
         this.db.endpoints.count((count) => {
             console.log(`${count} endpoints loaded.`);
@@ -104,9 +100,6 @@ class EndpointStorage {
             endpoint_and_api_key_items.append(endpoint_and_api_key_item);
             this.bind_endpoint_and_api_key_buttons(endpoint_and_api_key_item);
         });
-        endpoints.each((row) => {
-            this.fill_available_models_select(row.endpoint);
-        });
         endpoint_and_api_key_items.hide();
     }
     bind_endpoint_and_api_key_buttons(endpoint_and_api_key_item) {
@@ -159,48 +152,84 @@ class EndpointStorage {
             // TODO: remove models of current endpoint from available_models_select
         });
     }
-    async fill_available_models_select(endpoint) {
-        let select = $("#available-models-select");
+    fetch_available_models(endpoint) {
         console.log("fetch available models for endpoint:", endpoint);
-        // if endpoint not starts with http
+        // if endpoint not starts with http(s), skip
+        // such as "user-customized", which is used for other local functions or agents
         if (endpoint.startsWith("http")) {
             let available_models_requester = new AvailableModelsRequester(
                 endpoint
             );
-            await available_models_requester.get();
+            // update available_models field of endpoint index in db.endpoints
+            return available_models_requester.get().then((available_models) => {
+                this.db.endpoints.update(endpoint, {
+                    available_models: JSON.stringify(available_models),
+                });
+                return available_models;
+            });
         } else {
+            return Promise.resolve([]);
         }
-        available_models[endpoint].forEach((value, index) => {
-            const option = new Option(value, value);
-            select.append(option);
-        });
-        this.set_default_model();
     }
-    set_default_model() {
-        let flatten_available_models = [];
-        Object.entries(available_models).forEach(([key, value]) => {
-            flatten_available_models.push(...value);
-        });
-        flatten_available_models = [...new Set(flatten_available_models)];
+    fill_available_models_select() {
+        // fetch available_models for all endpoints, and then fill available_models_select
+        let available_models_select = $("#available-models-select");
+        available_models_select.empty();
+        this.db.endpoints.toArray().then((endpoints) => {
+            let promises = endpoints.map((row) => {
+                return this.fetch_available_models(row.endpoint).then(
+                    (available_models) => {
+                        available_models.forEach((model_id) => {
+                            // if model duplicated in available_models_select values,
+                            // then attach endpoint host name
+                            let model_name = model_id;
+                            let endpoint_hostname = new URL(
+                                row.endpoint
+                            ).hostname
+                                .split(".")[0]
+                                .split("-")[0];
+                            let model_id_with_endpoint = `${row.endpoint}/models/${model_id}`;
 
-        let default_model = "";
+                            model_name = `${model_id} (${endpoint_hostname})`;
+                            const option = new Option(
+                                model_name,
+                                model_id_with_endpoint
+                            );
+                            available_models_select.append(option);
+                        });
+                    }
+                );
+            });
+            Promise.all(promises).then(() => {
+                this.set_default_model();
+            });
+        });
+    }
+
+    set_default_model() {
         let storage_default_model = localStorage.getItem("default_model");
-        console.log("storage_default_model:", storage_default_model);
+        // format of storage_default_model is `{endpoint}/models/{model_id}`
+        // if storage_default_model is null, or not in the available_models_select,
+        // set as the first one of available_models_select
+        let select = $("#available-models-select");
         if (
             storage_default_model &&
-            flatten_available_models.includes(storage_default_model)
+            select.find(`option[value="${storage_default_model}"]`).length > 0
         ) {
-            default_model = storage_default_model;
-        } else if (flatten_available_models) {
-            // default_model = flatten_available_models[0];
-            // localStorage.setItem("default_model", default_model);
+            select.val(storage_default_model);
+            console.log(
+                "load default model:",
+                localStorage.getItem("default_model")
+            );
         } else {
-            default_model = "";
+            let new_storage_default_model = select.find("option:first").val();
+            select.val(new_storage_default_model);
+            localStorage.setItem("default_model", new_storage_default_model);
+            console.log(
+                "set new default model:",
+                localStorage.getItem("default_model")
+            );
         }
-
-        let select = $("#available-models-select");
-        select.val(default_model);
-        console.log(`default_model is set to: ${select.val()}`);
     }
 }
 
