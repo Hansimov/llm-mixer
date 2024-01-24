@@ -188,7 +188,7 @@ class EndpointStorage {
                             ).hostname
                                 .split(".")[0]
                                 .split("-")[0];
-                            let model_id_with_endpoint = `${row.endpoint}/models/${model_id}`;
+                            let model_id_with_endpoint = `${row.endpoint}|${model_id}`;
 
                             model_name = `${model_id} (${endpoint_hostname})`;
                             const option = new Option(
@@ -208,7 +208,7 @@ class EndpointStorage {
 
     set_default_model() {
         let storage_default_model = localStorage.getItem("default_model");
-        // format of storage_default_model is `{endpoint}/models/{model_id}`
+        // format of storage_default_model is `{endpoint}|{model_id}`
         // if storage_default_model is null, or not in the available_models_select,
         // set as the first one of available_models_select
         let select = $("#available-models-select");

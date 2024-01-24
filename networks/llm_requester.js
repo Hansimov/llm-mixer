@@ -18,14 +18,19 @@ export class ChatCompletionsRequester {
         openai_endpoint = null
     ) {
         this.prompt = prompt;
-        this.model = model || get_selected_llm_model() || "gpt-turbo-3.5";
+        this.openai_endpoint =
+            openai_endpoint || this.extract_endpoint_and_model()[0];
+        this.model = model || this.extract_endpoint_and_model()[1];
         this.temperature =
             temperature !== null ? temperature : get_selected_temperature();
-
-        this.openai_endpoint =
-            openai_endpoint || get_endpoint_by_model(this.model);
         this.backend_request_endpoint = "/chat/completions";
         this.controller = new AbortController();
+    }
+    extract_endpoint_and_model() {
+        let model_id_with_endpoint = get_selected_llm_model();
+        this.openai_endpoint = model_id_with_endpoint.split("|")[0];
+        this.model = model_id_with_endpoint.split("|")[1];
+        return [this.openai_endpoint, this.model];
     }
     construct_openai_request_headers() {
         this.backend_request_headers = {
