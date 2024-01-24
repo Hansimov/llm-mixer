@@ -84,8 +84,8 @@
             </div>
         </div>
     </div>
-    <div id="new-agent-modal" class="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog">
+    <div id="new-agent-modal" class="modal" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">Create New Agent</h4>
@@ -94,18 +94,31 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <!-- input: nickname -->
-                    <h5>Nickname</h5>
-                    <input id="new-agent-model-nickname" class="form-control" type="text" placeholder="Nickname" />
-                    <!-- input: system prompt -->
-                    <h5>System Prompt</h5>
-                    <input id="new-agent-model-system-prompt" class="form-control" type="text"
-                        placeholder="System Message" />
-                    <!-- select: model -->
-                    <h5>Model</h5>
-                    <!-- slider: temperature -->
-                    <h5>Temperature</h5>
+                    <!-- nickname -->
+                    <div class="form-floating mb-2">
+                        <input id="new-agent-modal-nickname" class="form-control" type="text" placeholder="Nickname" />
+                        <label for="new-agent-model-nickname">Nickname</label>
+                    </div>
+                    <!-- model -->
+                    <div class="form-floating mb-2">
+                        <select id="new-agent-modal-llm-model" class="form-select" type="text"></select>
+                        <label for="new-agent-modal-llm-model">Model</label>
+                    </div>
+                    <!-- system prompt -->
+                    <div class="form-floating mb-2">
+                        <textarea id="new-agent-modal-system-prompt" class="form-control" type="text"
+                            placeholder="System Prompt" rows="3"></textarea>
+                        <label for="new-agent-modal-system-prompt">System Prompt</label>
+                    </div>
+                    <!-- temperature -->
+                    <div class="form-floating mb-2">
+                        <input id="new-agent-modal-temperature" min="0" max="1" step="0.1" class="form-range"
+                            type="range" />
+                        <label for="new-agent-modal-temperature">Temperature</label>
+                    </div>
                 </div>
+                <!-- max output token -->
+                <!-- max history messages token -->
                 <div class="modal-footer justify-content-end">
                     <button id="new-agent-model-save-button" class="btn btn-success">Save</button>
                     <button id="new-agent-model-close-button" class="btn btn-secondary"

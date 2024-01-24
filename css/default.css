@@ -46,6 +46,19 @@ body {
     flex: 0 0 auto;
 }
 
+#new-agent-modal-system-prompt {
+    resize: none;
+    max-height: 150px;
+}
+
+.modal-dialog,
+.modal-content {
+    height: 80vh;
+}
+.modal-body {
+    height: 80vh;
+}
+
 .message-user,
 .message-assistant {
     box-shadow: 0px 0px 6px 0px rgba(122, 122, 122, 0.5);
