@@ -9,12 +9,13 @@ class EndpointStorage {
     constructor() {
         this.init_database();
         this.fill_available_models_select("user-customized");
+        this.load_local_endpoints();
         this.create_endpoint_and_api_key_items();
     }
     init_database() {
         this.db = new Dexie("endpoints");
         this.db.version(1).stores({
-            endpoints: "index, endpoint, api_key",
+            endpoints: "index, endpoint, api_key, need_protect",
         });
         this.db.endpoints.count((count) => {
             console.log(`${count} endpoints loaded.`);
@@ -24,7 +25,30 @@ class EndpointStorage {
         this.db.endpoints.clear();
         console.log("endpoints cleared.");
     }
-    get_endpoint_and_api_key_item_html() {
+    async load_local_endpoints() {
+        fetch("/endpoints")
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.error) {
+                    console.error(data.error);
+                    return;
+                }
+                let count = Object.keys(data).length;
+                console.log(`${count} local endpoints loaded.`);
+                // data is array of endpint items, each item has 4 keys:
+                // - `endpoint`, `api_key`, `api_type`, `need_protect`
+                // add these to db.endpoints
+                data.forEach((endpoint) => {
+                    this.db.endpoints.put({
+                        index: endpoint.endpoint,
+                        endpoint: endpoint.endpoint,
+                        api_key: endpoint.api_key,
+                        need_protect: endpoint.need_protect || true,
+                    });
+                });
+            });
+    }
+    generate_endpoint_and_api_key_item_html() {
         let endpoint_and_api_key_item_html = `
             <div class="row mt-2 no-gutters">
                 <div class="col-auto">
@@ -54,7 +78,7 @@ class EndpointStorage {
     add_endpoint_and_api_key_item() {
         let endpoint_and_api_key_items = $("#endpoint-and-api-key-items");
         let endpoint_and_api_key_item = $(
-            this.get_endpoint_and_api_key_item_html()
+            this.generate_endpoint_and_api_key_item_html()
         );
         endpoint_and_api_key_items.append(endpoint_and_api_key_item);
         this.bind_endpoint_and_api_key_buttons(endpoint_and_api_key_item);
@@ -65,8 +89,11 @@ class EndpointStorage {
         endpoint_and_api_key_items.empty();
 
         endpoints.each((row) => {
+            if (row.need_protect) {
+                return;
+            }
             let endpoint_and_api_key_item_html =
-                this.get_endpoint_and_api_key_item_html();
+                this.generate_endpoint_and_api_key_item_html();
             let endpoint_and_api_key_item = $(endpoint_and_api_key_item_html);
             let endpoint_input =
                 endpoint_and_api_key_item.find(".endpoint-input");
@@ -104,6 +131,7 @@ class EndpointStorage {
                     index: endpoint_input_value,
                     endpoint: endpoint_input_value,
                     api_key: api_key_input_value,
+                    need_protect: false,
                 });
                 console.log(`new_endpoint: ${endpoint_input_value}`);
             }

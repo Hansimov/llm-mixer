@@ -1,3 +1,4 @@
+const fs = require("fs").promises;
 const express = require("express");
 const axios = require("axios");
 const bodyParser = require("body-parser");
@@ -10,6 +11,21 @@ app.use(bodyParser.json());
 
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname + "/index.html"));
+});
+
+app.get("/endpoints", async (req, res) => {
+    try {
+        let secrets_path = path.join(__dirname, "secrets.json");
+        const data = await fs.readFile(secrets_path, "utf-8");
+        const secrets = JSON.parse(data);
+        const local_points = secrets.endpoints;
+        res.json(local_points);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            error: "Failed to get local endpoints: Maybe secrets.json not existed?",
+        });
+    }
 });
 
 app.post("/chat/completions", async (req, res) => {
