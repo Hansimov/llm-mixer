@@ -119,10 +119,6 @@ body {
     max-width: 75px;
 }
 
-#scroll-to-bottom-button {
-    z-index: 100;
-}
-
 .message-viewer .edit-button,
 .message-viewer .copy-button,
 .message-viewer .regenerate-button {
@@ -195,6 +191,6 @@ body {
     box-shadow: 0px 0px 6px 0px rgba(122, 122, 122, 0.4);
 }
 .explicit-button:hover {
-    background-color: lightsalmon;
+    background-color: rgb(252, 231, 223);
     font-weight: bold;
 }

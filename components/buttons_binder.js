@@ -293,6 +293,11 @@ class ChatAgentsSidebarToggleButtonBinder {
     }
 }
 
+class NewAgentButtonBinder {
+    constructor() {}
+    bind() {}
+}
+
 class ClearChatAgentsButtonBinder {
     constructor() {
         this.sidebar_name = "chat-agents";
