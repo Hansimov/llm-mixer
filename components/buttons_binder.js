@@ -8,6 +8,8 @@ import {
     create_messager,
 } from "./chat_operator.js";
 
+import { NewAgentModalWidget } from "../widgets/new_agent_modal_widget.js";
+
 import { screen_scroller } from "./screen_scroller.js";
 import { chat_history_storage } from "../storages/chat_history_storage.js";
 import { endpoint_storage } from "../storages/endpoint_storage.js";
@@ -35,6 +37,8 @@ export class ButtonsBinder {
         let chat_agents_sidebar_toggle_button_binder =
             new ChatAgentsSidebarToggleButtonBinder();
         chat_agents_sidebar_toggle_button_binder.bind();
+        let new_agent_button_binder = new NewAgentButtonBinder();
+        new_agent_button_binder.bind();
         let clear_chat_history_button_binder =
             new ClearChatHistoryButtonBinder();
         clear_chat_history_button_binder.bind();
@@ -295,7 +299,14 @@ class ChatAgentsSidebarToggleButtonBinder {
 
 class NewAgentButtonBinder {
     constructor() {}
-    bind() {}
+    bind() {
+        const button = $("#new-agent-button");
+        button.attr("title", "New agent");
+        button.click(() => {
+            let new_agent_modal_widget = new NewAgentModalWidget();
+            new_agent_modal_widget.spawn();
+        });
+    }
 }
 
 class ClearChatAgentsButtonBinder {

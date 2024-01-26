@@ -27,16 +27,6 @@ class UserInputResizer {
             },
             false
         );
-        document
-            .getElementById("new-agent-modal-system-prompt")
-            .addEventListener(
-                "input",
-                function () {
-                    this.style.height = 0;
-                    this.style.height = this.scrollHeight + 3 + "px";
-                },
-                false
-            );
     }
 }
 
