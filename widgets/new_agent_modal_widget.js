@@ -3,9 +3,14 @@ import { RangeNumberWidget } from "./range_number_widget.js";
 export class NewAgentModalWidget {
     constructor({ widget_id = null } = {}) {
         this.widget_id = widget_id;
+        this.name_widget_id = `${this.widget_id}-name`;
+        this.model_widget_id = `${this.widget_id}-model`;
+        this.description_widget_id = `${this.widget_id}-description`;
         this.temperature_widget_id = `${this.widget_id}-temperature`;
         this.max_output_tokens_widget_id = `${this.widget_id}-max-output-tokens`;
         this.system_prompt_widget_id = `${this.widget_id}-system-prompt`;
+        this.save_button_id = `${this.widget_id}-save-button`;
+        this.close_button_id = `${this.widget_id}-close-button`;
     }
     spawn() {
         this.create_widget();
@@ -56,14 +61,19 @@ export class NewAgentModalWidget {
                         </button>
                     </div>
                     <div class="modal-body">
-                        <!-- nickname -->
+                        <!-- name -->
                         <div class="form-floating mb-2">
-                            <input id="${this.widget_id}-nickname" class="form-control" type="text" placeholder="Nickname" />
-                            <label class="form-label">Nickname</label>
+                            <input id="${this.name_widget_id}" class="form-control" type="text"/>
+                            <label class="form-label">Name</label>
+                        </div>
+                        <!-- description -->
+                        <div class="form-floating mb-2">
+                            <textarea id="${this.description_widget_id}" class="form-control" rows="1"></textarea>
+                            <label>Description</label>
                         </div>
                         <!-- model -->
                         <div class="form-floating mb-2">
-                            <select id="${this.widget_id}-model" class="form-select" type="text"></select>
+                            <select id="${this.model_widget_id}" class="form-select" type="text"></select>
                             <label class="form-label">Model</label>
                         </div>
                         <!-- temperature -->
@@ -74,16 +84,15 @@ export class NewAgentModalWidget {
                         </div>
                         <!-- system prompt -->
                         <div class="form-floating mb-2">
-                            <textarea id="${this.system_prompt_widget_id}" class="form-control" placeholder="System Prompt"
-                                rows="3"></textarea>
+                            <textarea id="${this.system_prompt_widget_id}" class="form-control" rows="3"></textarea>
                             <label>System Prompt</label>
                         </div>
                         <!-- max token -->
                         <!-- max history messages token -->
                     </div>
                     <div class="modal-footer justify-content-end">
-                        <button id="new-agent-model-save-button" class="btn btn-success">Save</button>
-                        <button id="new-agent-model-close-button" class="btn btn-secondary"
+                        <button id="${this.save_button_id}" class="btn btn-success">Save</button>
+                        <button id="${this.close_button_id}" class="btn btn-secondary"
                             data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
@@ -109,5 +118,6 @@ export class NewAgentModalWidget {
         $(`#${this.system_prompt_widget_id}`)
             .css("resize", "none")
             .css("max-height", "200px");
+        $(`#${this.description_widget_id}`).css("resize", "none");
     }
 }
