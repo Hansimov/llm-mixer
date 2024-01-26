@@ -15,15 +15,18 @@ app.get("/", (req, res) => {
 
 app.get("/endpoints", async (req, res) => {
     try {
-        let secrets_path = path.join(__dirname, "secrets.json");
-        const data = await fs.readFile(secrets_path, "utf-8");
-        const secrets = JSON.parse(data);
-        const local_points = secrets.endpoints;
+        let endpoints_configs_path = path.join(
+            __dirname,
+            "configs",
+            "endpoints.json"
+        );
+        const data = await fs.readFile(endpoints_configs_path, "utf-8");
+        const local_points = JSON.parse(data);
         res.json(local_points);
     } catch (error) {
         console.error(error);
         res.status(500).json({
-            error: "Failed to get local endpoints: Maybe secrets.json not existed?",
+            error: "Failed to get local endpoints: Maybe configs/endpoints.json not existed?",
         });
     }
 });
