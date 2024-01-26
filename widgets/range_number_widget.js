@@ -53,10 +53,10 @@ export class RangeNumberWidget {
     }
     bind_update_functions() {
         let self = this;
-        this.widget.find(`#${this.widget_id}-range`).change(function () {
+        this.widget.find(`#${this.widget_id}-range`).on("input", function () {
             self.update_number_widget_value($(this).val());
         });
-        this.widget.find(`#${this.widget_id}-number`).change(function () {
+        this.widget.find(`#${this.widget_id}-number`).on("input", function () {
             self.update_range_widget_value($(this).val());
         });
     }

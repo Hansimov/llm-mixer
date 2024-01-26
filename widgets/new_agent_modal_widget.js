@@ -1,8 +1,11 @@
 import { RangeNumberWidget } from "./range_number_widget.js";
 
 export class NewAgentModalWidget {
-    constructor() {
-        this.widget_id = "new-agent-modal";
+    constructor({ widget_id = null } = {}) {
+        this.widget_id = widget_id;
+        this.temperature_widget_id = `${this.widget_id}-temperature`;
+        this.max_output_tokens_widget_id = `${this.widget_id}-max-output-tokens`;
+        this.system_prompt_widget_id = `${this.widget_id}-system-prompt`;
     }
     spawn() {
         this.create_widget();
@@ -12,7 +15,6 @@ export class NewAgentModalWidget {
         this.widget.remove();
     }
     create_temperature_widget() {
-        this.temperature_widget_id = `${this.widget_id}-temperature`;
         this.temperature_widget = new RangeNumberWidget({
             widget_id: this.temperature_widget_id,
             label_text: "Temperature",
@@ -21,12 +23,12 @@ export class NewAgentModalWidget {
             max_val: 1,
             step_val: 0.1,
         });
-        this.temperature_widget.spawn_in_parent(
-            this.widget.find(`#${this.temperature_widget_id}`)
+        let temperature_widget_parent = this.widget.find(
+            `#${this.temperature_widget_id}`
         );
+        this.temperature_widget.spawn_in_parent(temperature_widget_parent);
     }
     create_max_output_tokens_widget() {
-        this.max_output_tokens_widget_id = `${this.widget_id}-max-output-tokens`;
         this.max_output_tokens_widget = new RangeNumberWidget({
             widget_id: this.max_output_tokens_widget_id,
             label_text: "Max Output Tokens",
@@ -35,8 +37,11 @@ export class NewAgentModalWidget {
             max_val: 32768,
             step_val: 1,
         });
+        let max_output_tokens_widget_parent = this.widget.find(
+            `#${this.max_output_tokens_widget_id}`
+        );
         this.max_output_tokens_widget.spawn_in_parent(
-            this.widget.find(`#${this.temperature_widget_id}`)
+            max_output_tokens_widget_parent
         );
     }
     create_widget() {
@@ -54,12 +59,12 @@ export class NewAgentModalWidget {
                         <!-- nickname -->
                         <div class="form-floating mb-2">
                             <input id="${this.widget_id}-nickname" class="form-control" type="text" placeholder="Nickname" />
-                            <label for="new-agent-model-nickname" class="form-label">Nickname</label>
+                            <label class="form-label">Nickname</label>
                         </div>
                         <!-- model -->
                         <div class="form-floating mb-2">
                             <select id="${this.widget_id}-model" class="form-select" type="text"></select>
-                            <label for="${this.widget_id}-model" class="form-label">Model</label>
+                            <label class="form-label">Model</label>
                         </div>
                         <!-- temperature -->
                         <div id="${this.temperature_widget_id}" class="row mb-0"">
@@ -69,9 +74,9 @@ export class NewAgentModalWidget {
                         </div>
                         <!-- system prompt -->
                         <div class="form-floating mb-2">
-                            <textarea id="${this.widget_id}-system-prompt" class="form-control" placeholder="System Prompt"
+                            <textarea id="${this.system_prompt_widget_id}" class="form-control" placeholder="System Prompt"
                                 rows="3"></textarea>
-                            <label for="${this.widget_id}-system-prompt">System Prompt</label>
+                            <label>System Prompt</label>
                         </div>
                         <!-- max token -->
                         <!-- max history messages token -->
@@ -92,7 +97,7 @@ export class NewAgentModalWidget {
     append_to_body() {
         $("body").append(this.widget);
         document
-            .getElementById("new-agent-modal-system-prompt")
+            .getElementById(`${this.system_prompt_widget_id}`)
             .addEventListener(
                 "input",
                 function () {
@@ -101,5 +106,8 @@ export class NewAgentModalWidget {
                 },
                 false
             );
+        $(`#${this.system_prompt_widget_id}`)
+            .css("resize", "none")
+            .css("max-height", "200px");
     }
 }

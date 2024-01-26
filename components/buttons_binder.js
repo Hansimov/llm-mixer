@@ -303,8 +303,20 @@ class NewAgentButtonBinder {
         const button = $("#new-agent-button");
         button.attr("title", "New agent");
         button.click(() => {
-            let new_agent_modal_widget = new NewAgentModalWidget();
-            new_agent_modal_widget.spawn();
+            let new_agent_modal_widget_id = "new-agent-modal";
+            let new_agent_modal_widget_parent = $(
+                `#${new_agent_modal_widget_id}`
+            );
+            if (new_agent_modal_widget_parent.length <= 0) {
+                let new_agent_modal_widget = new NewAgentModalWidget({
+                    widget_id: new_agent_modal_widget_id,
+                });
+                new_agent_modal_widget.spawn();
+                new_agent_modal_widget_parent = $(
+                    `#${new_agent_modal_widget_id}`
+                );
+            }
+            new_agent_modal_widget_parent.modal("show");
         });
     }
 }
