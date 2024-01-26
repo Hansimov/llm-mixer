@@ -48,15 +48,7 @@ body {
 
 #new-agent-modal-system-prompt {
     resize: none;
-    max-height: 150px;
-}
-
-.modal-dialog,
-.modal-content {
-    height: 80vh;
-}
-.modal-body {
-    height: 80vh;
+    max-height: 200px;
 }
 
 .message-user,

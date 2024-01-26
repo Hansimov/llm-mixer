@@ -20,6 +20,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment-with-locales.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dexie/3.2.4/dexie.min.js"></script>
+    <script src="./networks/live.js"></script>
     <link rel="stylesheet" href="./css/default.css" />
 </head>
 
@@ -84,7 +85,7 @@
             </div>
         </div>
     </div>
-    <div id="new-agent-modal" class="modal" role="dialog">
+    <div id="new-agent-modal" data-bs-backdrop="static" class="modal" role="dialog">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -97,28 +98,49 @@
                     <!-- nickname -->
                     <div class="form-floating mb-2">
                         <input id="new-agent-modal-nickname" class="form-control" type="text" placeholder="Nickname" />
-                        <label for="new-agent-model-nickname">Nickname</label>
+                        <label for="new-agent-model-nickname" class="form-label">Nickname</label>
                     </div>
                     <!-- model -->
                     <div class="form-floating mb-2">
-                        <select id="new-agent-modal-llm-model" class="form-select" type="text"></select>
-                        <label for="new-agent-modal-llm-model">Model</label>
+                        <select id="new-agent-modal-model" class="form-select" type="text"></select>
+                        <label for="new-agent-modal-model" class="form-label">Model</label>
+                    </div>
+                    <!-- temperature -->
+                    <div class="row mb-0">
+                        <label for="new-agent-modal-temperature" class="col-form-label">Temperature</label>
+                        <div class="col-sm-8 d-flex align-items-center">
+                            <input id="new-agent-modal-temperature-range" type="range" value="0" min="0" max="1"
+                                step="0.1" class="form-range" oninput="updateTemperatureNumber(this.value)" />
+                        </div>
+                        <div class="col-sm-4">
+                            <input id="new-agent-modal-temperature-number" type="number" value="0" min="0" max="1"
+                                step="0.1" class="form-control" onchange="updateTemperatureRange(this.value)" />
+                        </div>
+                    </div>
+                    <!-- max output tokens -->
+                    <div class="row mb-2">
+                        <label for="new-agent-modal-max-output-tokens" class="col-form-label">Max Output
+                            Tokens (<code>-1</code>: auto)</label>
+                        <div class="col-sm-8 d-flex align-items-center">
+                            <input id="new-agent-modal-max-output-tokens-range" type="range" value="-1" min="-1"
+                                max="32768" step="1" class="form-range"
+                                oninput="updateMaxOutputTokensNumber(this.value)" />
+                        </div>
+                        <div class="col-sm-4">
+                            <input id="new-agent-modal-max-output-tokens-number" type="number" value="-1" min="-1"
+                                max="32768" step="1" class="form-control"
+                                onchange="updateMaxOutputTokensRange(this.value)" />
+                        </div>
                     </div>
                     <!-- system prompt -->
                     <div class="form-floating mb-2">
-                        <textarea id="new-agent-modal-system-prompt" class="form-control" type="text"
-                            placeholder="System Prompt" rows="3"></textarea>
+                        <textarea id="new-agent-modal-system-prompt" class="form-control" placeholder="System Prompt"
+                            rows="3"></textarea>
                         <label for="new-agent-modal-system-prompt">System Prompt</label>
                     </div>
-                    <!-- temperature -->
-                    <div class="form-floating mb-2">
-                        <input id="new-agent-modal-temperature" min="0" max="1" step="0.1" class="form-range"
-                            type="range" />
-                        <label for="new-agent-modal-temperature">Temperature</label>
-                    </div>
+                    <!-- max token -->
+                    <!-- max history messages token -->
                 </div>
-                <!-- max output token -->
-                <!-- max history messages token -->
                 <div class="modal-footer justify-content-end">
                     <button id="new-agent-model-save-button" class="btn btn-success">Save</button>
                     <button id="new-agent-model-close-button" class="btn btn-secondary"
@@ -187,6 +209,20 @@
         </div>
     </div>
 </body>
+<script>
+    function updateTemperatureNumber(value) {
+        document.getElementById('new-agent-modal-temperature-number').value = value;
+    }
+    function updateTemperatureRange(value) {
+        document.getElementById('new-agent-modal-temperature-range').value = value;
+    }
+    function updateMaxOutputTokensNumber(value) {
+        document.getElementById('new-agent-modal-max-output-tokens-number').value = value;
+    }
+    function updateMaxOutputTokensRange(value) {
+        document.getElementById('new-agent-modal-max-output-tokens-range').value = value;
+    }
+</script>
 <script type="module" src="./main.js"></script>
 
 </html>
