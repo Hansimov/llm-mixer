@@ -31,6 +31,24 @@ app.get("/endpoints", async (req, res) => {
     }
 });
 
+app.get("/agents", async (req, res) => {
+    try {
+        let agents_configs_path = path.join(
+            __dirname,
+            "configs",
+            "agents.json"
+        );
+        const data = await fs.readFile(agents_configs_path, "utf-8");
+        const local_agents = JSON.parse(data);
+        res.json(local_agents);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            error: "Failed to get local agents: Maybe configs/agents.json not existed?",
+        });
+    }
+});
+
 app.post("/chat/completions", async (req, res) => {
     try {
         const {

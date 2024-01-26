@@ -1,0 +1,10 @@
+[
+    {
+        "name": "Summarizer",
+        "description": "Summarizes text",
+        "temperature": 0.0,
+        "max_output_token": -1,
+        "system_prompt": "Summarize the following text:",
+        "need_protect": false
+    }
+]
