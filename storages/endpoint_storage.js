@@ -18,8 +18,10 @@ class EndpointStorage {
         });
     }
     clear_database() {
+        this.db.endpoints.count((count) => {
+            console.log(`${count} endpoints would be cleared.`);
+        });
         this.db.endpoints.clear();
-        console.log("endpoints cleared.");
     }
     async load_local_endpoints() {
         fetch("/endpoints")
@@ -31,7 +33,7 @@ class EndpointStorage {
                 }
                 let count = Object.keys(data).length;
                 console.log(`${count} local endpoints loaded.`);
-                // data is array of endpint items, each item has 4 keys:
+                // data is array of endpoint items, each item has 4 keys:
                 // - `endpoint`, `api_key`, `api_type`, `need_protect`
                 // add these to db.endpoints
                 data.forEach((endpoint) => {
