@@ -365,18 +365,14 @@ class DarkThemeToggleButtonBinder {
             }
             this.set_theme();
         });
+        DarkReader.setFetchMethod(window.fetch);
     }
     set_theme() {
         let theme = localStorage.getItem(this.storage_key);
         if (theme === "dark") {
-            // load dark.css
-            $("#dark-theme").remove();
-            $("head").append(
-                '<link id="dark-theme" rel="stylesheet" href="css/dark.css">'
-            );
+            DarkReader.enable();
         } else {
-            // remove dark.css
-            $("#dark-theme").remove();
+            DarkReader.disable();
         }
         console.log("set theme:", theme);
     }
