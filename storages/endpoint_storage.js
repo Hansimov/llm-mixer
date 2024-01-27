@@ -41,7 +41,7 @@ class EndpointStorage {
                         index: endpoint.endpoint,
                         endpoint: endpoint.endpoint,
                         api_key: endpoint.api_key,
-                        need_protect: endpoint.need_protect || true,
+                        need_protect: endpoint.need_protect || false,
                     });
                 });
             });

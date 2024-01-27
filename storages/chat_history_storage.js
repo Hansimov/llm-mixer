@@ -1,14 +1,15 @@
+import { datetimer } from "./datetimer.js";
 class ChatStorageItem {
     constructor(chat_history_storage) {
         this.chat_history_storage = chat_history_storage;
     }
     create_index() {
-        let datetime_string = moment().format("YYYY-MM-DD_HH-mm-ss_SSS");
+        let datetime_string = datetimer.now_with_ms_as_pathname();
         let chat_index = `chat_${datetime_string}`;
         return chat_index;
     }
     create_title() {
-        let chat_title = moment().format("YYYY-MM-DD HH:mm:ss");
+        let chat_title = datetimer.now();
         return chat_title;
     }
     get_messagers_container_html() {
@@ -20,7 +21,7 @@ class ChatStorageItem {
         }
     }
     get_current_datetime_string() {
-        return moment().format("YYYY-MM-DD HH:mm:ss.SSS");
+        return datetimer.now_with_ms();
     }
     construct() {
         this.html = this.get_messagers_container_html();
