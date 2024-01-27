@@ -352,11 +352,11 @@ class AvailableModelsSelectBinder {
 class DarkThemeToggleButtonBinder {
     constructor() {
         this.storage_key = "theme";
+        this.toggle_button = $("#dark-theme-toggle-button");
         window.onload = () => this.set_theme();
     }
     bind() {
-        const toggle_button = $("#dark-theme-toggle-button");
-        toggle_button.click(() => {
+        this.toggle_button.click(() => {
             let theme = localStorage.getItem(this.storage_key);
             if (theme === "dark") {
                 localStorage.setItem(this.storage_key, "light");
@@ -371,8 +371,10 @@ class DarkThemeToggleButtonBinder {
         let theme = localStorage.getItem(this.storage_key);
         if (theme === "dark") {
             DarkReader.enable();
+            this.toggle_button.attr("title", "Switch to Light theme");
         } else {
             DarkReader.disable();
+            this.toggle_button.attr("title", "Switch to Dark theme");
         }
         console.log("set theme:", theme);
     }
