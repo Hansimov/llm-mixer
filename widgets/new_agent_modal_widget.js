@@ -1,4 +1,5 @@
 import { RangeNumberWidget } from "./range_number_widget.js";
+import { AvailableModelsSelectWidget } from "./available_models_select_widget.js";
 
 export class NewAgentModalWidget {
     constructor({ widget_id = null } = {}) {
@@ -18,6 +19,13 @@ export class NewAgentModalWidget {
     }
     remove() {
         this.widget.remove();
+    }
+    create_model_widget() {
+        this.model_widget = new AvailableModelsSelectWidget({
+            widget_id: this.model_widget_id,
+        });
+        let model_widget_parent = this.widget.find(`#${this.model_widget_id}`);
+        this.model_widget.spawn_in_parent(model_widget_parent, "prepend");
     }
     create_temperature_widget() {
         this.temperature_widget = new RangeNumberWidget({
@@ -72,8 +80,7 @@ export class NewAgentModalWidget {
                             <label>Description</label>
                         </div>
                         <!-- model -->
-                        <div class="form-floating mb-2">
-                            <select id="${this.model_widget_id}" class="form-select" type="text"></select>
+                        <div id="${this.model_widget_id}" class="form-floating mb-2">
                             <label class="form-label">Model</label>
                         </div>
                         <!-- temperature -->
@@ -100,6 +107,7 @@ export class NewAgentModalWidget {
         </div>
         `;
         this.widget = $(this.widget_html);
+        this.create_model_widget();
         this.create_temperature_widget();
         this.create_max_output_tokens_widget();
     }
