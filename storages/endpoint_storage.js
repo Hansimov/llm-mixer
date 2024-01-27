@@ -105,12 +105,11 @@ class EndpointStorage {
         endpoint_and_api_key_items.hide();
     }
     bind_endpoint_and_api_key_buttons(endpoint_and_api_key_item) {
-        let self = this;
         // console.log("endpoint_and_api_key_item:", endpoint_and_api_key_item);
         let endpoint_submit_button = endpoint_and_api_key_item.find(
             ".submit-endpoint-button"
         );
-        endpoint_submit_button.click(function () {
+        endpoint_submit_button.click(() => {
             let endpoint_input =
                 endpoint_and_api_key_item.find(".endpoint-input");
             let endpoint_input_value = endpoint_input.val().trim();
@@ -122,7 +121,7 @@ class EndpointStorage {
                 console.log("Endpoint is empty.");
                 return;
             } else {
-                self.db.endpoints.put({
+                this.db.endpoints.put({
                     index: endpoint_input_value,
                     endpoint: endpoint_input_value,
                     api_key: api_key_input_value,
@@ -130,28 +129,35 @@ class EndpointStorage {
                 });
                 console.log(`new_endpoint: ${endpoint_input_value}`);
             }
-            self.fill_available_models_select(endpoint_input_value);
+            this.fill_available_models_select(endpoint_input_value);
         });
 
         let remove_endpoint_buttons = endpoint_and_api_key_item.find(
             ".remove-endpoint-button"
         );
-        remove_endpoint_buttons.click(function () {
+        remove_endpoint_buttons.click(() => {
             let endpoint_input =
                 endpoint_and_api_key_item.find(".endpoint-input");
             let endpoint_input_value = endpoint_input.val();
             endpoint_and_api_key_item.remove();
             if (
                 endpoint_input_value.trim() === "" ||
-                self.db.endpoints.get(endpoint_input_value) === undefined
+                this.db.endpoints.get(endpoint_input_value) === undefined
             ) {
                 console.log("Endpoint not in endpoints");
             } else {
-                self.db.endpoints.delete(endpoint_input_value);
+                this.db.endpoints.delete(endpoint_input_value);
+                // remove models of current endpoint from available_models_select
+                let available_models_select = $("#available-models-select");
+                let model_value = this.construct_model_name_and_value(
+                    endpoint_input_value,
+                    ""
+                )[1];
+                available_models_select
+                    .find(`option[value^="${model_value}"]`)
+                    .remove();
+                console.log(`remove endpoint: ${endpoint_input_value}`);
             }
-            console.log(`remove endpoint: ${endpoint_input_value}`);
-
-            // TODO: remove models of current endpoint from available_models_select
         });
     }
     fetch_available_models(endpoint) {
