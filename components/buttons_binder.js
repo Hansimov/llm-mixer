@@ -352,7 +352,7 @@ class AvailableModelsSelectBinder {
 class DarkThemeToggleButtonBinder {
     constructor() {
         this.storage_key = "theme";
-        this.set_theme();
+        window.onload = () => this.set_theme();
     }
     bind() {
         const toggle_button = $("#dark-theme-toggle-button");
