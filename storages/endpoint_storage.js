@@ -182,20 +182,14 @@ class EndpointStorage {
                 return this.fetch_available_models(row.endpoint).then(
                     (available_models) => {
                         available_models.forEach((model_id) => {
-                            // if model duplicated in available_models_select values,
-                            // then attach endpoint host name
-                            let model_name = model_id;
-                            let endpoint_hostname = new URL(
-                                row.endpoint
-                            ).hostname
-                                .split(".")[0]
-                                .split("-")[0];
-                            let model_id_with_endpoint = `${row.endpoint}|${model_id}`;
-
-                            model_name = `${model_id} (${endpoint_hostname})`;
-                            const option = new Option(
-                                model_name,
-                                model_id_with_endpoint
+                            let model_name_and_value =
+                                this.construct_model_name_and_value(
+                                    row.endpoint,
+                                    model_id
+                                );
+                            let option = new Option(
+                                model_name_and_value[0],
+                                model_name_and_value[1]
                             );
                             available_models_select.append(option);
                         });
@@ -207,7 +201,14 @@ class EndpointStorage {
             });
         });
     }
-
+    construct_model_name_and_value(endpoint, model_id) {
+        let endpoint_hostname = new URL(endpoint).hostname
+            .split(".")[0]
+            .split("-")[0];
+        let model_name = `${model_id} (${endpoint_hostname})`;
+        let model_value = `${endpoint}|${model_id}`;
+        return [model_name, model_value];
+    }
     set_default_model() {
         let storage_default_model = localStorage.getItem("default_model");
         // format of storage_default_model is `{endpoint}|{model_id}`
