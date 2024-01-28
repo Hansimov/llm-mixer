@@ -11,18 +11,19 @@ import {
 } from "../components/chat_operator.js";
 
 export class ChatCompletionsRequester {
-    constructor(
+    constructor({
         prompt,
         model = null,
-        temperature = null,
-        openai_endpoint = null
-    ) {
+        temperature = 0.5,
+        top_p = 0.95,
+        openai_endpoint = null,
+    } = {}) {
         this.prompt = prompt;
         this.openai_endpoint =
             openai_endpoint || this.extract_endpoint_and_model()[0];
         this.model = model || this.extract_endpoint_and_model()[1];
-        this.temperature =
-            temperature !== null ? temperature : get_selected_temperature();
+        this.temperature = temperature;
+        this.top_p = top_p;
         this.backend_request_endpoint = "/chat/completions";
         this.controller = new AbortController();
     }
@@ -51,6 +52,7 @@ export class ChatCompletionsRequester {
                 model: this.model,
                 messages: this.openai_request_messages,
                 temperature: this.temperature,
+                top_p: this.top_p,
                 stream: true,
             },
         };

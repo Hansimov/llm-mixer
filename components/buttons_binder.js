@@ -99,7 +99,9 @@ class SendUserInputButtonBinder {
         if (get_selected_llm_model() == "notes") {
             create_messager("user", user_input_content);
         } else {
-            this.requester = new ChatCompletionsRequester(user_input_content);
+            this.requester = new ChatCompletionsRequester({
+                prompt: user_input_content,
+            });
             this.requester.create_messager_components();
             start_latest_message_animation();
             let requester_post = this.requester.post();
