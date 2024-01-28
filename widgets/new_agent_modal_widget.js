@@ -8,9 +8,11 @@ export class NewAgentModalWidget {
         this.model_widget_id = `${this.widget_id}-model`;
         this.description_widget_id = `${this.widget_id}-description`;
         this.temperature_widget_id = `${this.widget_id}-temperature`;
+        this.top_p_widget_id = `${this.widget_id}-top-p`;
         this.max_output_tokens_widget_id = `${this.widget_id}-max-output-tokens`;
         this.system_prompt_widget_id = `${this.widget_id}-system-prompt`;
         this.save_button_id = `${this.widget_id}-save-button`;
+        this.default_button_id = `${this.widget_id}-default-button`;
         this.close_button_id = `${this.widget_id}-close-button`;
     }
     spawn() {
@@ -31,7 +33,7 @@ export class NewAgentModalWidget {
         this.temperature_widget = new RangeNumberWidget({
             widget_id: this.temperature_widget_id,
             label_text: "Temperature",
-            default_val: 0,
+            default_val: 0.5,
             min_val: 0,
             max_val: 1,
             step_val: 0.1,
@@ -41,10 +43,22 @@ export class NewAgentModalWidget {
         );
         this.temperature_widget.spawn_in_parent(temperature_widget_parent);
     }
+    create_top_p_widget() {
+        this.top_p_widget = new RangeNumberWidget({
+            widget_id: this.top_p_widget_id,
+            label_text: "Top P",
+            default_val: 0.9,
+            min_val: 0.0,
+            max_val: 1.0,
+            step_val: 0.01,
+        });
+        let top_p_widget_parent = this.widget.find(`#${this.top_p_widget_id}`);
+        this.top_p_widget.spawn_in_parent(top_p_widget_parent);
+    }
     create_max_output_tokens_widget() {
         this.max_output_tokens_widget = new RangeNumberWidget({
             widget_id: this.max_output_tokens_widget_id,
-            label_text: "Max Output Tokens",
+            label_text: "Max Output Tokens <code>(-1: auto)</code>",
             default_val: -1,
             min_val: -1,
             max_val: 32768,
@@ -86,6 +100,9 @@ export class NewAgentModalWidget {
                         <!-- temperature -->
                         <div id="${this.temperature_widget_id}" class="row mb-0"">
                         </div>
+                        <!-- top_p -->
+                        <div id="${this.top_p_widget_id}" class="row mb-0"">
+                        </div>
                         <!-- max output tokens -->
                         <div id="${this.max_output_tokens_widget_id}" class="row mb-2">
                         </div>
@@ -99,6 +116,7 @@ export class NewAgentModalWidget {
                     </div>
                     <div class="modal-footer justify-content-end">
                         <button id="${this.save_button_id}" class="btn btn-success">Save</button>
+                        <button id="${this.default_button_id}" class="btn btn-primary">Set to default</button>
                         <button id="${this.close_button_id}" class="btn btn-secondary"
                             data-bs-dismiss="modal">Close</button>
                     </div>
@@ -109,6 +127,7 @@ export class NewAgentModalWidget {
         this.widget = $(this.widget_html);
         this.create_model_widget();
         this.create_temperature_widget();
+        this.create_top_p_widget();
         this.create_max_output_tokens_widget();
     }
     append_to_body() {

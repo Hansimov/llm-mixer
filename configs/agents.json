@@ -2,7 +2,8 @@
     {
         "name": "Summarizer",
         "description": "Summarizes text",
-        "temperature": 0.0,
+        "temperature": 0.5,
+        "top_p": 0.9,
         "max_output_token": -1,
         "system_prompt": "Summarize the following text:",
         "need_protect": false

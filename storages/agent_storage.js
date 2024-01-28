@@ -30,14 +30,15 @@ class AgentStorage {
                 let count = Object.keys(data).length;
                 console.log(`${count} local agents loaded.`);
                 // data is array of agent items, each item has 7 keys:
-                // - name, model, description, temperature, max_output_tokens, system_prompt, need_protect
+                // - name, model, description, temperature, top_p, max_output_tokens, system_prompt, need_protect
                 data.forEach((agent) => {
                     this.db.agents.put({
                         index: agent.name,
                         name: agent.name,
                         description: agent.description || "",
                         model: agent.model,
-                        temperature: agent.temperature || 0.0,
+                        temperature: agent.temperature || 0.5,
+                        top_p: agent.top_p || 0.9,
                         max_output_tokens: agent.max_output_tokens || -1,
                         system_prompt: agent.system_prompt || "",
                         need_protect: agent.need_protect || false,
