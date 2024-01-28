@@ -77,7 +77,7 @@ export class NewAgentModalWidget {
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Create New Agent</h4>
+                        <h5 class="modal-title">Create New Agent</h5>
                         <button class="btn" data-bs-dismiss="modal">
                             <i class="fa fa-close"></i>
                         </button>
@@ -88,31 +88,35 @@ export class NewAgentModalWidget {
                             <input id="${this.name_widget_id}" class="form-control" type="text"/>
                             <label class="form-label">Name</label>
                         </div>
-                        <!-- description -->
-                        <div class="form-floating mb-2">
-                            <textarea id="${this.description_widget_id}" class="form-control" rows="1"></textarea>
-                            <label>Description</label>
-                        </div>
                         <!-- model -->
                         <div id="${this.model_widget_id}" class="form-floating mb-2">
                             <label class="form-label">Model</label>
-                        </div>
-                        <!-- temperature -->
-                        <div id="${this.temperature_widget_id}" class="row mb-0"">
-                        </div>
-                        <!-- top_p -->
-                        <div id="${this.top_p_widget_id}" class="row mb-0"">
-                        </div>
-                        <!-- max output tokens -->
-                        <div id="${this.max_output_tokens_widget_id}" class="row mb-2">
                         </div>
                         <!-- system prompt -->
                         <div class="form-floating mb-2">
                             <textarea id="${this.system_prompt_widget_id}" class="form-control" rows="3"></textarea>
                             <label>System Prompt</label>
                         </div>
-                        <!-- max token -->
-                        <!-- max history messages token -->
+                        <a class="btn mx-0 px-0" data-bs-toggle="collapse" href="#new-agent-advanced-settings">
+                            <b>Advanced Settings</b> <i class="fa fa-chevron-down"></i>
+                        </a>
+                        <div class="collapse" id="new-agent-advanced-settings">
+                            <!-- description -->
+                            <div class="form-floating my-2">
+                                <textarea id="${this.description_widget_id}" class="form-control" rows="1"></textarea>
+                                <label>Description</label>
+                            </div>
+                            <!-- temperature -->
+                            <div id="${this.temperature_widget_id}" class="row mb-0"">
+                            </div>
+                            <!-- top_p -->
+                            <div id="${this.top_p_widget_id}" class="row mb-0"">
+                            </div>
+                            <!-- max output tokens -->
+                            <div id="${this.max_output_tokens_widget_id}" class="row mb-2">
+                            </div>
+                            <!-- max history messages token -->
+                        </div>
                     </div>
                     <div class="modal-footer justify-content-end">
                         <button id="${this.save_button_id}" class="btn btn-success">Save</button>
