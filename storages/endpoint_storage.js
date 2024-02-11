@@ -14,7 +14,7 @@ class EndpointStorage {
                 "index, endpoint, api_key, need_protect, available_models",
         });
         this.db.endpoints.count((count) => {
-            console.log(`${count} endpoints loaded.`);
+            console.log(`${count} endpoints loaded from cookies.`);
         });
     }
     clear_database() {
@@ -32,7 +32,7 @@ class EndpointStorage {
                     return;
                 }
                 let count = Object.keys(data).length;
-                console.log(`${count} local endpoints loaded.`);
+                console.log(`${count} endpoints loaded from local file.`);
                 // data is array of endpoint items, each item has 4 keys:
                 // - `endpoint`, `api_key`, `api_type`, `need_protect`
                 // add these to db.endpoints

@@ -9,8 +9,6 @@ app_port: 23456
 
 Mirrors:
 * https://hansimov-llm-mixer.hf.space
-* https://hf-llm-api.vercel.app
-
 
 ## Run
 ### Command Line
