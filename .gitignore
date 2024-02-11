@@ -3,3 +3,4 @@ package-lock.json
 .vscode
 live.js
 # configs/endpoints.json
+configs/secrets.json

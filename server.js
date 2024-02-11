@@ -49,6 +49,54 @@ app.get("/agents", async (req, res) => {
     }
 });
 
+let httpProxyDict = {};
+const loadHttpProxy = async () => {
+    try {
+        let secrets_configs_path = path.join(
+            __dirname,
+            "configs",
+            "secrets.json"
+        );
+        const data = await fs.readFile(secrets_configs_path, "utf-8");
+        const secrets = JSON.parse(data);
+        if (secrets.http_proxy) {
+            const url = new URL(secrets.http_proxy);
+            httpProxyDict = {
+                protocol: url.protocol.slice(0, -1),
+                host: url.hostname,
+                port: parseInt(url.port),
+            };
+        }
+    } catch (error) {
+        console.warn(
+            "Failed to load http_proxy: Maybe configs/secrets.json not existed?"
+        );
+    }
+};
+
+loadHttpProxy();
+
+app.post("/models", async (req, res) => {
+    try {
+        const {
+            openai_endpoint,
+            openai_request_method,
+            openai_request_headers,
+        } = req.body;
+
+        const response = await axios({
+            method: openai_request_method,
+            url: openai_endpoint + "/models",
+            headers: openai_request_headers,
+            proxy: httpProxyDict,
+        });
+        res.json(response.data);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Failed to request OpenAI Endpoint" });
+    }
+});
+
 app.post("/chat/completions", async (req, res) => {
     try {
         const {
@@ -64,28 +112,9 @@ app.post("/chat/completions", async (req, res) => {
             data: openai_request_body,
             headers: openai_request_headers,
             responseType: "stream",
+            proxy: httpProxyDict,
         });
         response.data.pipe(res);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Failed to request OpenAI Endpoint" });
-    }
-});
-
-app.post("/models", async (req, res) => {
-    try {
-        const {
-            openai_endpoint,
-            openai_request_method,
-            openai_request_headers,
-        } = req.body;
-
-        const response = await axios({
-            method: openai_request_method,
-            url: openai_endpoint + "/models",
-            headers: openai_request_headers,
-        });
-        res.json(response.data);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Failed to request OpenAI Endpoint" });
