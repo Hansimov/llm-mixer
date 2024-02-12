@@ -49,7 +49,7 @@ app.get("/agents", async (req, res) => {
     }
 });
 
-let httpProxyDict = {};
+let httpProxyDict = false;
 const loadHttpProxy = async () => {
     try {
         let secrets_configs_path = path.join(
