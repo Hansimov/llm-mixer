@@ -1,3 +1,5 @@
+import { AgentInfoWidget } from "../widgets/agent_info_widget.js";
+
 class AgentStorageItem {
     constructor(agent_storage) {
         this.agent_storage = agent_storage;
@@ -67,6 +69,7 @@ class AgentStorage {
             });
             Promise.all(promises).then(() => {
                 this.set_default_agent();
+                this.set_agent_info();
             });
         });
     }
@@ -92,6 +95,19 @@ class AgentStorage {
                 localStorage.getItem("default_agent")
             );
         }
+    }
+    get_current_agent() {
+        let current_agent_name = $("#agents-select").val();
+        console.log("current_agent_name:", current_agent_name);
+        return this.db.agents.get(current_agent_name);
+    }
+    set_agent_info() {
+        this.get_current_agent().then((agent) => {
+            let agent_info_widget = new AgentInfoWidget({
+                agent: agent,
+            });
+            agent_info_widget.spawn();
+        });
     }
 }
 
