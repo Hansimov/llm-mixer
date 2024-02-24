@@ -3,9 +3,10 @@ import { AvailableModelsRequester } from "../networks/llm_requester.js";
 class EndpointStorage {
     constructor() {
         this.init_database();
-        this.load_local_endpoints();
-        this.create_endpoint_and_api_key_items();
-        this.fill_available_models_select();
+        this.load_local_endpoints().then(() => {
+            this.create_endpoint_and_api_key_items();
+            this.fill_available_models_select();
+        });
     }
     init_database() {
         this.db = new Dexie("endpoints");
@@ -24,7 +25,7 @@ class EndpointStorage {
         this.db.endpoints.clear();
     }
     async load_local_endpoints() {
-        fetch("/endpoints")
+        return fetch("/endpoints")
             .then((response) => response.json())
             .then((data) => {
                 if (data.error) {

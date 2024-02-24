@@ -1,13 +1,20 @@
+class AgentStorageItem {
+    constructor(agent_storage) {
+        this.agent_storage = agent_storage;
+    }
+}
+
 class AgentStorage {
     constructor() {
         this.init_database();
-        this.load_local_agents();
-        // this.create_agent_items();
+        this.load_local_agents().then(() => {
+            this.create_agent_items();
+        });
     }
     init_database() {
         this.db = new Dexie("agents");
         this.db.version(1).stores({
-            agents: "index, name, model, temperature, max_output_tokens, system_prompt, need_protect",
+            agents: "index, name, model, description, temperature, top_p, max_output_tokens, system_prompt, need_protect",
         });
         this.db.agents.count((count) => {
             console.log(`${count} agents loaded.`);
@@ -20,7 +27,7 @@ class AgentStorage {
         this.db.agents.clear();
     }
     async load_local_agents() {
-        fetch("/agents")
+        return fetch("/agents")
             .then((response) => response.json())
             .then((data) => {
                 if (data.error) {
@@ -47,9 +54,24 @@ class AgentStorage {
             });
     }
 
-    generate_agent_item_html() {
-        let agent_item_html = ``;
+    generate_agent_item_html(agent) {
+        let agent_item_html = `
+        <div class="my-2 row no-gutters">
+            <button id="${agent.name}-agent-button" title="${agent.system_prompt}"  class="agent-button" type="button">
+            <i class="fa fa-arrow-circle-o-right"></i> ${agent.name}
+            </button>
+        </div>
+        `;
         return agent_item_html;
+    }
+
+    create_agent_items() {
+        let chat_agents_sidebar_items = $("#chat-agents-sidebar-items");
+        chat_agents_sidebar_items.empty();
+        this.db.agents.each((agent) => {
+            let agent_item_html = this.generate_agent_item_html(agent);
+            chat_agents_sidebar_items.append(agent_item_html);
+        });
     }
 
     set_default_agent() {

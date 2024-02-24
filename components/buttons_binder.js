@@ -13,6 +13,7 @@ import { NewAgentModalWidget } from "../widgets/new_agent_modal_widget.js";
 import { screen_scroller } from "./screen_scroller.js";
 import { chat_history_storage } from "../storages/chat_history_storage.js";
 import { endpoint_storage } from "../storages/endpoint_storage.js";
+import { agent_storage } from "../storages/agent_storage.js";
 
 export class ButtonsBinder {
     constructor() {}
@@ -42,6 +43,8 @@ export class ButtonsBinder {
         let clear_chat_history_button_binder =
             new ClearChatHistoryButtonBinder();
         clear_chat_history_button_binder.bind();
+        let clear_chat_agents_button_binder = new ClearChatAgentsButtonBinder();
+        clear_chat_agents_button_binder.bind();
         let available_models_select_binder = new AvailableModelsSelectBinder();
         available_models_select_binder.bind();
         let dark_theme_toggle_button_binder = new DarkThemeToggleButtonBinder();
@@ -332,7 +335,7 @@ class ClearChatAgentsButtonBinder {
         button.attr("title", "Clear agents");
         button.click(() => {
             if (confirm("Clear agents?")) {
-                // chat_history_storage.clear_database();
+                agent_storage.clear_database();
             } else {
                 console.log("Clear agents canceled.");
             }
