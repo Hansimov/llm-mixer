@@ -1,7 +1,6 @@
 [
     {
         "name": "默认",
-        "index": "0",
         "description": "默认",
         "temperature": 0.5,
         "top_p": 0.9,
