@@ -47,6 +47,8 @@ export class ButtonsBinder {
         clear_chat_agents_button_binder.bind();
         let available_models_select_binder = new AvailableModelsSelectBinder();
         available_models_select_binder.bind();
+        let agents_select_binder = new AgentsSelectBinder();
+        agents_select_binder.bind();
         let dark_theme_toggle_button_binder = new DarkThemeToggleButtonBinder();
         dark_theme_toggle_button_binder.bind();
     }
@@ -350,6 +352,17 @@ class AvailableModelsSelectBinder {
         select.change(() => {
             localStorage.setItem("default_model", select.val());
             console.log("set default_model:", select.val());
+        });
+    }
+}
+
+class AgentsSelectBinder {
+    constructor() {}
+    bind() {
+        const select = $("#agents-select");
+        select.change(() => {
+            localStorage.setItem("default_agent", select.val());
+            console.log("set default_agent:", select.val());
         });
     }
 }

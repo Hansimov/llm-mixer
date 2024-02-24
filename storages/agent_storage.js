@@ -8,7 +8,7 @@ class AgentStorage {
     constructor() {
         this.init_database();
         this.load_local_agents().then(() => {
-            this.create_agent_items();
+            this.fill_agents_select();
         });
     }
     init_database() {
@@ -40,7 +40,7 @@ class AgentStorage {
                 // - name, model, description, temperature, top_p, max_output_tokens, system_prompt, need_protect
                 data.forEach((agent) => {
                     this.db.agents.put({
-                        index: agent.name,
+                        index: agent.index || agent.name,
                         name: agent.name,
                         description: agent.description || "",
                         model: agent.model,
@@ -54,43 +54,39 @@ class AgentStorage {
             });
     }
 
-    generate_agent_item_html(agent) {
-        let agent_item_html = `
-        <div class="my-2 row no-gutters">
-            <button id="${agent.name}-agent-button" title="${agent.system_prompt}"  class="agent-button" type="button">
-            <i class="fa fa-arrow-circle-o-right"></i> ${agent.name}
-            </button>
-        </div>
-        `;
-        return agent_item_html;
-    }
-
-    create_agent_items() {
-        let chat_agents_sidebar_items = $("#chat-agents-sidebar-items");
-        chat_agents_sidebar_items.empty();
-        this.db.agents.each((agent) => {
-            let agent_item_html = this.generate_agent_item_html(agent);
-            chat_agents_sidebar_items.append(agent_item_html);
+    fill_agents_select() {
+        // fetch agents, and then fill agents_select
+        let agents_select = $("#agents-select");
+        agents_select.empty();
+        this.db.agents.toArray().then((agents) => {
+            let promises = agents.map((agent) => {
+                let option_name = agent.name;
+                let option_value = agent.name;
+                let option = new Option(option_name, option_value);
+                agents_select.append(option);
+            });
+            Promise.all(promises).then(() => {
+                this.set_default_agent();
+            });
         });
     }
-
     set_default_agent() {
         let storage_default_agent = localStorage.getItem("default_agent");
 
-        // let select = $("#agent-select");
+        let select = $("#agents-select");
         if (
-            storage_default_agent
-            // && select.find(`option[value="${storage_default_agent}"]`).length > 0
+            storage_default_agent &&
+            select.find(`option[value="${storage_default_agent}"]`).length > 0
         ) {
-            // select.val(storage_default_agent);
+            select.val(storage_default_agent);
             console.log(
                 "load default agent:",
                 localStorage.getItem("default_agent")
             );
         } else {
-            // let new_storage_default_agent = select.find("option:first").val();
-            // select.val(new_storage_default_agent);
-            // localStorage.setItem("default_agent", new_storage_default_agent);
+            let new_storage_default_agent = select.find("option:first").val();
+            select.val(new_storage_default_agent);
+            localStorage.setItem("default_agent", new_storage_default_agent);
             console.log(
                 "set new default agent:",
                 localStorage.getItem("default_agent")
