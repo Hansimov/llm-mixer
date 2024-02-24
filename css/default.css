@@ -185,12 +185,23 @@ body {
     color: orange;
 }
 
-.explicit-button {
+.new-agent-button {
     background-color: #e9efff;
-    border-width: 1px;
+    border-width: 0px;
+    border-radius: 4px;
     box-shadow: 0px 0px 6px 0px rgba(122, 122, 122, 0.4);
 }
-.explicit-button:hover {
+.agent-button {
+    background-color: #e9efff;
+    border-width: 0px;
+    border-radius: 4px;
+    box-shadow: 0px 0px 6px 0px rgba(122, 122, 122, 0.4);
+}
+.new-agent-button:hover {
+    background-color: rgb(223, 252, 227);
+    font-weight: bold;
+}
+.agent-button:hover {
     background-color: rgb(252, 231, 223);
     font-weight: bold;
 }
