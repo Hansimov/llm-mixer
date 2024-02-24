@@ -86,7 +86,7 @@ app.post("/models", async (req, res) => {
 
         const response = await axios({
             method: openai_request_method,
-            url: openai_endpoint + "/models",
+            url: openai_endpoint + "/v1/models",
             headers: openai_request_headers,
             proxy: httpProxyDict,
         });
@@ -108,7 +108,7 @@ app.post("/chat/completions", async (req, res) => {
 
         const response = await axios({
             method: openai_request_method,
-            url: openai_endpoint + "/chat/completions",
+            url: openai_endpoint + "/v1/chat/completions",
             data: openai_request_body,
             headers: openai_request_headers,
             responseType: "stream",
