@@ -50,8 +50,8 @@ class ChatHistorySidebarResizeBinder {
     constructor() {
         this.USER_INTERACTIONS_MAX_WIDTH = 900;
         this.SIDEBAR_GAP = 20;
-        this.SIDEBAR_MAX_WIDTH = 250;
-        this.SIDEBAR_MIN_WIDTH = 120;
+        this.SIDEBAR_MAX_WIDTH = 300;
+        this.SIDEBAR_MIN_WIDTH = 150;
     }
     bind() {
         this.resize();
