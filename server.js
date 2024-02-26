@@ -121,6 +121,7 @@ app.post("/chat/completions", async (req, res) => {
         if (httpProxyDict) {
             axios_config.proxy = httpProxyDict;
         }
+        console.log(`request to ${axios_config.url}`);
         const response = await axios(axios_config);
         response.data.pipe(res);
     } catch (error) {
