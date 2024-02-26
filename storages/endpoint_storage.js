@@ -161,14 +161,15 @@ class EndpointStorage {
             }
         });
     }
-    fetch_available_models(endpoint) {
+    async fetch_available_models(endpoint) {
         console.log("fetch available models for endpoint:", endpoint);
-        // if endpoint not starts with http(s), skip
-        // such as "user-customized", which is used for other local functions or agents
+        // if endpoint not starts with http(s), skip,
+        //   such as "user-customized", which is might be local functions or agents
         if (endpoint.startsWith("http")) {
             let available_models_requester = new AvailableModelsRequester(
                 endpoint
             );
+            console.log(`try to fetch available_models from ${endpoint}`);
             // update available_models field of endpoint index in db.endpoints
             return available_models_requester.get().then((available_models) => {
                 this.db.endpoints.update(endpoint, {
@@ -177,35 +178,47 @@ class EndpointStorage {
                 return available_models;
             });
         } else {
+            console.log("skip fetch available models for endpoint:", endpoint);
             return Promise.resolve([]);
         }
     }
-    fill_available_models_select() {
+    fill_available_models_select(endpoint = null) {
         // fetch available_models for all endpoints, and then fill available_models_select
         let available_models_select = $("#available-models-select");
         available_models_select.empty();
-        this.db.endpoints.toArray().then((endpoints) => {
-            let promises = endpoints.map((row) => {
-                return this.fetch_available_models(row.endpoint).then(
-                    (available_models) => {
-                        available_models.forEach((model_id) => {
-                            let model_name_and_value =
-                                this.construct_model_name_and_value(
-                                    row.endpoint,
-                                    model_id
-                                );
-                            let option = new Option(
-                                model_name_and_value[0],
-                                model_name_and_value[1]
+        let promises = [];
+
+        const fill_models = (endpoint) => {
+            return this.fetch_available_models(endpoint).then(
+                (available_models) => {
+                    available_models.forEach((model_id) => {
+                        let model_name_and_value =
+                            this.construct_model_name_and_value(
+                                endpoint,
+                                model_id
                             );
-                            available_models_select.append(option);
-                        });
-                    }
-                );
+                        let option = new Option(
+                            model_name_and_value[0],
+                            model_name_and_value[1]
+                        );
+                        available_models_select.append(option);
+                    });
+                }
+            );
+        };
+
+        if (endpoint) {
+            promises.push(fill_models(endpoint));
+        } else {
+            this.db.endpoints.toArray().then((endpoints) => {
+                endpoints.map(async (row) => {
+                    promises.push(fill_models(row.endpoint));
+                });
             });
-            Promise.all(promises).then(() => {
-                this.set_default_model();
-            });
+        }
+
+        Promise.all(promises).then(() => {
+            this.set_default_model();
         });
     }
     construct_model_name_and_value(endpoint, model_id) {

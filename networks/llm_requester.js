@@ -133,7 +133,7 @@ export class AvailableModelsRequester {
             signal: this.controller.signal,
         };
     }
-    get() {
+    async get() {
         this.construct_request_params();
         return fetch(this.backend_request_endpoint, this.backend_request_params)
             .then((response) => response.json())

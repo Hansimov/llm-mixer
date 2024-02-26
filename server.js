@@ -66,6 +66,8 @@ const loadHttpProxy = async () => {
                 host: url.hostname,
                 port: parseInt(url.port),
             };
+        } else {
+            console.warn("http_proxy not found in secrets");
         }
     } catch (error) {
         console.warn(
@@ -84,12 +86,15 @@ app.post("/models", async (req, res) => {
             openai_request_headers,
         } = req.body;
 
-        const response = await axios({
+        let axios_config = {
             method: openai_request_method,
             url: openai_endpoint + "/v1/models",
             headers: openai_request_headers,
-            proxy: httpProxyDict,
-        });
+        };
+        if (httpProxyDict) {
+            axios_config.proxy = httpProxyDict;
+        }
+        const response = await axios(axios_config);
         res.json(response.data);
     } catch (error) {
         console.error(error);
@@ -106,14 +111,17 @@ app.post("/chat/completions", async (req, res) => {
             openai_request_body,
         } = req.body;
 
-        const response = await axios({
+        let axios_config = {
             method: openai_request_method,
             url: openai_endpoint + "/v1/chat/completions",
             data: openai_request_body,
             headers: openai_request_headers,
             responseType: "stream",
-            proxy: httpProxyDict,
-        });
+        };
+        if (httpProxyDict) {
+            axios_config.proxy = httpProxyDict;
+        }
+        const response = await axios(axios_config);
         response.data.pipe(res);
     } catch (error) {
         console.error(error);
