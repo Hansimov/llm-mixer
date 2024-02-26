@@ -109,8 +109,7 @@ class SendUserInputButtonBinder {
             });
             this.requester.create_messager_components();
             start_latest_message_animation();
-            let requester_post = this.requester.post();
-            requester_post.then(() => {
+            this.requester.post().then(() => {
                 this.stop(button);
             });
         }

@@ -8,6 +8,7 @@ import {
     get_request_messages,
     get_selected_llm_model,
     get_selected_temperature,
+    ContentDisplayerUpdater,
 } from "../components/chat_operator.js";
 
 export class ChatCompletionsRequester {
@@ -72,28 +73,28 @@ export class ChatCompletionsRequester {
         create_messager("user", this.prompt);
         create_messager("assistant", "", this.model, this.temperature);
     }
+    async handle_read_stream_data(reader) {
+        while (true) {
+            const { done, value } = await reader.read();
+            if (done) {
+                break;
+            }
+            let input = stringify_stream_bytes(value);
+            let json_chunks = jsonize_stream_data(input);
+            if (!this.content_displayer_updater) {
+                this.content_displayer_updater = new ContentDisplayerUpdater();
+            }
+            update_message(json_chunks, this.content_displayer_updater);
+        }
+    }
     async post() {
         this.construct_request_params();
-        const response = await fetch(
+        let response = await fetch(
             this.backend_request_endpoint,
             this.backend_request_params
         );
-        const reader = response.body.getReader();
-        let buffer = "";
-        return reader.read().then(function process({ done, value }) {
-            if (done) {
-                return;
-            }
-            buffer += stringify_stream_bytes(value);
-            let boundary = buffer.lastIndexOf("\n");
-            if (boundary !== -1) {
-                let input = buffer.substring(0, boundary);
-                buffer = buffer.substring(boundary + 1);
-                let json_chunks = jsonize_stream_data(input);
-                update_message(json_chunks);
-            }
-            return reader.read().then(process);
-        });
+        let reader = response.body.getReader();
+        return this.handle_read_stream_data(reader);
     }
     stop() {
         this.controller.abort();

@@ -85,17 +85,17 @@ export function pop_messager(n = 2) {
     return get_active_messager_list().pop(n);
 }
 
-export function update_message(json_chunks, content_displayer = null) {
-    let content_displayer_updater = new ContentDisplayerUpdater(
-        content_displayer
-    );
+export function update_message(json_chunks, content_displayer_updater = null) {
+    if (content_displayer_updater === null) {
+        content_displayer_updater = new ContentDisplayerUpdater();
+    }
     json_chunks.forEach(function (item) {
         let choice = item.choices[0];
         let content = choice.delta.content;
         let role = choice.delta.role;
         let finish_reason = choice.finish_reason;
         if (role) {
-            console.log("role: " + role);
+            // console.log("role: " + role);
         }
         if (content) {
             content_displayer_updater.update_with_chunk_content(content);
