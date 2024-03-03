@@ -19,17 +19,11 @@ export function get_latest_messager() {
     return get_active_messager_list().messagers.slice(-1)[0];
 }
 
-export function create_messager(
-    role,
-    content = "",
-    model = "",
-    temperature = ""
-) {
+export function create_messager(role, content = "", model = "") {
     let message = {
         role: role,
         content: content,
         model: model,
-        temperature: temperature,
     };
     let messager = new Messager(message);
     get_active_messager_list().push(messager);

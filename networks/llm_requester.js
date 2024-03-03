@@ -6,33 +6,38 @@ import {
     update_message,
     create_messager,
     get_request_messages,
-    get_selected_llm_model,
-    get_selected_temperature,
     ContentDisplayerUpdater,
 } from "../components/chat_operator.js";
+
+import { get_current_agent_info } from "../storages/agent_storage.js";
 
 export class ChatCompletionsRequester {
     constructor({
         prompt,
         model = null,
-        temperature = 0.5,
-        top_p = 0.95,
         openai_endpoint = null,
+        temperature = null,
+        top_p = null,
+        max_output_tokens = null,
     } = {}) {
+        this.agent_info = get_current_agent_info();
+        console.log("agent_info:", this.agent_info);
         this.prompt = prompt;
+        this.model_id_with_endpoint = this.agent_info.model;
         this.openai_endpoint =
-            openai_endpoint || this.extract_endpoint_and_model()[0];
-        this.model = model || this.extract_endpoint_and_model()[1];
-        this.temperature = temperature;
-        this.top_p = top_p;
+            openai_endpoint || this.extract_openai_endpoint_and_model()[0];
+        this.model = model || this.extract_openai_endpoint_and_model()[1];
+        this.temperature = temperature || this.agent_info.temperature;
+        this.top_p = top_p || this.agent_info.top_p;
+        this.max_output_tokens =
+            max_output_tokens || this.agent_info.max_output_tokens;
         this.backend_request_endpoint = "/chat/completions";
         this.controller = new AbortController();
     }
-    extract_endpoint_and_model() {
-        let model_id_with_endpoint = get_selected_llm_model();
-        this.openai_endpoint = model_id_with_endpoint.split("|")[0];
-        this.model = model_id_with_endpoint.split("|")[1];
-        return [this.openai_endpoint, this.model];
+    extract_openai_endpoint_and_model() {
+        let openai_endpoint = this.model_id_with_endpoint.split("|")[0];
+        let model = this.model_id_with_endpoint.split("|")[1];
+        return [openai_endpoint, model];
     }
     construct_openai_request_headers() {
         this.backend_request_headers = {
@@ -54,6 +59,7 @@ export class ChatCompletionsRequester {
                 messages: this.openai_request_messages,
                 temperature: this.temperature,
                 top_p: this.top_p,
+                max_tokens: this.max_output_tokens,
                 stream: true,
             },
         };
@@ -71,7 +77,7 @@ export class ChatCompletionsRequester {
     }
     create_messager_components() {
         create_messager("user", this.prompt);
-        create_messager("assistant", "", this.model, this.temperature);
+        create_messager("assistant", "", this.model);
     }
     async handle_read_stream_data(reader) {
         let buffer = "";
@@ -112,7 +118,6 @@ export class ChatCompletionsRequester {
     }
 }
 
-// export var available_models = { "user-customized": ["notes"] };
 export class AvailableModelsRequester {
     constructor(openai_endpoint) {
         this.openai_endpoint = openai_endpoint;

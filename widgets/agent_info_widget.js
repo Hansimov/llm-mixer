@@ -4,7 +4,7 @@ import { AvailableModelsSelectWidget } from "./available_models_select_widget.js
 export class AgentInfoWidget {
     constructor({ agent } = {}) {
         this.agent = agent;
-        this.widget_id = `agent-x-${this.agent.name}-x`;
+        this.widget_id = `agent-info`;
         this.name_widget_id = `${this.widget_id}-name`;
         this.model_widget_id = `${this.widget_id}-model`;
         this.description_widget_id = `${this.widget_id}-description`;
@@ -18,9 +18,9 @@ export class AgentInfoWidget {
         this.append_to_agent_sidebar();
     }
     append_to_agent_sidebar() {
-        let agent_info = $("#agent-info");
-        agent_info.empty();
-        agent_info.append(this.widget);
+        let agent_info_container = $("#agent-info-container");
+        agent_info_container.empty();
+        agent_info_container.append(this.widget);
         document
             .getElementById(`${this.system_prompt_widget_id}`)
             .addEventListener(

@@ -6,6 +6,35 @@ class AgentStorageItem {
     }
 }
 
+export function get_current_agent_info() {
+    let widget_id = "agent-info";
+    let agent_info_widget = $(`#${widget_id}`);
+    let name = agent_info_widget.find(`#${widget_id}-name`).val();
+    let model = agent_info_widget.find(`#${widget_id}-model-select`).val();
+    let system_prompt = agent_info_widget
+        .find(`#${widget_id}-system-prompt`)
+        .val();
+    let description = agent_info_widget.find(`#${widget_id}-description`).val();
+    let temperature = parseFloat(
+        agent_info_widget.find(`#${widget_id}-temperature-number`).val()
+    );
+    let top_p = parseFloat(
+        agent_info_widget.find(`#${widget_id}-top-p-number`).val()
+    );
+    let max_output_tokens = parseInt(
+        agent_info_widget.find(`#${widget_id}-max-output-tokens-number`).val()
+    );
+    return {
+        name: name,
+        model: model,
+        system_prompt: system_prompt,
+        description: description,
+        temperature: temperature,
+        top_p: top_p,
+        max_output_tokens: max_output_tokens,
+    };
+}
+
 class AgentStorage {
     constructor() {
         this.init_database();
