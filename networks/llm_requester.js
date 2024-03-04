@@ -28,7 +28,6 @@ export class ChatCompletionsRequester {
             openai_endpoint || this.extract_openai_endpoint_and_model()[0];
         this.model = model || this.extract_openai_endpoint_and_model()[1];
         this.system_prompt = this.agent_info.system_prompt;
-
         this.temperature = temperature || this.agent_info.temperature;
         this.top_p = top_p || this.agent_info.top_p;
         this.max_output_tokens =
@@ -83,8 +82,18 @@ export class ChatCompletionsRequester {
         };
     }
     create_messager_components() {
-        create_messager("user", this.prompt);
-        create_messager("assistant", "", this.model);
+        create_messager({
+            role: "user",
+            content: this.prompt,
+            model: "",
+            nickname: "You",
+        });
+        create_messager({
+            role: "assistant",
+            content: "",
+            model: this.model,
+            nickname: `${this.agent_info.name} (${this.model})`,
+        });
     }
     async handle_read_stream_data(reader) {
         let buffer = "";

@@ -102,7 +102,11 @@ class SendUserInputButtonBinder {
         $("#user-input").val("");
         $("#user-input").css("height", "auto");
         if (get_selected_llm_model() == "notes") {
-            create_messager("user", user_input_content);
+            create_messager({
+                role: "user",
+                content: user_input_content,
+                nickname: "notes",
+            });
         } else {
             this.requester = new ChatCompletionsRequester({
                 prompt: user_input_content,

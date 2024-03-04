@@ -19,11 +19,7 @@ class MessagerViewer {
         this.role_displayer = $("<div>")
             .addClass("role-displayer")
             .css("z-index", "1");
-        if (this.message.role === "user") {
-            this.role_displayer.append("You");
-        } else {
-            this.role_displayer.append(this.message.model);
-        }
+        this.role_displayer.append(this.message.nickname);
     }
     create_content_displayer() {
         this.content_displayer = $("<div>")
