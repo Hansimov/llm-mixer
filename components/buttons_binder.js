@@ -366,6 +366,7 @@ class AgentsSelectBinder {
         select.change(() => {
             localStorage.setItem("default_agent", select.val());
             console.log("set default_agent:", select.val());
+            agent_storage.set_agent_info_widget();
         });
     }
 }

@@ -7,22 +7,18 @@ class AgentStorageItem {
 }
 
 export function get_current_agent_info() {
-    let widget_id = "agent-info";
-    let agent_info_widget = $(`#${widget_id}`);
-    let name = agent_info_widget.find(`#${widget_id}-name`).val();
-    let model = agent_info_widget.find(`#${widget_id}-model-select`).val();
-    let system_prompt = agent_info_widget
-        .find(`#${widget_id}-system-prompt`)
-        .val();
-    let description = agent_info_widget.find(`#${widget_id}-description`).val();
+    let id = "agent-info";
+    let widget = $(`#${id}`);
+    let name = widget.find(`#${id}-name`).val();
+    let model = widget.find(`#${id}-model-select`).val();
+    let system_prompt = widget.find(`#${id}-system-prompt`).val();
+    let description = widget.find(`#${id}-description`).val();
     let temperature = parseFloat(
-        agent_info_widget.find(`#${widget_id}-temperature-number`).val()
+        widget.find(`#${id}-temperature-number`).val()
     );
-    let top_p = parseFloat(
-        agent_info_widget.find(`#${widget_id}-top-p-number`).val()
-    );
+    let top_p = parseFloat(widget.find(`#${id}-top-p-number`).val());
     let max_output_tokens = parseInt(
-        agent_info_widget.find(`#${widget_id}-max-output-tokens-number`).val()
+        widget.find(`#${id}-max-output-tokens-number`).val()
     );
     return {
         name: name,
@@ -73,12 +69,12 @@ class AgentStorage {
                     this.db.agents.put({
                         index: agent.index || agent.name,
                         name: agent.name,
-                        description: agent.description || "",
                         model: agent.model,
+                        system_prompt: agent.system_prompt || "",
+                        description: agent.description || "",
                         temperature: agent.temperature || 0.5,
                         top_p: agent.top_p || 0.9,
                         max_output_tokens: agent.max_output_tokens || -1,
-                        system_prompt: agent.system_prompt || "",
                         need_protect: agent.need_protect || false,
                     });
                 });
@@ -98,7 +94,7 @@ class AgentStorage {
             });
             Promise.all(promises).then(() => {
                 this.set_default_agent();
-                this.set_agent_info();
+                this.set_agent_info_widget();
             });
         });
     }
@@ -130,12 +126,29 @@ class AgentStorage {
         console.log("current_agent_name:", current_agent_name);
         return this.db.agents.get(current_agent_name);
     }
-    set_agent_info() {
+    set_agent_info_widget() {
         this.get_current_agent().then((agent) => {
             let agent_info_widget = new AgentInfoWidget({
                 agent: agent,
             });
             agent_info_widget.spawn();
+        });
+    }
+    get_agent_info(name = "") {
+        let agent_info = {};
+        if (name === "") {
+            name = $("#agents-select").val();
+        }
+        this.db.agents.get(name).then((agent) => {
+            agent_info.name = agent.name;
+            agent_info.model = agent.model;
+            agent_info.system_prompt = agent.system_prompt;
+            agent_info.description = agent.description;
+            agent_info.temperature = agent.temperature;
+            agent_info.top_p = agent.top_p;
+            agent_info.max_output_tokens = agent.max_output_tokens;
+            agent_info.need_protect = agent.need_protect;
+            return agent_info;
         });
     }
 }
