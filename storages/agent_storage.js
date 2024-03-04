@@ -123,7 +123,6 @@ class AgentStorage {
     }
     get_current_agent() {
         let current_agent_name = $("#agents-select").val();
-        console.log("current_agent_name:", current_agent_name);
         return this.db.agents.get(current_agent_name);
     }
     set_agent_info_widget() {

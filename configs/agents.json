@@ -2,36 +2,31 @@
     {
         "name": "默认",
         "description": "默认",
+        "model": "",
+        "system_prompt": "",
         "temperature": 0.5,
         "top_p": 0.9,
         "max_output_token": -1,
-        "system_prompt": "",
         "need_protect": false
     },
     {
         "name": "总结",
         "description": "文本总结",
-        "temperature": 0.5,
-        "top_p": 0.9,
-        "max_output_token": -1,
-        "system_prompt": "总结下面的文本：",
+        "model": "openchat-3.5",
+        "system_prompt": "请用中文总结下面的文本：",
         "need_protect": false
     },
     {
         "name": "翻译",
         "description": "文本翻译",
-        "temperature": 0.5,
-        "top_p": 0.9,
-        "max_output_token": -1,
-        "system_prompt": "请翻译下面的文本：",
+        "model": "openchat-3.5",
+        "system_prompt": "请用中文翻译下面的文本：",
         "need_protect": false
     },
     {
         "name": "搜索",
         "description": "网页搜索",
-        "temperature": 0.5,
-        "top_p": 0.9,
-        "max_output_token": -1,
+        "model": "openchat-3.5",
         "system_prompt": "请根据下列内容搜索网页：",
         "need_protect": false
     }

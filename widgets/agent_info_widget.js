@@ -47,6 +47,21 @@ export class AgentInfoWidget {
             widget_id: this.model_widget_id,
         });
         let model_widget_parent = this.widget.find(`#${this.model_widget_id}`);
+        let model_select = this.widget.find(`#${this.model_widget_id}-select`);
+        let agent_model = this.agent.model;
+        let model_matched = false;
+        model_select.find("option").each(function () {
+            let option_model = $(this).val().split("|")[1];
+            console.log("option_model:", option_model);
+            if (option_model === agent_model) {
+                model_select.val($(this).val());
+                model_matched = true;
+            }
+        });
+        if (!model_matched) {
+            console.log("No model matched for:", agent_model);
+        }
+
         this.model_widget.spawn_in_parent(model_widget_parent, "prepend");
     }
     create_system_prompt_widget() {
