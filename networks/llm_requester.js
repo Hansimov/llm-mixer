@@ -95,30 +95,28 @@ export class ChatCompletionsRequester {
             nickname: `${this.agent_info.name} (${this.model})`,
         });
     }
-    async handle_read_stream_data(reader) {
-        let buffer = "";
-        while (true) {
-            const { done, value } = await reader.read();
-            if (done && buffer.length === 0) {
-                break;
-            }
-            buffer += done ? "" : stringify_stream_bytes(value);
-            let new_line_index;
-            while ((new_line_index = buffer.indexOf("\n")) !== -1) {
-                let json_line = buffer.slice(0, new_line_index);
-                buffer = buffer.slice(new_line_index + 1);
-                try {
-                    let json_chunks = jsonize_stream_data(json_line);
-                    if (!this.content_displayer_updater) {
-                        this.content_displayer_updater =
-                            new ContentDisplayerUpdater();
-                    }
-                    update_message(json_chunks, this.content_displayer_updater);
-                } catch (e) {
-                    console.warn("Invalid JSON:", json_line);
+    async handle_read_stream_data(reader, buffer = "") {
+        const { done, value } = await reader.read();
+        if (done && buffer.length === 0) {
+            return;
+        }
+        buffer += done ? "" : stringify_stream_bytes(value);
+        let new_line_index;
+        while ((new_line_index = buffer.indexOf("\n")) !== -1) {
+            let json_line = buffer.slice(0, new_line_index);
+            buffer = buffer.slice(new_line_index + 1);
+            try {
+                let json_chunks = jsonize_stream_data(json_line);
+                if (!this.content_displayer_updater) {
+                    this.content_displayer_updater =
+                        new ContentDisplayerUpdater();
                 }
+                update_message(json_chunks, this.content_displayer_updater);
+            } catch (e) {
+                console.warn("Invalid JSON:", json_line);
             }
         }
+        return this.handle_read_stream_data(reader, buffer);
     }
     async post() {
         this.construct_request_params();
