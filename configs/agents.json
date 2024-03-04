@@ -12,21 +12,21 @@
     {
         "name": "总结",
         "description": "文本总结",
-        "model": "openchat-3.5",
+        "model": "nous-mixtral-8x7b",
         "system_prompt": "请用中文总结下面的文本：",
         "need_protect": false
     },
     {
         "name": "翻译",
         "description": "文本翻译",
-        "model": "openchat-3.5",
+        "model": "nous-mixtral-8x7b",
         "system_prompt": "请用中文翻译下面的文本：",
         "need_protect": false
     },
     {
         "name": "搜索",
         "description": "网页搜索",
-        "model": "openchat-3.5",
+        "model": "nous-mixtral-8x7b",
         "system_prompt": "请根据下列内容搜索网页：",
         "need_protect": false
     }

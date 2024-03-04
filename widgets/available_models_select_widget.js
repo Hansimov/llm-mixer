@@ -33,6 +33,7 @@ export class AvailableModelsSelectWidget {
             for (let mutation of mutationsList) {
                 if (mutation.type === "childList") {
                     this.update_select_options();
+                    $(document).trigger("available_models_select:change");
                 }
             }
         });

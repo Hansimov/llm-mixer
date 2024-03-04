@@ -42,27 +42,40 @@ export class AgentInfoWidget {
     create_name_widget() {
         this.widget.find(`#${this.name_widget_id}`).val(this.agent.name);
     }
+    update_model_widget() {
+        let model_select = this.widget.find(`#${this.model_widget_id}-select`);
+        let agent_model = this.agent.model;
+        let agent_name = this.agent.name;
+        let model_matched = false;
+        model_select.find("option").each(function () {
+            let option_model = $(this).val().split("|")[1];
+            if (option_model === agent_model) {
+                model_select.val($(this).val());
+                model_matched = true;
+                console.log(
+                    `Model matched [${agent_model}] for agent [${agent_name}].`
+                );
+                return false;
+            }
+        });
+        if (!model_matched) {
+            let default_model = model_select.find("option:first").val();
+            model_select.val(default_model);
+            console.log(
+                `No model matched [${agent_model}] for agent [${agent_name}].`
+            );
+        }
+    }
     create_model_widget() {
         this.model_widget = new AvailableModelsSelectWidget({
             widget_id: this.model_widget_id,
         });
         let model_widget_parent = this.widget.find(`#${this.model_widget_id}`);
-        let model_select = this.widget.find(`#${this.model_widget_id}-select`);
-        let agent_model = this.agent.model;
-        let model_matched = false;
-        model_select.find("option").each(function () {
-            let option_model = $(this).val().split("|")[1];
-            console.log("option_model:", option_model);
-            if (option_model === agent_model) {
-                model_select.val($(this).val());
-                model_matched = true;
-            }
-        });
-        if (!model_matched) {
-            console.log("No model matched for:", agent_model);
-        }
-
         this.model_widget.spawn_in_parent(model_widget_parent, "prepend");
+        this.update_model_widget();
+        $(document).on("available_models_select:change", () => {
+            this.update_model_widget();
+        });
     }
     create_system_prompt_widget() {
         this.widget
