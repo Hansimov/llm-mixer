@@ -39,7 +39,7 @@ body {
 #chat-session-container {
     overflow-y: auto;
     overflow-x: hidden;
-    padding: 0px;
+    padding: 4px 0px 0px 0px;
     flex: 1 1 auto;
 }
 
@@ -53,7 +53,7 @@ body {
 
 .message-user,
 .message-assistant {
-    box-shadow: 0px 0px 6px 0px rgba(122, 122, 122, 0.5);
+    box-shadow: 0px 1px 4px 0px rgba(122, 122, 122, 0.4);
     border-radius: 5px;
     padding: 5px 0px 5px 0px;
     margin: 0px 0px 8px 0px;
