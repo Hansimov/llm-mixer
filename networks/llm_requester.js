@@ -27,6 +27,8 @@ export class ChatCompletionsRequester {
         this.openai_endpoint =
             openai_endpoint || this.extract_openai_endpoint_and_model()[0];
         this.model = model || this.extract_openai_endpoint_and_model()[1];
+        this.system_prompt = this.agent_info.system_prompt;
+
         this.temperature = temperature || this.agent_info.temperature;
         this.top_p = top_p || this.agent_info.top_p;
         this.max_output_tokens =
@@ -50,6 +52,11 @@ export class ChatCompletionsRequester {
     }
     construct_backend_request_body() {
         this.openai_request_messages = get_request_messages();
+        this.system_message = {
+            role: "system",
+            content: this.system_prompt,
+        };
+        this.openai_request_messages.unshift(this.system_message);
         this.backend_request_body = {
             openai_endpoint: this.openai_endpoint,
             openai_request_method: "POST",
