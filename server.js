@@ -13,6 +13,13 @@ app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname + "/index.html"));
 });
 
+async function is_file_exists(file) {
+    return fs
+        .access(file, fs.constants.F_OK)
+        .then(() => true)
+        .catch(() => false);
+}
+
 app.get("/endpoints", async (req, res) => {
     try {
         let endpoints_configs_path = path.join(
@@ -20,6 +27,14 @@ app.get("/endpoints", async (req, res) => {
             "configs",
             "endpoints.json"
         );
+        if (!(await is_file_exists(endpoints_configs_path))) {
+            endpoints_configs_path = path.join(
+                __dirname,
+                "configs",
+                "endpoints_template.json"
+            );
+            console.log("agents.json not found. Use template.");
+        }
         const data = await fs.readFile(endpoints_configs_path, "utf-8");
         const local_points = JSON.parse(data);
         res.json(local_points);
@@ -38,6 +53,14 @@ app.get("/agents", async (req, res) => {
             "configs",
             "agents.json"
         );
+        if (!(await is_file_exists(agents_configs_path))) {
+            agents_configs_path = path.join(
+                __dirname,
+                "configs",
+                "agents_template.json"
+            );
+            console.log("endpoints.json not found. Use template.");
+        }
         const data = await fs.readFile(agents_configs_path, "utf-8");
         const local_agents = JSON.parse(data);
         res.json(local_agents);

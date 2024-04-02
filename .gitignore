@@ -1,6 +1,9 @@
+.vscode
 node_modules
 package-lock.json
-.vscode
-live.js
-# configs/endpoints.json
+
+configs/endpoints.json
+configs/agents.json
 configs/secrets.json
+
+live.js
