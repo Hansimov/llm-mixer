@@ -36,6 +36,10 @@ body {
     flex: 0 0 auto;
 }
 
+#agents-select {
+    text-align: center;
+}
+
 #chat-session-container {
     overflow-y: auto;
     overflow-x: hidden;
