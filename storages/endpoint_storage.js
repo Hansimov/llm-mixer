@@ -225,6 +225,7 @@ class EndpointStorage {
         let endpoint_hostname = new URL(endpoint).hostname
             .split(".")[0]
             .split("-")[0];
+        model_id = model_id.split("/").pop().split(".")[0];
         let model_name = `${model_id} (${endpoint_hostname})`;
         let model_value = `${endpoint}|${model_id}`;
         return [model_name, model_value];
