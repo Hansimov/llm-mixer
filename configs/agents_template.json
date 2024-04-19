@@ -2,7 +2,7 @@
     {
         "name": "默认",
         "description": "默认",
-        "model": "",
+        "model": "nous-mixtral-8x7b",
         "system_prompt": "",
         "temperature": 0.5,
         "top_p": 0.9,
@@ -21,13 +21,6 @@
         "description": "文本翻译",
         "model": "nous-mixtral-8x7b",
         "system_prompt": "请用中文翻译下面的文本：",
-        "need_protect": false
-    },
-    {
-        "name": "搜索",
-        "description": "网页搜索",
-        "model": "nous-mixtral-8x7b",
-        "system_prompt": "请根据下列内容搜索网页：",
         "need_protect": false
     }
 ]
