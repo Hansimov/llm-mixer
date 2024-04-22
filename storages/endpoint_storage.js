@@ -5,7 +5,7 @@ class EndpointStorage {
         this.init_database();
         this.load_local_endpoints().then(() => {
             this.create_endpoint_and_api_key_items();
-            this.fill_available_models_select();
+            this.fill_available_models_select({ clear_select: true });
         });
     }
     init_database() {
@@ -130,7 +130,11 @@ class EndpointStorage {
                 });
                 console.log(`new_endpoint: ${endpoint_input_value}`);
             }
-            this.fill_available_models_select(endpoint_input_value);
+            this.fill_available_models_select({
+                endpoint: endpoint_input_value,
+                api_key: api_key_input_value,
+                clear_select: false,
+            });
         });
 
         let remove_endpoint_buttons = endpoint_and_api_key_item.find(
@@ -150,10 +154,11 @@ class EndpointStorage {
                 this.db.endpoints.delete(endpoint_input_value);
                 // remove models of current endpoint from available_models_select
                 let available_models_select = $("#available-models-select");
-                let model_value = this.construct_model_name_and_value(
-                    endpoint_input_value,
-                    ""
-                )[1];
+                let model_value = this.construct_model_name_and_value({
+                    endpoint: endpoint_input_value,
+                    model_id: "",
+                    api_key: "",
+                })[1];
                 available_models_select
                     .find(`option[value^="${model_value}"]`)
                     .remove();
@@ -161,13 +166,14 @@ class EndpointStorage {
             }
         });
     }
-    async fetch_available_models(endpoint) {
+    async fetch_available_models(endpoint, api_key = null) {
         console.log("fetch available models for endpoint:", endpoint);
         // if endpoint not starts with http(s), skip,
         //   such as "user-customized", which is might be local functions or agents
         if (endpoint.startsWith("http")) {
             let available_models_requester = new AvailableModelsRequester(
-                endpoint
+                endpoint,
+                api_key
             );
             console.log(`try to fetch available_models from ${endpoint}`);
             // update available_models field of endpoint index in db.endpoints
@@ -182,21 +188,23 @@ class EndpointStorage {
             return Promise.resolve([]);
         }
     }
-    fill_available_models_select(endpoint = null) {
+    fill_available_models_select({
+        endpoint = null,
+        api_key = null,
+        clear_select = false,
+    } = {}) {
         // fetch available_models for all endpoints, and then fill available_models_select
         let available_models_select = $("#available-models-select");
-        available_models_select.empty();
-        let promises = [];
-
-        const fill_models = (endpoint) => {
-            return this.fetch_available_models(endpoint).then(
+        const fill_models = (endpoint, api_key) => {
+            return this.fetch_available_models(endpoint, api_key).then(
                 (available_models) => {
                     available_models.forEach((model_id) => {
                         let model_name_and_value =
-                            this.construct_model_name_and_value(
-                                endpoint,
-                                model_id
-                            );
+                            this.construct_model_name_and_value({
+                                endpoint: endpoint,
+                                model_id: model_id,
+                                api_key: api_key,
+                            });
                         let option = new Option(
                             model_name_and_value[0],
                             model_name_and_value[1]
@@ -207,12 +215,17 @@ class EndpointStorage {
             );
         };
 
+        if (clear_select) {
+            available_models_select.empty();
+        }
+
+        let promises = [];
         if (endpoint) {
-            promises.push(fill_models(endpoint));
+            promises.push(fill_models(endpoint, api_key));
         } else {
             this.db.endpoints.toArray().then((endpoints) => {
                 endpoints.map(async (row) => {
-                    promises.push(fill_models(row.endpoint));
+                    promises.push(fill_models(row.endpoint, row.api_key));
                 });
             });
         }
@@ -221,13 +234,17 @@ class EndpointStorage {
             this.set_default_model();
         });
     }
-    construct_model_name_and_value(endpoint, model_id) {
+    construct_model_name_and_value({
+        endpoint,
+        model_id,
+        api_key = null,
+    } = {}) {
         let endpoint_hostname = new URL(endpoint).hostname
             .split(".")[0]
             .split("-")[0];
         model_id = model_id.split("/").pop();
         let model_name = `${model_id} (${endpoint_hostname})`;
-        let model_value = `${endpoint}|${model_id}`;
+        let model_value = `${endpoint}|${model_id}|${api_key}`;
         return [model_name, model_value];
     }
     set_default_model() {

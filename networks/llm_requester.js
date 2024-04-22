@@ -133,8 +133,9 @@ export class ChatCompletionsRequester {
 }
 
 export class AvailableModelsRequester {
-    constructor(openai_endpoint) {
+    constructor(openai_endpoint, openai_api_key = null) {
         this.openai_endpoint = openai_endpoint;
+        this.openai_api_key = openai_api_key;
         this.backend_request_endpoint = "/models";
         this.controller = new AbortController();
         this.available_models = [];
@@ -146,6 +147,11 @@ export class AvailableModelsRequester {
         this.openai_request_headers = {
             "Content-Type": "application/json",
         };
+        if (this.openai_api_key) {
+            this.openai_request_headers[
+                "Authorization"
+            ] = `Bearer ${this.openai_api_key}`;
+        }
     }
     construct_backend_request_body() {
         this.backend_request_body = {
