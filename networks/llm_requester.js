@@ -27,6 +27,7 @@ export class ChatCompletionsRequester {
         this.openai_endpoint =
             openai_endpoint || this.extract_openai_endpoint_and_model()[0];
         this.model = model || this.extract_openai_endpoint_and_model()[1];
+        this.openai_api_key = this.extract_openai_endpoint_and_model()[2];
         this.system_prompt = this.agent_info.system_prompt;
         this.temperature = temperature || this.agent_info.temperature;
         this.top_p = top_p || this.agent_info.top_p;
@@ -36,9 +37,11 @@ export class ChatCompletionsRequester {
         this.controller = new AbortController();
     }
     extract_openai_endpoint_and_model() {
-        let openai_endpoint = this.model_id_with_endpoint.split("|")[0];
-        let model = this.model_id_with_endpoint.split("|")[1];
-        return [openai_endpoint, model];
+        let splits = this.model_id_with_endpoint.split("|");
+        let openai_endpoint = splits[0];
+        let model = splits[1];
+        let openai_api_key = splits[2];
+        return [openai_endpoint, model, openai_api_key];
     }
     construct_openai_request_headers() {
         this.backend_request_headers = {
@@ -46,7 +49,7 @@ export class ChatCompletionsRequester {
         };
         this.openai_request_headers = {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("openai_api_key")}`,
+            Authorization: `Bearer ${this.openai_api_key}`,
         };
     }
     construct_backend_request_body() {

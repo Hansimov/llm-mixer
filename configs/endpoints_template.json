@@ -1,7 +1,7 @@
 [
     {
         "endpoint": "https://hansimov-hf-llm-api.hf.space/api",
-        "api_key": "sk-xxxxx",
+        "api_key": "Hansimov",
         "api_type": "openai",
         "need_protect": false
     }
